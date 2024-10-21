@@ -27,14 +27,19 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl);
 
     /* YOUR CODE HERE */
 
-	// 000 rll Rotate left
-	// 001 sll Shift left logical
-	// 010 sra Shift right arithmetic
-	// 011 srl Shift right logical
-	// 100 ADD A+B
-	// 101 AND A AND B
-	// 110 OR A OR B
-	// 111 XOR A XOR B
+	// 0000 rll Rotate left
+	// 0001 sll Shift left logical
+	// 0010 sra Shift right arithmetic
+	// 0011 srl Shift right logical
+	// 0100 ADD A+B
+	// 0101 AND A AND B
+	// 0110 OR A OR B
+	// 0111 XOR A XOR B
+	// 1000 SLBI 
+	// 1001 ROLI
+	// 1010 RORI
+	// 1011 SRLI
+	// 1100 BTR
 
 	wire [15:0] Atouse;
 	wire [15:0] Btouse;

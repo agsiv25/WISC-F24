@@ -16,16 +16,17 @@ input halt;
 input rst;
 input clk;
 
-wire [15:0]ReadAddr; 
+wire [15:0]pcRegAddr; 
 wire [15:0]nextPC;
 
 cla_16 pc_inc(.sum(incPC), .cout(), .ofl(), .a(ReadAddr), .b(16'h2), .c_in(1'b0), .sign(1'b0));
 
-reg16 PC(.readData(ReadAddr), .err(), .clk(clk), .rst(rst), .writeData(nextPC), .writeEnable(1'b1));
+reg16 PC(.readData(pcRegAddr), .err(), .clk(clk), .rst(rst), .writeData(nextPC), .writeEnable(1'b1));
 
-mux2_1 pc_halt_mux(.Out(nextPC), .S(halt), .InpA(newPC), .InpB(ReadAddr));
+//mux2_1 pc_halt_mux(.Out(nextPC), .S(halt), .InpA(newPC), .InpB(pcRegAddr));
+assign nextPC = (halt) ? pcRegAddr : newPC;
 
-memory2c instruction_memory(.data_out(instruction), .data_in(16'b0), .addr(ReadAddr), .enable(1'b1), .wr(0), .createdump(1'b0), .clk(clk), .rst(rst));
+memory2c instruction_memory(.data_out(instruction), .data_in(16'b0), .addr(pcRegAddr), .enable(1'b1), .wr(0), .createdump(1'b0), .clk(clk), .rst(rst));
    
 endmodule
 `default_nettype wire
