@@ -12,7 +12,6 @@ input [1:0] instructionALU;
 
 output [3:0] aluOp;
 
-
 // IMPLEMENT HERE 
 
 endmodule
