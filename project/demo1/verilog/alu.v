@@ -36,10 +36,7 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl);
 	// 0110 OR A OR B
 	// 0111 XOR A XOR B
 	// 1000 SLBI 
-	// 1001 ROLI
-	// 1010 RORI
-	// 1011 SRLI
-	// 1100 BTR
+	// 1001 BTR
 
 	wire [15:0] Atouse;
 	wire [15:0] Btouse;
