@@ -25,8 +25,6 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl);
     output                      Ofl ; // Signal if overflow occured
     output                      Zero; // Signal if Out is 0
 
-    /* YOUR CODE HERE */
-
 	// 0000 rll Rotate left
 	// 0001 sll Shift left logical
 	// 0010 sra Shift right arithmetic
@@ -36,7 +34,7 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl);
 	// 0110 OR A OR B
 	// 0111 XOR A XOR B
 
-	// ~~~~~~~~~~~~~~~~~~~ NEED TO IMPLEMENT ~~~~~~~~~~~~~~~~~~~~~
+	// Added Operations
 	// 1000 SLBI 
 	// 1001 BTR
 	// 1010 rrl rotate right

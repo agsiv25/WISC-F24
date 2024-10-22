@@ -16,7 +16,7 @@ module rotater (in, shamt, out);
 
    /* YOUR CODE HERE */
 
-	// for rotate right: LSBs are moved to MSBs and all other bits are shifted right [shamt] positions. To do this, add the input to itself, take MSB, and add it to the result of the shift. 
+	// for rotate right: LSBs are moved to MSBs and all other bits are shifted right [shamt] positions. To do this, add the input to itself, take LSB, and add it to the result of the shift. 
 
 	wire [15:0] shift1, shift2, shift4;
 

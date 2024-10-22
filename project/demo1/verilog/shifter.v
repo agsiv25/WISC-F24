@@ -31,11 +31,12 @@ module shifter (In, ShAmt, Oper, Out);
 	shiftl oper_1 (.in(In), .shamt(ShAmt), .out(shiftl_out));
 	shiftrarithmetic oper_2 (.in(In), .shamt(ShAmt), .out(shiftra_out));
 	shiftrlogical oper_3 (.in(In), .shamt(ShAmt), .out(shiftrl_out));
+    rotater oper_4 (.in(In), .shamt(ShAmt), .out(rotater_out));
 
 	// control output to be taken from correct fucntion module 
-	quadmux4_1 byte0 (.Out(Out[3:0]), .S(Oper), .InpA(rotatel_out[3:0]), .InpB(shiftl_out[3:0]), .InpC(shiftra_out[3:0]), .InpD(shiftrl_out[3:0]));
-	quadmux4_1 byte1 (.Out(Out[7:4]), .S(Oper), .InpA(rotatel_out[7:4]), .InpB(shiftl_out[7:4]), .InpC(shiftra_out[7:4]), .InpD(shiftrl_out[7:4]));
-	quadmux4_1 byte2 (.Out(Out[11:8]), .S(Oper), .InpA(rotatel_out[11:8]), .InpB(shiftl_out[11:8]), .InpC(shiftra_out[11:8]), .InpD(shiftrl_out[11:8]));
-	quadmux4_1 byte3 (.Out(Out[15:12]), .S(Oper), .InpA(rotatel_out[15:12]), .InpB(shiftl_out[15:12]), .InpC(shiftra_out[15:12]), .InpD(shiftrl_out[15:12]));
+	quadmux4_1 byte0 (.Out(Out[3:0]), .S(Oper[1:0]), .InpA(rotatel_out[3:0]), .InpB(shiftl_out[3:0]), .InpC(shiftra_out[3:0]), .InpD(shiftrl_out[3:0]));
+	quadmux4_1 byte1 (.Out(Out[7:4]), .S(Oper[1:0]), .InpA(rotatel_out[7:4]), .InpB(shiftl_out[7:4]), .InpC(shiftra_out[7:4]), .InpD(shiftrl_out[7:4]));
+	quadmux4_1 byte2 (.Out(Out[11:8]), .S(Oper[1:0]), .InpA(rotatel_out[11:8]), .InpB(shiftl_out[11:8]), .InpC(shiftra_out[11:8]), .InpD(shiftrl_out[11:8]));
+	quadmux4_1 byte3 (.Out(Out[15:12]), .S(Oper[1:0]), .InpA(rotatel_out[15:12]), .InpB(shiftl_out[15:12]), .InpC(shiftra_out[15:12]), .InpD(shiftrl_out[15:12]));
 
 endmodule
