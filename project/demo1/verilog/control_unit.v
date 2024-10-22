@@ -11,7 +11,7 @@ input [15:0] instruction;
 
 output ALUjmp;
 output memWrt;              // memory write or read signal 
-output [1:0] brchSig;
+output [3:0] brchSig;       // bit 2: sign flag, bit 1: zero flag, bit 0: carry out
 output Cin;
 output invA;                // invert ALU input A
 output invB;                // invert ALU input B
@@ -30,7 +30,7 @@ output jalSel;              // select signal for jal and slbiu conflict
 always @(instruction) begin
    ALUjmp = 1'b0;
    memWrt = 1'b0;
-   brchSig = 2'b00;
+   brchSig = 3'b000;
    Cin = 1'b0;
    invA = 1'b0;
    invB = 1'b0;
@@ -153,31 +153,31 @@ always @(instruction) begin
          regDestSel = 2'b10; //select instr bits [4:2] as write back
       end
       1_1100: begin //SEQ
-
+         brchSig = 3'b010; //if zero flag then true
       end
       1_1101: begin //SLT
-
+         brchSig = 3'b100; //if sign flag then true
       end
       1_1110: begin //SLE
-
+         brchSig = 3'b110; //if zero or sign then true
       end
       1_1111: begin //SCO
-
+         brchSig = 2'b001; //if carry out then true
       end
       0_1100: begin //BEQZ
-         brchSig = 2'b01; //select zero flag
+         brchSig = 2'b010; //select zero flag
          BSrc = 2'b11; //select 0 as inB
       end
       0_1101: begin //BNEZ
-         brchSig = 2'b01; //select zero flag
+         brchSig = 2'b101; //select not zero flag
          BSrc = 2'b11; //select 0 as inB
       end
       0_1110: begin //BLTZ
-         brchSig = 2'b10; //select sign flag
+         brchSig = 2'b100; //select sign flag
          BSrc = 2'b11; //select 0 as inB
       end
       0_1111: begin //BGEZ
-         brchSig = 2'b10; //select sign flag
+         brchSig = 2'b011; //if not sign or zero
          BSrc = 2'b11; //select 0 as inB
       end
       1_1000: begin //LBI
@@ -185,19 +185,34 @@ always @(instruction) begin
          wbDataSel = 2'b11; //select imm8 as wb src
       end
       1_0010: begin //SLBI
-
+         regWrt = 1'b1; //enable write back
+         wbDataSel = 2'b00; //select addPC as wb src
+         SLBIsel = 1'b1; //select ALU output as PC
+         zeroSel = 1'b1; //select zero extended imm8
+         brchSig = 2'b11; //select special to tell you to go ALU
       end
       0_0100: begin //J
-
+         immSrc = 1'b1; //select imm11 as PC adder input
       end
       0_0101: begin //JR
+         SLBIsel = 1'b1; //select ALU output as PC
+         BSrc = 2'b11; //select 0 as inB
 
       end
       0_0110: begin //JAL
-
+         regWrt = 1'b1; //enable write back
+         wbDataSel = 2'b00; //select addPC as wb src
+         immSrc = 1'b1; //select imm11 as PC adder input
+         jalSel = 1'b1; //select ALU output as PC
+         regDestSel = 2'b11; //select instr R7 as write back
       end
       0_0111: begin //JALR
-
+         ALUjmp = 1'b1; //enable ALU jump
+         regWrt = 1'b1; //enable write back
+         wbDataSel = 2'b00; //select addPC as wb src
+         jalSel = 1'b1; //select ALU output as PC
+         BSrc = 2'b11; //select 0 as inB
+         regDestSel = 2'b11; //select instr R7 as write back
       end
       0_0010: begin //siic
 
