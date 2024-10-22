@@ -25,6 +25,7 @@ output [1:0] BSrc;          // select signal for inB mux
 output zeroSel;             // choose zero or sign extended immediates 
 output [1:0] regDestSel;    // sel signal to register write mux 
 output jalSel;              // select signal for jal and slbiu conflict
+output sOpSel;
 
 // IMPLEMENT HERE 
 always @(instruction) begin
@@ -44,6 +45,7 @@ always @(instruction) begin
    zeroSel = 1'b0;
    regDestSel = 2'b00;
    jalSel = 1'b0;
+   sOpSel = 1'b0;
    casex(instruction[15:11])
       0_0000: begin // HALT
          createDump = 1'b1;
@@ -153,16 +155,32 @@ always @(instruction) begin
          regDestSel = 2'b10; //select instr bits [4:2] as write back
       end
       1_1100: begin //SEQ
+         regWrt = 1'b1; //enable write back
+         wbDataSel = 2'b10; //select aluOut as wb src
+         regDestSel = 2'b10; //select instr bits [4:2] as write back
          brchSig = 3'b010; //if zero flag then true
+         sOpSel = 1'b1; //select special to tell you to use brch cond output
       end
       1_1101: begin //SLT
+         regWrt = 1'b1; //enable write back
+         wbDataSel = 2'b10; //select aluOut as wb src
+         regDestSel = 2'b10; //select instr bits [4:2] as write back
          brchSig = 3'b100; //if sign flag then true
+         sOpSel = 1'b1; //select special to tell you to use brch cond output
       end
       1_1110: begin //SLE
+         regWrt = 1'b1; //enable write back
+         wbDataSel = 2'b10; //select aluOut as wb src
+         regDestSel = 2'b10; //select instr bits [4:2] as write back
          brchSig = 3'b110; //if zero or sign then true
+         sOpSel = 1'b1; //select special to tell you to use brch cond output
       end
       1_1111: begin //SCO
+         regWrt = 1'b1; //enable write back
+         wbDataSel = 2'b10; //select aluOut as wb src
+         regDestSel = 2'b10; //select instr bits [4:2] as write back
          brchSig = 2'b001; //if carry out then true
+         sOpSel = 1'b1; //select special to tell you to use brch cond output
       end
       0_1100: begin //BEQZ
          brchSig = 2'b010; //select zero flag
@@ -197,7 +215,6 @@ always @(instruction) begin
       0_0101: begin //JR
          SLBIsel = 1'b1; //select ALU output as PC
          BSrc = 2'b11; //select 0 as inB
-
       end
       0_0110: begin //JAL
          regWrt = 1'b1; //enable write back
@@ -215,7 +232,7 @@ always @(instruction) begin
          regDestSel = 2'b11; //select instr R7 as write back
       end
       0_0010: begin //siic
-
+      
       end
       0_0011: begin //NOP/RTI
 

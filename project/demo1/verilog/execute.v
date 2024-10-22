@@ -5,7 +5,7 @@
    Description     : This is the overall module for the execute stage of the processor.
 */
 `default_nettype none
-module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluOut, newPC, pcAdd, wrtData);
+module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluOut, newPC, pcAdd, wrtData, sOpSel);
 
    input SLBIsel;
    input incPC;
@@ -21,6 +21,7 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    input [3:0] aluOp;
    input aluJmp;
    input jalSel;
+   input sOpSel;
 
    output [15:0] aluOut;
    output [15:0] newPC;
@@ -30,18 +31,21 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    wire zeroFlag;
    wire oflFlag;
    wire jmpSel;
+   wire [15:0]aluInter;
    wire [15:0] pcOrSLBI;
    wire [15:0] imm8Or11;
    wire [15:0] pcAdd;
 
    // ALU
-   alu aluExec(.InA(inA), .InB(inB), .Cin(Cin), .Oper(aluOp), .invA(invA), .invB(invB), .sign(1'b0), .Out(aluOut), .Zero(zeroFlag), .Ofl(oflFlag));
+   alu aluExec(.InA(inA), .InB(inB), .Cin(Cin), .Oper(aluOp), .invA(invA), .invB(invB), .sign(1'b0), .Out(aluInter), .Zero(zeroFlag), .Ofl(oflFlag));
 
    // Branch conditional module
    branch_conditional branchCond(.brchSig(brchSig), .sf(), .zf(zeroFlag), .of(oflFlag), .cf(), .jmpSel(jmpSel));
 
    assign pcOrSLBI = (SLBIsel) ? aluOut : incPC;
    assign imm8or11 = (immSrc) ? imm11 : imm8;
+
+   assign aluOut = (sOpSel) ? {15'b0,jmpSel} : aluInter;
 
    // PC add module 
    cla_16 pcImmAdd(.sum(addPC), .cout(), .ofl(), .a(pcOrSLBI), .b(imm8or11), .c_in(1'b0), .sign(1'b0));
