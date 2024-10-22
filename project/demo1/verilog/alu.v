@@ -35,8 +35,11 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl);
 	// 0101 AND A AND B
 	// 0110 OR A OR B
 	// 0111 XOR A XOR B
+
+	// ~~~~~~~~~~~~~~~~~~~ NEED TO IMPLEMENT ~~~~~~~~~~~~~~~~~~~~~
 	// 1000 SLBI 
 	// 1001 BTR
+	// 1010 rrl rotate right
 
 	wire [15:0] Atouse;
 	wire [15:0] Btouse;
@@ -49,6 +52,15 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl);
 	wire [15:0] ANDout;
 	wire [15:0] ORout;
 	wire [15:0] XORout;
+
+	wire [15:0] originalOpsOut;
+	wire [15:0] addedOpsOut;
+
+	// added operation wires
+	wire [15:0] rotater_out;
+	wire [15:0] slbi;
+	wire [15:0] btr;
+	wire [15:0] slbiBtrOut;
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ INPUTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -71,6 +83,29 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl);
 	// Bitwise XOR
 	assign XORout = Atouse ^ Btouse;
 
+	// SLBI
+	assign slbi = Atouse << 8;
+
+	// BTR
+	assign btr[0] = Atouse[15];
+	assign btr[1] = Atouse[14];
+	assign btr[2] = Atouse[13];
+	assign btr[3] = Atouse[12];
+	assign btr[4] = Atouse[11];
+	assign btr[5] = Atouse[10];
+	assign btr[6] = Atouse[9];
+	assign btr[7] = Atouse[8];
+	assign btr[8] = Atouse[7];
+	assign btr[9] = Atouse[6];
+	assign btr[10] = Atouse[5];
+	assign btr[11] = Atouse[4];
+	assign btr[12] = Atouse[3];
+	assign btr[13] = Atouse[2];
+	assign btr[14] = Atouse[1];
+	assign btr[15] = Atouse[0];
+
+	// rotate right 
+	rotater oper_4 (.in(Atouse), .shamt(Btouse[3:0]), .out(rotater_out));
 
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ OUTPUTS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -81,7 +116,16 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl);
 	quadmux4_1 stage1_3 (.Out(nonBarrelOpsOut[15:12]), .S(Oper[1:0]), .InpA(ADDout[15:12]), .InpB(ANDout[15:12]), .InpC(ORout[15:12]), .InpD(XORout[15:12]));
 
 	// decide between shifting operations and non-shifting operations 
-	assign Out = (Oper[2]) ? nonBarrelOpsOut : shifterout;
+	assign originalOpsOut = (Oper[2]) ? nonBarrelOpsOut : shifterout;
+
+	// decide between SLBI and BTR
+    assign slbiBtrOut = (Oper[0]) ? btr : slbi;
+
+	// decide between SLBI / BTR and rrl
+    assign addedOpsOut = (Oper[1]) ? rotater_out : slbiBtrOut;	
+
+	// decide between original operations or new WISC_ISA operations 
+	assign Out = (Oper[3]) ? addedOpsOut : originalOpsOut;
 
 	// Zero: set high if Out is zero, otherwise 0
 	assign Zero = (Out == 16'b0);
