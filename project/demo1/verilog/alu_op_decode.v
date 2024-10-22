@@ -28,8 +28,6 @@ output [3:0] aluOp;
 	// 0111 XOR A XOR B
    parameter XOR = 4'b0111;
 
-
-
 	// 1000 SLBI 
    parameter SLBI = 4'b1000;
 	// 1001 BTR
@@ -93,48 +91,59 @@ output [3:0] aluOp;
             end
          5'b11010:          // Standard ALU shifts
             begin
-               aluOp <= (instruction[1:0] == 2'b00) ? ROL : (instruction[1:0] == 2'b01) ? SLL : ADD;
-
+               aluOp <= (instruction[1:0] == 2'b00) ? ROL : (instruction[1:0] == 2'b01) ? SLL : (instruction[1:0] == 2'b10) ? ROR : SRL;
             end
          5'b11100:          // SEQ
             begin
+               aluOp = ADD;
             end
-         5'b01000:          // Standard ALU operations
+         5'b11101:          // SLT
             begin
+               aluOp = ADD;
             end
-         5'b01000:          // Standard ALU operations
+         5'b11110:          // SLE
             begin
+               aluOp = ADD;
             end
-         5'b01000:          // Standard ALU operations
+         5'b11111:          // SCO
             begin
+               aluOp = ADD;
             end
-         5'b01000:          // Standard ALU operations
+         5'b01100:          // BEQZ
             begin
+               aluOp = ADD;
             end
-         5'b01000:          // Standard ALU operations
+         5'b01101:          // BNEZ
             begin
+               aluOp = ADD;
             end
-         5'b01000: 
+         5'b01110:          // BLTZ
             begin
+               aluOp = ADD;
             end
-         5'b01000: 
+         5'b01111:          // BGEZ
             begin
+               aluOp = ADD;
             end
-         5'b01000: 
+         5'b10010:          // SLBI
             begin
+               aluOp = SLBI;
             end
-         5'b01000: 
+         5'b00101:          // JR
             begin
+               aluOp = ADD;
             end
-         5'b01000: 
+         5'b00111:          // JALR
             begin
+               aluOp = ADD;
             end
-         5'b01000: 
+         5'b00111:          // JALR
             begin
+               aluOp = ADD;
             end
-         
-         default: 
+         default:           // All other operations
             begin
+               aluOp = RLL;
             end
       endcase
    end
