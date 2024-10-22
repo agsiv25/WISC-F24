@@ -7,9 +7,9 @@
 `default_nettype none
 module alu_op_decode (instruction, aluOp);
 
-input [15:0] instruction;
+input wire [15:0] instruction;
 
-output [3:0] aluOp;
+output reg [3:0] aluOp;
 
 	// 0000 rll Rotate left
    parameter RLL = 4'b0000;
@@ -32,10 +32,10 @@ output [3:0] aluOp;
    parameter SLBI = 4'b1000;
 	// 1001 BTR
    parameter BTR = 4'b1001;
+   // 1010 rrl rotate right 
+   parameter RRL = 4'b1010;
 
-   reg [3:0] aluOp;
-
-   begin
+   always@(instruction) begin
       case (instruction[15:11])
          5'b01000:          // ADDI
             begin
@@ -55,7 +55,7 @@ output [3:0] aluOp;
             end
          5'b10100:          // ROLI
             begin
-               aluOp <= ROL;
+               aluOp <= RLL;
             end
          5'b10101:          // SLLI
             begin
@@ -63,7 +63,7 @@ output [3:0] aluOp;
             end
          5'b10110:          // RORI
             begin
-               aluOp <= ROR;
+               aluOp <= RRL;
             end
          5'b10111:          // SRLI
             begin
@@ -91,7 +91,7 @@ output [3:0] aluOp;
             end
          5'b11010:          // Standard ALU shifts
             begin
-               aluOp <= (instruction[1:0] == 2'b00) ? ROL : (instruction[1:0] == 2'b01) ? SLL : (instruction[1:0] == 2'b10) ? ROR : SRL;
+               aluOp <= (instruction[1:0] == 2'b00) ? RLL : (instruction[1:0] == 2'b01) ? SLL : (instruction[1:0] == 2'b10) ? RRL : SRL;
             end
          5'b11100:          // SEQ
             begin
