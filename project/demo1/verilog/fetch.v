@@ -23,7 +23,7 @@ wire pcRegErr;
 
 cla_16b pc_inc(.sum(incPC), .c_out(), .ofl(pcIncErr), .a(pcRegAddr), .b(16'h2), .c_in(1'b0), .sign(1'b0));
 
-reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(newPC), .writeEn(~createDump)));
+reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(newPC), .writeEn(~createDump));
 
 
 // assign error signal to be an OR between the PC adder and the PC register
