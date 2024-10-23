@@ -50,7 +50,7 @@ wire regErr;
 wire cntrlErr;
 
 // 4:1 mux for register write select
-assign wrtReg = (regDestSel == 2'b0) ? instruction[10:8] : (regDestSel == 2'b01) ? instruction[7:5] : (regDestSel == 2'b10) ? instruction[4:2] : 3'b111;
+assign wrtReg = (regDestSel == 2'b00) ? instruction[10:8] : (regDestSel == 2'b01) ? instruction[7:5] : (regDestSel == 2'b10) ? instruction[4:2] : 3'b111;
 
 // 2:1 muxes for 5 and 8 bit immediates 
 assign imm5 = (zeroSel) ? {11'b0 , instruction[4:0]} : {{11 {instruction[4]}} , instruction[4:0]};
