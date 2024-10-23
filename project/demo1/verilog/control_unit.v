@@ -27,7 +27,6 @@ output reg [1:0] regDestSel;    // sel signal to register write mux
 output reg jalSel;              // select signal for jal and slbiu conflict
 output reg sOpSel;
 output reg err;
-assign regDestSel <= 2'b00;
 // IMPLEMENT HERE 
 always @(instruction[15:11]) begin
    aluJmp = 1'b0;
@@ -44,7 +43,7 @@ always @(instruction[15:11]) begin
    createDump = 1'b0;
    BSrc = 2'b00;
    zeroSel = 1'b0;
-   regDestSel = 2'b10;
+   regDestSel = 2'b00;
    jalSel = 1'b0;
    sOpSel = 1'b0;
    casex(instruction[15:11])
