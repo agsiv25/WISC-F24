@@ -5,27 +5,28 @@
    Description     : This is the module that decodes the instruction and sends various control signals.
 */
 `default_nettype none
-module control_unit (instruction, aluJmp, ALUOpr, memWrt, brchSig, Cin, invA, invB, regWrt, wbDataSel, stuSel, immSrc, SLBIsel, createDump, BSrc, zeroSel, regDestSel, jalSel, sOpSel);
+module control_unit (instruction, aluJmp, memWrt, brchSig, Cin, invA, invB, regWrt, wbDataSel, stuSel, immSrc, SLBIsel, createDump, BSrc, zeroSel, regDestSel, jalSel, sOpSel, err);
 
-input [15:0] instruction;
+input wire [15:0] instruction;
 
-output aluJmp;
-output memWrt;              // memory write or read signal 
-output [2:0] brchSig;       // bit 2: sign flag, bit 1: zero flag, bit 0: carry out
-output Cin;
-output invA;                // invert ALU input A
-output invB;                // invert ALU input B
-output regWrt;
-output [1:0] wbDataSel;     // choose source of writeback data 
-output stuSel;              // for STU instruction, choose memory write data source
-output immSrc;              // used to choose which immediate to add to PC
-output SLBIsel;
-output createDump;
-output [1:0] BSrc;          // select signal for inB mux
-output zeroSel;             // choose zero or sign extended immediates 
-output [1:0] regDestSel;    // sel signal to register write mux 
-output jalSel;              // select signal for jal and slbiu conflict
-output sOpSel;
+output reg aluJmp;
+output reg memWrt;              // memory write or read signal 
+output reg [2:0] brchSig;       // bit 2: sign flag, bit 1: zero flag, bit 0: carry out
+output reg Cin;
+output reg invA;                // invert ALU input A
+output reg invB;                // invert ALU input B
+output reg regWrt;
+output reg [1:0] wbDataSel;     // choose source of writeback data 
+output reg stuSel;              // for STU instruction, choose memory write data source
+output reg immSrc;              // used to choose which immediate to add to PC
+output reg SLBIsel;
+output reg createDump;
+output reg [1:0] BSrc;          // select signal for inB mux
+output reg zeroSel;             // choose zero or sign extended immediates 
+output reg [1:0] regDestSel;    // sel signal to register write mux 
+output reg jalSel;              // select signal for jal and slbiu conflict
+output reg sOpSel;
+output reg err;
 
 // IMPLEMENT HERE 
 always @(instruction) begin
@@ -179,23 +180,23 @@ always @(instruction) begin
          regWrt = 1'b1; //enable write back
          wbDataSel = 2'b10; //select aluOut as wb src
          regDestSel = 2'b10; //select instr bits [4:2] as write back
-         brchSig = 2'b001; //if carry out then true
+         brchSig = 3'b001; //if carry out then true
          sOpSel = 1'b1; //select special to tell you to use brch cond output
       end
       0_1100: begin //BEQZ
-         brchSig = 2'b010; //select zero flag
+         brchSig = 3'b010; //select zero flag
          BSrc = 2'b11; //select 0 as inB
       end
       0_1101: begin //BNEZ
-         brchSig = 2'b101; //select not zero flag
+         brchSig = 3'b101; //select not zero flag
          BSrc = 2'b11; //select 0 as inB
       end
       0_1110: begin //BLTZ
-         brchSig = 2'b100; //select sign flag
+         brchSig = 3'b100; //select sign flag
          BSrc = 2'b11; //select 0 as inB
       end
       0_1111: begin //BGEZ
-         brchSig = 2'b011; //if not sign or zero
+         brchSig = 3'b011; //if not sign or zero
          BSrc = 2'b11; //select 0 as inB
       end
       1_1000: begin //LBI

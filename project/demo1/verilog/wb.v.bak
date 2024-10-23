@@ -9,13 +9,13 @@ module wb (wbDataSel, addPC, memOut, aluFinal, imm8, wbData);
 
    // TODO: Your code here
 
-   input wire [1:0]wbDataSel;
-   input wire [15:0]addPC;
-   input wire [15:0]memOut;
-   input wire [15:0]aluFinal;
-   input wire [15:0]imm8;
+   input [1:0]wbDataSel;
+   input [15:0]addPC;
+   input [15:0]memOut;
+   input [15:0]aluFinal;
+   input [15:0]imm8;
 
-   output wire [15:0]wbData;
+   output [15:0]wbData;
 
    // mux4_1 wb_sel(.Out(wbData), .S(wbDataSel), .InpA(pcAdd), .InpB(memOut), .InpC(ALUout), .InpD(imm8));
 

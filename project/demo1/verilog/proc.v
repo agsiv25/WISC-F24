@@ -64,7 +64,7 @@ module proc (/*AUTOARG*/
 
    wb wbSection(.wbData(wbData), .addPC(addPC), .memOut(memOut), .aluFinal(aluFinal), .imm8(imm8), .wbDataSel(wbDataSel));
 
-   assign err <= fetchErr | decodeErr;
+   // assign err <= fetchErr | decodeErr;
    
 
 endmodule // proc

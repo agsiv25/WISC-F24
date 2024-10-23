@@ -17,7 +17,7 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut);
    input wire clk;
    input wire rst;
 
-   output wire [15:0]memOut;
+   output [15:0]memOut;
 
    memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(1'b1), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
    
