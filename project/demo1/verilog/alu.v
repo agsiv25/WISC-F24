@@ -9,7 +9,7 @@
     of the operation, as well as drive the output signals Zero and Overflow
     (OFL).
 */
-module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl);
+module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl, Cout, signFlag);
 
     parameter OPERAND_WIDTH = 16;    
     parameter NUM_OPERATIONS = 4;
@@ -24,6 +24,10 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl);
     output [OPERAND_WIDTH -1:0] Out ; // Result of computation
     output                      Ofl ; // Signal if overflow occured
     output                      Zero; // Signal if Out is 0
+	output                      Cout; // Signal if carry out
+	output						signFlag; //signed flag
+
+	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ MODULES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 	// 0000 rll Rotate left
 	// 0001 sll Shift left logical
@@ -70,7 +74,7 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl);
 	shifter ALUshifter (.In(Atouse), .ShAmt(Btouse[3:0]), .Oper(Oper[1:0]), .Out(shifterout));
 
 	// 2's compliment ADD
-	cla_16b ALUadder (.sum(ADDout), .c_out(), .ofl(Ofl), .a(Atouse), .b(Btouse), .c_in(Cin), .sign(sign));
+	cla_16b ALUadder (.sum(ADDout), .c_out(Cout), .ofl(Ofl), .a(Atouse), .b(Btouse), .c_in(Cin), .sign(sign));
 
 	// Bitwise AND
 	assign ANDout = Atouse & Btouse;
@@ -127,5 +131,7 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl);
 
 	// Zero: set high if Out is zero, otherwise 0
 	assign Zero = (Out == 16'b0);
+
+	assign signFlag = Out[15];
 	
 endmodule

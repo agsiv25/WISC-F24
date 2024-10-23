@@ -30,6 +30,8 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
 
    wire zeroFlag;
    wire oflFlag;
+   wire carryOut;
+   wire signFlag;
    wire jmpSel;
    wire [15:0]aluInter;
    wire [15:0] pcOrSLBI;
@@ -37,10 +39,10 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    wire [15:0] pcAdd;
 
    // ALU
-   alu aluExec(.InA(inA), .InB(inB), .Cin(Cin), .Oper(aluOp), .invA(invA), .invB(invB), .sign(1'b0), .Out(aluInter), .Zero(zeroFlag), .Ofl(oflFlag));
+   alu aluExec(.InA(inA), .InB(inB), .Cin(Cin), .Oper(aluOp), .invA(invA), .invB(invB), .sign(1'b0), .Out(aluInter), .Zero(zeroFlag), .Ofl(oflFlag), .Cout(carryOut), .signFlag(signFlag));
 
    // Branch conditional module
-   branch_conditional branchCond(.brchSig(brchSig), .sf(), .zf(zeroFlag), .of(oflFlag), .cf(), .jmpSel(jmpSel));
+   branch_conditional branchCond(.brchSig(brchSig), .sf(signFlag), .zf(zeroFlag), .of(oflFlag), .cf(carryOut), .jmpSel(jmpSel));
 
    assign pcOrSLBI = (SLBIsel) ? aluOut : incPC;
    assign imm8or11 = (immSrc) ? imm11 : imm8;
