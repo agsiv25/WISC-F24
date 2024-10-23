@@ -21,7 +21,7 @@ wire [15:0]nextPC;
 wire pcIncErr;
 wire pcRegErr;
 
-cla_16 pc_inc(.sum(incPC), .cout(), .ofl(pcIncErr), .a(newPC), .b(16'h2), .c_in(1'b0), .sign(1'b0));
+cla_16b pc_inc(.sum(incPC), .cout(), .ofl(pcIncErr), .a(newPC), .b(16'h2), .c_in(1'b0), .sign(1'b0));
 
 reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(nextPC), .writeEnable(1'b1));
 
