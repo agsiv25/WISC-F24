@@ -5,7 +5,7 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (instruction, wbData, clk, rst, imm8, imm11, ALUjmp, SLBIsel, createDump, memWrt, brchSig, Cin, invA, invB, wbDataSel, immSrc, aluOp, inA, inB, wrtData, err);
+module decode (instruction, wbData, clk, rst, imm8, imm11, aluJmp, SLBIsel, createDump, memWrt, brchSig, Cin, invA, invB, wbDataSel, immSrc, aluOp, inA, inB, wrtData, err);
 
 input wire [15:0] instruction;
 input wire [15:0] wbData;
@@ -17,17 +17,19 @@ output wire [15:0] imm8;
 output wire [15:0] imm11;
 
 // from instruction decoder 
-output wire ALUjmp;
+output wire aluJmp;
 output wire SLBIsel;
 output wire createDump;
 output wire memWrt;           // memory write or read signal 
-output wire [1:0] brchSig;
+output wire [2:0] brchSig;
 output wire Cin;
 output wire invA;             // invert ALU input A
 output wire invB;             // invert ALU input B
 output wire [1:0] wbDataSel;           // choose source of writeback data 
 output wire immSrc;                    // used to choose which immediate to add to PC
-output wire aluOp;                     // signal to ALU to choose operation
+output wire [3:0]aluOp;                     // signal to ALU to choose operation
+output wire jalSel;              // select signal for jal and slbiu conflict
+output wire sOpSel;
 
 // from register file / reg mux 
 output wire [15:0] inA;
@@ -68,7 +70,7 @@ regFile_bypass register_file(.read1Data(inA), .read2Data(regB), .err(err), .clk(
 assign inB = (BSrc == 2'b0) ? regB : (BSrc == 2'b01) ? imm5 : (BSrc == 2'b10) ? imm11 : 16'b0;
 
 // instruction decoder. ~~~~~~~~~~~~~~~~~~HAVE TO IMPLEMENT~~~~~~~~~~~~~~~~~~~~
-control_unit instruction_decoder(.instruction(instruction), .ALUjmp(ALUjmp), .memWrt(memWrt), .brchSig(brchSig), .Cin(Cin), .invA(invA), .invB(invB), .regWrt(regWrt), .wbDataSel(wbDataSel), .stuSel(stuSel), .immSrc(immSrc), .SLBIsel(SLBIsel), .createDump(createDump), .BSrc(BSrc), .zeroSel(zeroSel), .regDestSel(regDestSel));
+control_unit instruction_decoder(.instruction(instruction), .aluJmp(aluJmp), .memWrt(memWrt), .brchSig(brchSig), .Cin(Cin), .invA(invA), .invB(invB), .regWrt(regWrt), .wbDataSel(wbDataSel), .stuSel(stuSel), .immSrc(immSrc), .SLBIsel(SLBIsel), .createDump(createDump), .BSrc(BSrc), .zeroSel(zeroSel), .regDestSel(regDestSel), .jalSel(jalSel), .sOpSel(sOpSel));
    
 endmodule
 `default_nettype wire

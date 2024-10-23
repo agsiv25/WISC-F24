@@ -5,13 +5,13 @@
    Description     : This is the module that decodes the instruction and sends various control signals.
 */
 `default_nettype none
-module control_unit (instruction, ALUjmp, ALUOpr, memWrt, brchSig, Cin, invA, invB, regWrt, wbDataSel, stuSel, immSrc, SLBIsel, createDump, BSrc, zeroSel, regDestSel, jalSel);
+module control_unit (instruction, aluJmp, ALUOpr, memWrt, brchSig, Cin, invA, invB, regWrt, wbDataSel, stuSel, immSrc, SLBIsel, createDump, BSrc, zeroSel, regDestSel, jalSel, sOpSel);
 
 input [15:0] instruction;
 
-output ALUjmp;
+output aluJmp;
 output memWrt;              // memory write or read signal 
-output [3:0] brchSig;       // bit 2: sign flag, bit 1: zero flag, bit 0: carry out
+output [2:0] brchSig;       // bit 2: sign flag, bit 1: zero flag, bit 0: carry out
 output Cin;
 output invA;                // invert ALU input A
 output invB;                // invert ALU input B
@@ -29,7 +29,7 @@ output sOpSel;
 
 // IMPLEMENT HERE 
 always @(instruction) begin
-   ALUjmp = 1'b0;
+   aluJmp = 1'b0;
    memWrt = 1'b0;
    brchSig = 3'b000;
    Cin = 1'b0;
@@ -224,7 +224,7 @@ always @(instruction) begin
          regDestSel = 2'b11; //select instr R7 as write back
       end
       0_0111: begin //JALR
-         ALUjmp = 1'b1; //enable ALU jump
+         aluJmp = 1'b1; //enable ALU jump
          regWrt = 1'b1; //enable write back
          wbDataSel = 2'b00; //select addPC as wb src
          jalSel = 1'b1; //select ALU output as PC
@@ -232,7 +232,7 @@ always @(instruction) begin
          regDestSel = 2'b11; //select instr R7 as write back
       end
       0_0010: begin //siic
-      
+
       end
       0_0011: begin //NOP/RTI
 
