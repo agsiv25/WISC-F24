@@ -24,7 +24,12 @@ module proc (/*AUTOARG*/
    
    
    /* your code here -- should include instantiations of fetch, decode, execute, mem and wb modules */
+
+   fetch fetchSection(.newPC(), .halt(), .rst(), .clk(), .incPC(), .instruction(), .err());
+
+   decode decodeSection(.instruction(), .wbData(), .clk(), .rst(), .imm8(), .imm11(), .ALUjmp(), .SLBIsel(), .createDump(), .memWrt(), .brchSig(), .Cin(), .invA(), .invB(), .wbDataSel(), .immSrc(), .aluOp(), .inA(), .inB(), .wrtData(), .err());
    
+
 endmodule // proc
 `default_nettype wire
 // DUMMY LINE FOR REV CONTROL :0:
