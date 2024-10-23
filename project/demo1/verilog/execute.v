@@ -36,7 +36,7 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    wire [15:0]aluInter;
    wire [15:0] pcOrSLBI;
    wire [15:0] imm8Or11;
-   wire [15:0] pcAdd;
+   wire [15:0] compPC;
 
    // ALU
    alu aluExec(.InA(inA), .InB(inB), .Cin(Cin), .Oper(aluOp), .invA(invA), .invB(invB), .sign(1'b0), .Out(aluInter), .Zero(zeroFlag), .Ofl(oflFlag), .Cout(carryOut), .signFlag(signFlag));
@@ -50,12 +50,12 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    assign aluOut = (sOpSel) ? {15'b0,jmpSel} : aluInter;
 
    // PC add module 
-   cla_16 pcImmAdd(.sum(addPC), .cout(), .ofl(), .a(pcOrSLBI), .b(imm8or11), .c_in(1'b0), .sign(1'b0));
+   cla_16 pcImmAdd(.sum(compPC), .cout(), .ofl(), .a(pcOrSLBI), .b(imm8or11), .c_in(1'b0), .sign(1'b0));
    
    // 2:1 muxes to control PC and register wb values
-   assign pcAdd = (jmpSel) ? addPC : incPC;
-   assign newPC = (aluJmp) ? aluOut : pcAdd;
-   assign addPC = (jalSel)
+   assign jmpPC = (jmpSel) ? compPC : incPC;
+   assign newPC = (aluJmp) ? aluOut : jmpPC;
+   assign addPC = (jalSel) ? incPC : jmpPC;
 
 endmodule
 `default_nettype wire
