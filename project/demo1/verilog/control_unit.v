@@ -142,7 +142,8 @@ always @(instruction[15:11]) begin
       end
       5'b1_1011: begin //ALU (ADD, SUB, XOR, ANDN)
          assign Cin = (instruction[1:0] == 2'b01) ? 1'b1 : 1'b0;
-         assign invB = (instruction[1:0] == 2'b01) ? 1'b1 : 1'b0;
+         assign invA = (instruction[1:0] == 2'b01) ? 1'b1 : 1'b0;
+         assign invB = (instruction[1:0] == 2'b11) ? 1'b1 : 1'b0;
          wbDataSel = 2'b10; //select ALU as wb src
          regWrt = 1'b1; //enable write back
          BSrc = 2'b00; //select regB
