@@ -21,12 +21,10 @@ wire [15:0]nextPC;
 wire pcIncErr;
 wire pcRegErr;
 
-cla_16b pc_inc(.sum(incPC), .c_out(), .ofl(pcIncErr), .a(newPC), .b(16'h2), .c_in(1'b0), .sign(1'b0));
+cla_16b pc_inc(.sum(incPC), .c_out(), .ofl(pcIncErr), .a(pcRegAddr), .b(16'h2), .c_in(1'b0), .sign(1'b0));
 
-reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(nextPC), .writeEn(1'b1));
+reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(newPC), .writeEn(~createDump)));
 
-//mux2_1 pc_halt_mux(.Out(nextPC), .S(halt), .InpA(newPC), .InpB(pcRegAddr));
-assign nextPC = (createDump) ? pcRegAddr : newPC;
 
 // assign error signal to be an OR between the PC adder and the PC register
 assign err = pcRegErr | pcIncErr;
