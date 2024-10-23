@@ -8,7 +8,7 @@
 module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluFinal, newPC, sOpSel, aluOut, addPC);
 
    input wire SLBIsel;
-   input wire incPC;
+   input wire [15:0] incPC;
    input wire immSrc;
    input wire [15:0] imm8;
    input wire [15:0] imm11;
@@ -51,7 +51,7 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    assign aluFinal = (sOpSel) ? {15'b0,jmpSel} : aluOut;
 
    // PC add module 
-   cla_16b pcImmAdd(.sum(compPC), .cout(), .ofl(), .a(pcOrSLBI), .b(imm8Or11), .c_in(1'b0), .sign(1'b0));
+   cla_16b pcImmAdd(.sum(compPC), .c_out(), .ofl(), .a(pcOrSLBI), .b(imm8Or11), .c_in(1'b0), .sign(1'b0));
    
    // 2:1 muxes to control PC and register wb values
    assign jmpPC = (jmpSel) ? compPC : incPC;

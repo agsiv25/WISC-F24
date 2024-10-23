@@ -31,7 +31,6 @@ module shifter (In, ShAmt, Oper, Out);
 	shiftl oper_1 (.in(In), .shamt(ShAmt), .out(shiftl_out));
 	shiftrarithmetic oper_2 (.in(In), .shamt(ShAmt), .out(shiftra_out));
 	shiftrlogical oper_3 (.in(In), .shamt(ShAmt), .out(shiftrl_out));
-    rotater oper_4 (.in(In), .shamt(ShAmt), .out(rotater_out));
 
 	// control output to be taken from correct fucntion module 
 	quadmux4_1 byte0 (.Out(Out[3:0]), .S(Oper[1:0]), .InpA(rotatel_out[3:0]), .InpB(shiftl_out[3:0]), .InpC(shiftra_out[3:0]), .InpD(shiftrl_out[3:0]));
