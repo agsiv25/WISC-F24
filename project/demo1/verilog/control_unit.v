@@ -44,7 +44,7 @@ always @(*) begin
    createDump = 1'b0;
    BSrc = 2'b00;
    zeroSel = 1'b0;
-   regDestSel = 2'b00;
+   regDestSel = 2'b10;
    jalSel = 1'b0;
    sOpSel = 1'b0;
    casex(instruction[15:11])
