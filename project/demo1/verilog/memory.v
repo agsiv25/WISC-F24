@@ -6,7 +6,7 @@
                      processor.
 */
 `default_nettype none
-module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut);
+module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn);
 
    // TODO: Your code here
 
@@ -16,10 +16,11 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut);
    input wire createDump;
    input wire clk;
    input wire rst;
+   input wire readEn;
 
    output wire [15:0]memOut;
 
-   memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(1'b1), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
+   memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(~createDump), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
    
 endmodule
 `default_nettype wire

@@ -5,7 +5,7 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (instruction, wbData, clk, rst, imm8, imm11, aluJmp, SLBIsel, createDump, memWrt, brchSig, Cin, invA, invB, wbDataSel, immSrc, aluOp, jalSel, sOpSel, inA, inB, wrtData, err);
+module decode (instruction, wbData, clk, rst, imm8, imm11, aluJmp, SLBIsel, createDump, memWrt, brchSig, Cin, invA, invB, wbDataSel, immSrc, aluOp, jalSel, sOpSel, inA, inB, wrtData, err, readEn);
 
 input wire [15:0] instruction;
 input wire [15:0] wbData;
@@ -30,6 +30,7 @@ output wire immSrc;                    // used to choose which immediate to add 
 output wire [3:0]aluOp;                     // signal to ALU to choose operation
 output wire jalSel;              // select signal for jal and slbiu conflict
 output wire sOpSel;
+output wire readEn;
 
 // from register file / reg mux 
 output wire [15:0] inA;
@@ -76,6 +77,8 @@ assign inB = (BSrc == 2'b0) ? regB : (BSrc == 2'b01) ? imm5 : (BSrc == 2'b10) ? 
 control_unit instruction_decoder(.instruction(instruction), .aluJmp(aluJmp), .memWrt(memWrt), .brchSig(brchSig), .Cin(Cin), .invA(invA), .invB(invB), .regWrt(regWrt), .wbDataSel(wbDataSel), .stuSel(stuSel), .immSrc(immSrc), .SLBIsel(SLBIsel), .createDump(createDump), .BSrc(BSrc), .zeroSel(zeroSel), .regDestSel(regDestSel), .jalSel(jalSel), .sOpSel(sOpSel), .err(cntrlErr));
 
 assign err = regErr | cntrlErr;
+
+assign readEn = (wbDataSel == 2'b01) ? 1'b1 : 1'b0;
 
 endmodule
 `default_nettype wire
