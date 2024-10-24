@@ -209,7 +209,6 @@ always @(instruction[15:11]) begin
          SLBIsel <= 1'b1; //select ALU output as PC
          zeroSel <= 1'b1; //select zero extended imm8
          brchSig <= 3'b111; //select special to tell you to go ALU
-         invA <= 1'b0;
       end
       5'b0_0100: begin //J
          immSrc <= 1'b1; //select imm11 as PC adder input
