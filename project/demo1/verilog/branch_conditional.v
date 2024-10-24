@@ -44,5 +44,9 @@ always @(brchSig) begin
    endcase
 end
 
+  always @ (sf) begin
+		$display("The value of signFlag in branch conditional is: %d", signFlag);
+	end
+
 
 endmodule

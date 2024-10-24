@@ -61,9 +61,5 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    assign possPC = (aluJmp) ? aluOut : jmpPC;
    assign newPC = (SLBIsel) ? incPC : possPC;
 
-   always @ (signFlag) begin
-		$display("The value of signFlag in execute is: %d", signFlag);
-	end
-
 endmodule
 `default_nettype wire
