@@ -261,6 +261,8 @@ always @(*) begin
          err = 1'b1;
       end
    endcase
+
+   $display("invA after control_unit case:  %b", invA);
 end
 
         
