@@ -37,7 +37,7 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    wire [15:0] imm8Or11;
    wire [15:0] compPC;
    wire [15:0] jmpPC;
-   wire [15:0] signImm;
+   //wire [15:0] signImm;
    
 
    // ALU
@@ -51,9 +51,8 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
 
    assign aluFinal = (sOpSel) ? {15'b0,jmpSel} : aluOut;
 
-   assign signImm = (imm8Or11[15]) ? ~imm8Or11 : imm8Or11; 
    // PC add module 
-   cla_16b pcImmAdd(.sum(compPC), .c_out(), .ofl(), .a(pcOrSLBI), .b(signImm), .c_in(imm8Or11[15]), .sign(imm8Or11[15]));
+   cla_16b pcImmAdd(.sum(compPC), .c_out(), .ofl(), .a(pcOrSLBI), .b(signImm), .c_in(1'b0), .sign(1'b0));
    
    // 2:1 muxes to control PC and register wb values
    assign jmpPC = (jmpSel) ? compPC : incPC;
