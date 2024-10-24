@@ -262,7 +262,7 @@ always @(*) begin
       end
    endcase
 
-   $display("invA after control_unit case:  %b", invA);
+   $display("instruction 15:11: %b   invA after control_unit case:  %b", instruction[15:11], invA);
 end
 
         
