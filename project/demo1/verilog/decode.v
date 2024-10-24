@@ -71,7 +71,7 @@ assign wrtData = (stuSel) ? regB : inB;
 regFile_bypass register_file(.read1Data(inA), .read2Data(regB), .err(regErr), .clk(clk), .rst(rst), .read1RegSel(instruction[10:8]), .read2RegSel(instruction[7:5]), .writeRegSel(wrtReg), .writeData(wbData), .writeEn(regWrt));
 
 // 4:1 mux for ALU B input 
-assign inB = (BSrc == 2'b0) ? regB : (BSrc == 2'b01) ? imm5 : (BSrc == 2'b10) ? imm11 : 16'b0;
+assign inB = (BSrc == 2'b00) ? regB : (BSrc == 2'b01) ? imm5 : (BSrc == 2'b10) ? imm11 : 16'b0;
 
 // instruction decoder. ~~~~~~~~~~~~~~~~~~HAVE TO IMPLEMENT~~~~~~~~~~~~~~~~~~~~
 control_unit instruction_decoder(.instruction(instruction), .aluJmp(aluJmp), .memWrt(memWrt), .brchSig(brchSig), .Cin(Cin), .invA(invA), .invB(invB), .regWrt(regWrt), .wbDataSel(wbDataSel), .stuSel(stuSel), .immSrc(immSrc), .SLBIsel(SLBIsel), .createDump(createDump), .BSrc(BSrc), .zeroSel(zeroSel), .regDestSel(regDestSel), .jalSel(jalSel), .sOpSel(sOpSel), .err(cntrlErr));
