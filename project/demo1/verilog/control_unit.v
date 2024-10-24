@@ -176,7 +176,7 @@ always @(instruction[15:11]) begin
          sOpSel = 1'b1; //select special to tell you to use brch cond output
          SLBIsel = 1'b1; //select ALU output as PC
          Cin = 1'b1; //enable carry in for 2s comp add(sub)
-         invA = 1'b1; //invert inA for 2s comp add(sub)
+         invB = 1'b1; //invert inA for 2s comp add(sub)
       end
       5'b1_1110: begin //SLE
          regWrt = 1'b1; //enable write back
@@ -186,7 +186,7 @@ always @(instruction[15:11]) begin
          sOpSel = 1'b1; //select special to tell you to use brch cond output
          SLBIsel = 1'b1; //select ALU output as PC
          Cin = 1'b1; //enable carry in for 2s comp add(sub)
-         invA = 1'b1; //invert inA for 2s comp add(sub)
+         invB = 1'b1; //invert inA for 2s comp add(sub)
       end
       5'b1_1111: begin //SCO
          regWrt = 1'b1; //enable write back
