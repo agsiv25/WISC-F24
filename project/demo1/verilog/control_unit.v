@@ -29,23 +29,23 @@ output reg sOpSel;
 output reg err;
 // IMPLEMENT HERE 
 always @(instruction[15:11]) begin
-   aluJmp = 1'b0;
-   memWrt = 1'b0;
-   brchSig = 3'b000;
-   Cin = 1'b0;
-   invA = 1'b0;
-   invB = 1'b0;
-   regWrt = 1'b0;
-   wbDataSel = 2'b00;
-   stuSel = 1'b0;
-   immSrc = 1'b0;
-   SLBIsel = 1'b0;
-   createDump = 1'b0;
-   BSrc = 2'b00;
-   zeroSel = 1'b0;
-   regDestSel = 2'b00;
-   jalSel = 1'b0;
-   sOpSel = 1'b0;
+   aluJmp <= 1'b0;
+   memWrt <= 1'b0;
+   brchSig <= 3'b000;
+   Cin <= 1'b0;
+   invA <= 1'b0;
+   invB <= 1'b0;
+   regWrt <= 1'b0;
+   wbDataSel <= 2'b00;
+   stuSel <= 1'b0;
+   immSrc <= 1'b0;
+   SLBIsel <= 1'b0;
+   createDump <= 1'b0;
+   BSrc <= 2'b00;
+   zeroSel <= 1'b0;
+   regDestSel <= 2'b00;
+   jalSel <= 1'b0;
+   sOpSel <= 1'b0;
    case(instruction[15:11])
       5'b0_0000: begin // HALT
          createDump <= 1'b1;
