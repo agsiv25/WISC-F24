@@ -95,55 +95,55 @@ output reg [3:0] aluOp;
             end
          5'b11100:          // SEQ
             begin
-               aluOp = ADD;
+               aluOp <= ADD;
             end
          5'b11101:          // SLT
             begin
-               aluOp = ADD;
+               aluOp <= ADD;
             end
          5'b11110:          // SLE
             begin
-               aluOp = ADD;
+               aluOp <= ADD;
             end
          5'b11111:          // SCO
             begin
-               aluOp = ADD;
+               aluOp <= ADD;
             end
          5'b01100:          // BEQZ
             begin
-               aluOp = ADD;
+               aluOp <= ADD;
             end
          5'b01101:          // BNEZ
             begin
-               aluOp = ADD;
+               aluOp <= ADD;
             end
          5'b01110:          // BLTZ
             begin
-               aluOp = ADD;
+               aluOp <= ADD;
             end
          5'b01111:          // BGEZ
             begin
-               aluOp = ADD;
+               aluOp <= ADD;
             end
          5'b10010:          // SLBI
             begin
-               aluOp = SLBI;
+               aluOp <= SLBI;
             end
          5'b00101:          // JR
             begin
-               aluOp = ADD;
+               aluOp <= ADD;
             end
          5'b00111:          // JALR
             begin
-               aluOp = ADD;
+               aluOp <= ADD;
             end
          5'b00111:          // JALR
             begin
-               aluOp = ADD;
+               aluOp <= ADD;
             end
          default:           // All other operations
             begin
-               aluOp = RLL;
+               aluOp <= RLL;
             end
       endcase
    end

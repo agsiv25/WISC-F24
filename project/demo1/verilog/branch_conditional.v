@@ -18,25 +18,25 @@ always @(brchSig) begin
    jmpSel = 1'b0;
    casex(brchSig)
       3'b010: begin // BEQ
-         assign jmpSel = (zf == 1'b1) ? 1'b1 : 1'b0;
+         jmpSel <= (zf == 1'b1) ? 1'b1 : 1'b0;
       end
       3'b101: begin // BNE
-         assign jmpSel = (zf == 1'b0) ? 1'b1 : 1'b0;
+         jmpSel <= (zf == 1'b0) ? 1'b1 : 1'b0;
       end
       3'b100: begin // BLT
-         assign jmpSel = (sf == 1'b1) ? 1'b1 : 1'b0;
+         jmpSel <= (sf == 1'b1) ? 1'b1 : 1'b0;
       end
       3'b011: begin // BGE
-         assign jmpSel = (sf == 1'b0) ? 1'b1 : (zf == 1'b0) ? 1'b1 : 1'b0;
+         jmpSel <= (sf == 1'b0) ? 1'b1 : (zf == 1'b0) ? 1'b1 : 1'b0;
       end
       3'b110: begin // SLE
-         assign jmpSel = (sf == 1'b1) ? 1'b1 : (zf == 1'b1) ? 1'b1 : 1'b0;
+         jmpSel <= (sf == 1'b1) ? 1'b1 : (zf == 1'b1) ? 1'b1 : 1'b0;
       end
       3'b001: begin // SCO
-         assign jmpSel = (cf == 1'b1) ? 1'b1 : 1'b0;
+         jmpSel <= (cf == 1'b1) ? 1'b1 : 1'b0;
       end
       default: begin
-         jmpSel = 1'b0;
+         jmpSel <= 1'b0;
       end
    endcase
 end
