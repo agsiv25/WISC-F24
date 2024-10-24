@@ -212,6 +212,7 @@ always @(instruction[15:11]) begin
       end
       5'b0_0100: begin //J
          immSrc <= 1'b1; //select imm11 as PC adder input
+         brchSig <= 3'b111; //select jump
       end
       5'b0_0101: begin //JR
          SLBIsel <= 1'b1; //select ALU output as PC
