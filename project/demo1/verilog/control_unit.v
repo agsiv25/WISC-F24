@@ -233,8 +233,7 @@ always @(instruction[15:11]) begin
          brchSig = 3'b111; //select special to tell you to go ALU
       end
       5'b0_0111: begin //JALR
-         SLBIsel = 1'b1; //select ALU output as PC
-         aluPC = 1'b1; //select ALU output as PC
+         aluPC = 1'b1
          regWrt = 1'b1; //enable write back
          wbDataSel = 2'b00; //select addPC as wb src
          jalSel = 1'b1; //select ALU output as PC
