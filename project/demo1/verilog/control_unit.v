@@ -261,11 +261,11 @@ always @(*) begin
          err = 1'b1;
       end
    endcase
-
-   $display("instruction 15:11: %b   invA after control_unit case:  %b", instruction[15:11], invA);
 end
 
-        
+  always @(invA) begin
+   $display("invA after control_unit case:  %b", invA);
+  end      
          
 
 endmodule
