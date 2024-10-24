@@ -5,7 +5,7 @@
    Description     : This is the overall module for the execute stage of the processor.
 */
 `default_nettype none
-module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluFinal, newPC, sOpSel, aluOut, addPC, aluPC);
+module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluFinal, newPC, sOpSel, aluOut, addPC);
 
    input wire SLBIsel;
    input wire [15:0] incPC;
@@ -22,7 +22,6 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    input wire aluJmp;
    input wire jalSel;
    input wire sOpSel;
-   input wire aluPC;
 
    output wire [15:0] aluFinal;
    output wire [15:0] newPC;
@@ -46,7 +45,7 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    // Branch conditional module
    branch_conditional branchCond(.brchSig(brchSig), .sf(signFlag), .zf(zeroFlag), .of(oflFlag), .cf(carryOut), .jmpSel(jmpSel));
 
-   assign pcOrSLBI = (aluPC) ? aluOut : incPC;
+   assign pcOrSLBI = (SLBIsel) ? aluOut : incPC;
    assign imm8Or11 = (immSrc) ? imm11 : imm8;
 
    assign aluFinal = (sOpSel) ? {15'b0,jmpSel} : aluOut;
