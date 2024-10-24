@@ -263,9 +263,6 @@ always @(*) begin
    endcase
 end
 
-  always @(invA) begin
-   $display("invA after control_unit case:  %b", invA);
-  end      
          
 
 endmodule

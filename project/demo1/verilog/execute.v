@@ -40,9 +40,6 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    wire [15:0] jmpPC;
    wire [15:0] possPC;
    
-   always @(invA) begin
-      $display("invA in execute:  %b", invA);
-   end 
 
    // ALU
    alu aluExec(.InA(inA), .InB(inB), .Cin(Cin), .Oper(aluOp), .invA(invA), .invB(invB), .sign(1'b0), .Out(aluOut), .Zero(zeroFlag), .Ofl(oflFlag), .Cout(carryOut), .signFlag(signFlag));

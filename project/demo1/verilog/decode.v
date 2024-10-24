@@ -81,9 +81,6 @@ assign err = regErr | cntrlErr;
 
 assign readEn = (wbDataSel == 2'b01) ? 1'b1 : 1'b0;
 
-always @(invA) begin
-      $display("invA in decode:  %b", invA);
-   end 
 
 endmodule
 `default_nettype wire
