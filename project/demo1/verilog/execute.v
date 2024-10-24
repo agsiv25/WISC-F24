@@ -52,12 +52,18 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    assign aluFinal = (sOpSel) ? {15'b0,jmpSel} : aluOut;
 
    // PC add module 
-   cla_16b pcImmAdd(.sum(compPC), .cout(), .ofl(), .a(pcOrSLBI), .b(imm8Or11), .c_in(1'b0), .sign(1'b0));
+   cla_16b pcImmAdd(.sum(compPC), .c_out(), .ofl(), .a(pcOrSLBI), .b(imm8Or11), .c_in(1'b0), .sign(1'b0));
    
    // 2:1 muxes to control PC and register wb values
    assign jmpPC = (jmpSel) ? compPC : incPC;
-   assign newPC = (aluJmp) ? aluOut : jmpPC;
    assign addPC = (jalSel) ? incPC : jmpPC;
+
+   assign possPC = (aluJmp) ? aluOut : jmpPC;
+   assign newPC = (SLBIsel) ? incPC : possPC;
+
+   always @ (signFlag) begin
+		$display("The value of signFlag in execute is: %d", signFlag);
+	end
 
 endmodule
 `default_nettype wire
