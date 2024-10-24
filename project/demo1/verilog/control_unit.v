@@ -68,7 +68,7 @@ always @(*) begin
       5'b0_1001: begin //SUBI
          regWrt = 1'b1; //enable write back
          wbDataSel = 2'b10; //select alu as wb src
-         //Cin = 1'b1; //enable carry in for 2s comp add(sub)
+         Cin = 1'b1; //enable carry in for 2s comp add(sub)
          //invA = 1'b1; //invert inB for 2s comp add(sub)
          BSrc = 2'b01; //select imm5 as inB
          zeroSel = 1'b0; //select sign extended imm5
@@ -146,7 +146,7 @@ always @(*) begin
       end
       5'b1_1011: begin //ALU (ADD, SUB, XOR, ANDN)
          assign Cin = (instruction[1:0] == 2'b01) ? 1'b1 : 1'b0;
-         assign invA = (instruction[1:0] == 2'b01) ? 1'b1 : 1'b0;
+         //assign invA = (instruction[1:0] == 2'b01) ? 1'b1 : 1'b0;
          assign invB = (instruction[1:0] == 2'b11) ? 1'b1 : 1'b0;
          wbDataSel = 2'b10; //select ALU as wb src
          regWrt = 1'b1; //enable write back
@@ -166,8 +166,8 @@ always @(*) begin
          brchSig = 3'b010; //if zero flag then true
          sOpSel = 1'b1; //select special to tell you to use brch cond output
          SLBIsel = 1'b1; //select ALU output as PC
-         Cin = 1'b1; //enable carry in for 2s comp add(sub)
-         invA = 1'b1; //invert inA for 2s comp add(sub)
+         //Cin = 1'b1; //enable carry in for 2s comp add(sub)
+         //invA = 1'b1; //invert inA for 2s comp add(sub)
       end
       5'b1_1101: begin //SLT
          regWrt = 1'b1; //enable write back
