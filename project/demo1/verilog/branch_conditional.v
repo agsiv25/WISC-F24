@@ -45,7 +45,7 @@ always @(brchSig) begin
 end
 
   always @ (sf) begin
-		$display("The value of signFlag in branch conditional is: %d", signFlag);
+		$display("The value of signFlag in branch conditional is: %d", sf);
 	end
 
 
