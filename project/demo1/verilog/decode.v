@@ -68,7 +68,7 @@ alu_op_decode ALU_OP(.instruction(instruction[15:0]), .aluOp(aluOp));
 assign wrtData = (stuSel) ? regB : inB;
 
 // Register file with bypass
-regFile_bypass register_file(.read1Data(inA), .read2Data(regB), .err(regErr), .clk(clk), .rst(rst), .read1RegSel(instruction[10:8]), .read2RegSel(instruction[7:5]), .writeRegSel(wrtReg), .writeData(wbData), .writeEn(regWrt));
+regFile register_file(.read1Data(inA), .read2Data(regB), .err(regErr), .clk(clk), .rst(rst), .read1RegSel(instruction[10:8]), .read2RegSel(instruction[7:5]), .writeRegSel(wrtReg), .writeData(wbData), .writeEn(regWrt));
 
 // 4:1 mux for ALU B input 
 assign inB = (BSrc == 2'b00) ? regB : (BSrc == 2'b01) ? imm5 : (BSrc == 2'b10) ? imm11 : 16'b0;
