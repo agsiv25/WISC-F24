@@ -173,7 +173,7 @@ always @(*) begin
          regWrt = 1'b1; //enable write back
          wbDataSel = 2'b10; //select aluOut as wb src
          regDestSel = 2'b10; //select instr bits [4:2] as write back
-         brchSig = 3'b100; //if sign flag then true
+         brchSig = 3'b100; //if sign flag then true      
          sOpSel = 1'b1; //select special to tell you to use brch cond output
          SLBIsel = 1'b1; //select ALU output as PC
          Cin = 1'b1; //enable carry in for 2s comp add(sub)

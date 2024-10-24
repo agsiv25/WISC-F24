@@ -132,6 +132,6 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl, Cout, signFla
 	// Zero: set high if Out is zero, otherwise 0
 	assign Zero = (Out == 16'b0);
 
-	assign signFlag = (Ofl & (Out[15] ^ Atouse[15])) ? ~Out[15] : Atouse[15];	
+	assign signFlag = (Ofl & (Out[15] ^ Atouse[15])) ? ~Out[15] : Out[15];	
 	
 endmodule
