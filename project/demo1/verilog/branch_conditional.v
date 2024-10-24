@@ -27,7 +27,7 @@ always @(brchSig) begin
          jmpSel = (sf == 1'b1) ? 1'b1 : 1'b0;
       end
       3'b011: begin // BGE
-         jmpSel = (sf == 1'b0) ? 1'b1 : (zf == 1'b0) ? 1'b1 : 1'b0;
+         jmpSel = (sf == 1'b0) ? 1'b1 : 1'b0;
       end
       3'b110: begin // SLE
          jmpSel = (sf == 1'b1) ? 1'b1 : (zf == 1'b1) ? 1'b1 : 1'b0;

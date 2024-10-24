@@ -200,7 +200,7 @@ always @(instruction[15:11]) begin
          BSrc = 2'b11; //select 0 as inB
       end
       5'b0_1111: begin //BGEZ
-         brchSig = 3'b011; //if not sign or zero
+         brchSig = 3'b011; //if not sign or is zero
          BSrc = 2'b11; //select 0 as inB
       end
       5'b1_1000: begin //LBI
