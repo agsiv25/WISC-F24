@@ -14,7 +14,7 @@ input wire cf;
 
 output reg jmpSel;
 
-always @(brchSig) begin
+always @(*) begin
    jmpSel = 1'b0;
    casex(brchSig)
       3'b010: begin // BEQ
