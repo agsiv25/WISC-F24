@@ -75,8 +75,8 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl, Cout, signFla
 
 	// 2's compliment ADD
 	cla_16b ALUadder (.sum(ADDout), .c_out(Cout), .ofl(Ofl), .a(Atouse), .b(Btouse), .c_in(Cin), .sign(sign));
-	always @(ADDout, Atouse, Btouse) begin
-		$display("ALUadder: %d, %D, %d", ADDout, Atouse, Btouse);
+	always @(ADDout, Atouse, Btouse, Cin) begin
+		$display("ALUadder: %d, %d, %d, %d", ADDout, Atouse, Btouse, Cin);
 	end
 
 	// Bitwise AND
