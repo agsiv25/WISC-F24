@@ -136,7 +136,6 @@ always @(instruction[15:11]) begin
          stuSel = 1'b1; //select regB as memory write data
          BSrc = 2'b01; //select imm5 as inB
          zeroSel = 1'b0; //select sign extended imm5
-         regDestSel = 2'b01; //select instr bits [7:5] as write back
       end
       5'b1_1001: begin //BTR
          regWrt = 1'b1; //enable write back
