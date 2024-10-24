@@ -33,8 +33,7 @@ always @(brchSig) begin
          jmpSel = (sf == 1'b1) ? 1'b1 : (zf == 1'b1) ? 1'b1 : 1'b0;
       end
       3'b001: begin // SCO
-         //jmpSel = (cf == 1'b1) ? 1'b1 : 1'b0;
-         jmpSel = 1'b0;
+         jmpSel = (cf == 1'b1) ? 1'b1 : 1'b0;
       end
       3'b111: begin // Jump/SLBI
          jmpSel = 1'b1;
