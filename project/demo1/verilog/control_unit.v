@@ -68,8 +68,8 @@ always @(*) begin
       5'b0_1001: begin //SUBI
          regWrt = 1'b1; //enable write back
          wbDataSel = 2'b10; //select alu as wb src
-         Cin = 1'b1; //enable carry in for 2s comp add(sub)
-         invA = 1'b1; //invert inB for 2s comp add(sub)
+         //Cin = 1'b1; //enable carry in for 2s comp add(sub)
+         //invA = 1'b1; //invert inB for 2s comp add(sub)
          BSrc = 2'b01; //select imm5 as inB
          zeroSel = 1'b0; //select sign extended imm5
          regDestSel = 2'b01; //select instr bits [7:5] as write back
