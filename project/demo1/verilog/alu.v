@@ -86,7 +86,7 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl, Cout, signFla
 	assign XORout = Atouse ^ Btouse;
 
 	// SLBI
-	assign slbi = Atouse << 8;
+	shiftl slbiShift(.in(Atouse), .shamt(4'b1000), .out(slbi));
 
 	// BTR
 	assign btr[0] = Atouse[15];
