@@ -8,7 +8,7 @@
 module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluFinal, newPC, sOpSel, aluOut, addPC, aluPC);
 
    input wire SLBIsel;
-   input wire incPC;
+   input wire [15:0] incPC;
    input wire immSrc;
    input wire [15:0] imm8;
    input wire [15:0] imm11;
@@ -38,7 +38,7 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    wire [15:0] imm8Or11;
    wire [15:0] compPC;
    wire [15:0] jmpPC;
-   
+   wire [15:0] possPC;
 
    // ALU
    alu aluExec(.InA(inA), .InB(inB), .Cin(Cin), .Oper(aluOp), .invA(invA), .invB(invB), .sign(1'b0), .Out(aluOut), .Zero(zeroFlag), .Ofl(oflFlag), .Cout(carryOut), .signFlag(signFlag));
