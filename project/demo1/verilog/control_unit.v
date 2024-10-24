@@ -221,6 +221,7 @@ always @(instruction[15:11]) begin
       5'b0_0101: begin //JR
          SLBIsel = 1'b1; //select ALU output as PC
          BSrc = 2'b11; //select 0 as inB
+         brchSig = 3'b111; //select special to tell you to go ALU
       end
       5'b0_0110: begin //JAL
          regWrt = 1'b1; //enable write back
@@ -228,6 +229,7 @@ always @(instruction[15:11]) begin
          immSrc = 1'b1; //select imm11 as PC adder input
          jalSel = 1'b1; //select ALU output as PC
          regDestSel = 2'b11; //select instr R7 as write back
+         brchSig = 3'b111; //select special to tell you to go ALU
       end
       5'b0_0111: begin //JALR
          aluJmp = 1'b1; //enable ALU jump
@@ -236,6 +238,7 @@ always @(instruction[15:11]) begin
          jalSel = 1'b1; //select ALU output as PC
          BSrc = 2'b11; //select 0 as inB
          regDestSel = 2'b11; //select instr R7 as write back
+         brchSig = 3'b111; //select special to tell you to go ALU
       end
       5'b0_0010: begin //siic
 
