@@ -161,6 +161,7 @@ always @(instruction[15:11]) begin
          regDestSel <= 2'b10; //select instr bits [4:2] as write back
          brchSig <= 3'b010; //if zero flag then true
          sOpSel <= 1'b1; //select special to tell you to use brch cond output
+         SLBIsel <= 1'b1; //select ALU output as PC
       end
       5'b1_1101: begin //SLT
          regWrt <= 1'b1; //enable write back
@@ -168,6 +169,7 @@ always @(instruction[15:11]) begin
          regDestSel <= 2'b10; //select instr bits [4:2] as write back
          brchSig <= 3'b100; //if sign flag then true
          sOpSel <= 1'b1; //select special to tell you to use brch cond output
+         SLBIsel <= 1'b1; //select ALU output as PC
       end
       5'b1_1110: begin //SLE
          regWrt <= 1'b1; //enable write back
@@ -175,6 +177,7 @@ always @(instruction[15:11]) begin
          regDestSel <= 2'b10; //select instr bits [4:2] as write back
          brchSig <= 3'b110; //if zero or sign then true
          sOpSel <= 1'b1; //select special to tell you to use brch cond output
+         SLBIsel <= 1'b1; //select ALU output as PC
       end
       5'b1_1111: begin //SCO
          regWrt <= 1'b1; //enable write back
@@ -182,6 +185,7 @@ always @(instruction[15:11]) begin
          regDestSel <= 2'b10; //select instr bits [4:2] as write back
          brchSig <= 3'b001; //if carry out then true
          sOpSel <= 1'b1; //select special to tell you to use brch cond output
+         SLBIsel <= 1'b1; //select ALU output as PC
       end
       5'b0_1100: begin //BEQZ
          brchSig <= 3'b010; //select zero flag
