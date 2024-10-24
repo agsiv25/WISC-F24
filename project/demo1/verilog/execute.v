@@ -37,6 +37,7 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    wire [15:0] imm8Or11;
    wire [15:0] compPC;
    wire [15:0] jmpPC;
+   wire [15:0] possPC;
    //wire [15:0] signImm;
    
 
@@ -56,8 +57,9 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    
    // 2:1 muxes to control PC and register wb values
    assign jmpPC = (jmpSel) ? compPC : incPC;
-   assign newPC = (aluJmp) ? aluOut : jmpPC;
    assign addPC = (jalSel) ? incPC : jmpPC;
+   assign possPC = (aluJmp) ? aluOut : jmpPC;
+   assign newPC = (SLBIsel) ? incPC : possPC;
 
 endmodule
 `default_nettype wire

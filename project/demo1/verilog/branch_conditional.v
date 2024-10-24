@@ -35,7 +35,7 @@ always @(brchSig) begin
       3'b001: begin // SCO
          jmpSel <= (cf == 1'b1) ? 1'b1 : 1'b0;
       end
-      3'b111: begin // Jump
+      3'b111: begin // Jump/SLBI
          jmpSel <= 1'b1;
       end
       default: begin

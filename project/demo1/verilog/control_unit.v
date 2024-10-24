@@ -208,7 +208,7 @@ always @(instruction[15:11]) begin
          wbDataSel <= 2'b00; //select addPC as wb src
          SLBIsel <= 1'b1; //select ALU output as PC
          zeroSel <= 1'b1; //select zero extended imm8
-         brchSig <= 2'b11; //select special to tell you to go ALU
+         brchSig <= 3'b111; //select special to tell you to go ALU
       end
       5'b0_0100: begin //J
          immSrc <= 1'b1; //select imm11 as PC adder input
