@@ -5,7 +5,7 @@
    Description     : This is the module that decodes the instruction and sends various control signals.
 */
 `default_nettype none
-module control_unit (instruction, aluJmp, memWrt, brchSig, Cin, invA, invB, regWrt, wbDataSel, stuSel, immSrc, SLBIsel, createDump, BSrc, zeroSel, regDestSel, jalSel, sOpSel, err);
+module control_unit (instruction, aluJmp, memWrt, brchSig, Cin, invA, invB, regWrt, wbDataSel, stuSel, immSrc, SLBIsel, createDump, BSrc, zeroSel, regDestSel, jalSel, sOpSel, err, aluPC);
 
 input wire [15:0] instruction;
 
@@ -27,6 +27,7 @@ output reg [1:0] regDestSel;    // sel signal to register write mux
 output reg jalSel;              // select signal for jal and slbiu conflict
 output reg sOpSel;
 output reg err;
+output reg aluPC;
 // IMPLEMENT HERE 
 always @(instruction[15:11]) begin
    aluJmp = 1'b0;
@@ -211,6 +212,7 @@ always @(instruction[15:11]) begin
          regWrt = 1'b1; //enable write back
          wbDataSel = 2'b00; //select addPC as wb src
          SLBIsel = 1'b1; //select ALU output as PC
+         aluPC = 1'b1; //select ALU output as PC
          zeroSel = 1'b1; //select zero extended imm8
          brchSig = 3'b111; //select special to tell you to go ALU
       end
@@ -231,6 +233,8 @@ always @(instruction[15:11]) begin
          brchSig = 3'b111; //select special to tell you to go ALU
       end
       5'b0_0111: begin //JALR
+         SLBIsel = 1'b1; //select ALU output as PC
+         aluPC = 1'b1; //select ALU output as PC
          regWrt = 1'b1; //enable write back
          wbDataSel = 2'b00; //select addPC as wb src
          jalSel = 1'b1; //select ALU output as PC

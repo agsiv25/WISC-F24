@@ -31,6 +31,7 @@ output wire [3:0]aluOp;                     // signal to ALU to choose operation
 output wire jalSel;              // select signal for jal and slbiu conflict
 output wire sOpSel;
 output wire readEn;
+output wire aluPC;
 
 // from register file / reg mux 
 output wire [15:0] inA;
@@ -74,7 +75,7 @@ regFile register_file(.read1Data(inA), .read2Data(regB), .err(regErr), .clk(clk)
 assign inB = (BSrc == 2'b00) ? regB : (BSrc == 2'b01) ? imm5 : (BSrc == 2'b10) ? imm11 : 16'b0;
 
 // instruction decoder. ~~~~~~~~~~~~~~~~~~HAVE TO IMPLEMENT~~~~~~~~~~~~~~~~~~~~
-control_unit instruction_decoder(.instruction(instruction), .aluJmp(aluJmp), .memWrt(memWrt), .brchSig(brchSig), .Cin(Cin), .invA(invA), .invB(invB), .regWrt(regWrt), .wbDataSel(wbDataSel), .stuSel(stuSel), .immSrc(immSrc), .SLBIsel(SLBIsel), .createDump(createDump), .BSrc(BSrc), .zeroSel(zeroSel), .regDestSel(regDestSel), .jalSel(jalSel), .sOpSel(sOpSel), .err(cntrlErr));
+control_unit instruction_decoder(.instruction(instruction), .aluJmp(aluJmp), .memWrt(memWrt), .brchSig(brchSig), .Cin(Cin), .invA(invA), .invB(invB), .regWrt(regWrt), .wbDataSel(wbDataSel), .stuSel(stuSel), .immSrc(immSrc), .SLBIsel(SLBIsel), .createDump(createDump), .BSrc(BSrc), .zeroSel(zeroSel), .regDestSel(regDestSel), .jalSel(jalSel), .sOpSel(sOpSel), .err(cntrlErr), .aluPC(aluPC));
 
 assign err = regErr | cntrlErr;
 
