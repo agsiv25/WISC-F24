@@ -225,6 +225,7 @@ always @(instruction[15:11]) begin
       5'b0_0101: begin //JR
          BSrc = 2'b11; //select 0 as inB
          brchSig = 3'b111; //select special to tell you to go ALU
+         aluPC = 1'b1; //select ALU output as PC
       end
       5'b0_0110: begin //JAL
          regWrt = 1'b1; //enable write back
