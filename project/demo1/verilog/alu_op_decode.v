@@ -35,7 +35,7 @@ output reg [3:0] aluOp;
    // 1010 rrl rotate right 
    parameter RRL = 4'b1010;
 
-   always@(instruction) begin
+   always@(*) begin
       case (instruction[15:11])
          5'b01000:          // ADDI
             begin

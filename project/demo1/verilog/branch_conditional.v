@@ -25,7 +25,6 @@ always @(*) begin
       end
       3'b100: begin // BLT
          jmpSel = sf;
-         $display("The value of signFlag in branch conditional is: %d", sf);
       end
       3'b011: begin // BGE
          jmpSel = (sf == 1'b0) ? 1'b1 : 1'b0;

@@ -29,7 +29,7 @@ output reg sOpSel;
 output reg err;
 output reg aluPC;
 // IMPLEMENT HERE 
-always @(instruction[15:0]) begin
+always @(*) begin
    aluJmp = 1'b0;
    memWrt = 1'b0;
    brchSig = 3'b000;
