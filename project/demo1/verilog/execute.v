@@ -50,7 +50,7 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    assign pcOrSLBI = (SLBIsel) ? aluOut : incPC;
    assign imm8Or11 = (immSrc) ? imm11 : imm8;
 
-   assign aluFinal = (sOpSel) ? {15'b0,jmpSel} : aluOut;
+   assign aluFinal = (sOpSel) ? {16'b0} : aluOut;
 
    // PC add module 
    cla_16b pcImmAdd(.sum(compPC), .c_out(), .ofl(), .a(pcOrSLBI), .b(imm8Or11), .c_in(1'b0), .sign(1'b0));
