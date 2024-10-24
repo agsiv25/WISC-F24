@@ -47,6 +47,8 @@ always @(instruction[15:11]) begin
    regDestSel = 2'b00;
    jalSel = 1'b0;
    sOpSel = 1'b0;
+   err = 1'b0;
+   aluPC = 1'b0;
    case(instruction[15:11])
       5'b0_0000: begin // HALT
          createDump = 1'b1;
