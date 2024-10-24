@@ -74,7 +74,7 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl, Cout, signFla
 	shifter ALUshifter (.In(Atouse), .ShAmt(Btouse[3:0]), .Oper(Oper[1:0]), .Out(shifterout));
 
 	// 2's compliment ADD
-	cla_16b ALUadder (.sum(ADDout), .c_out(Cout), .ofl(Ofl), .a(Atouse), .b(Btouse), .c_in(Cin), .sign(sign));
+	cla_16b ALUadder (.sum(ADDout), .c_out(Cout), .ofl(Ofl), .a(Atouse), .b(Btouse), .c_in(Cin), .sign(1'b1));
 
 	// Bitwise AND
 	assign ANDout = Atouse & Btouse;
@@ -132,6 +132,6 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl, Cout, signFla
 	// Zero: set high if Out is zero, otherwise 0
 	assign Zero = (Out == 16'b0);
 
-	assign signFlag = Out[15];
+	assign signFlag = (Ofl & (Out[15] ^ Atouse[15])) ? ~Out[15] : Atouse[15];	
 	
 endmodule
