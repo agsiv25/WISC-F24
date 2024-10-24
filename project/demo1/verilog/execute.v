@@ -53,7 +53,7 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
 
    assign signImm = (imm8Or11[15]) ? ~imm8Or11 : imm8Or11; 
    // PC add module 
-   cla_16b pcImmAdd(.sum(compPC), .c_out(), .ofl(), .a(pcOrSLBI), .b(imm8Or11), .c_in(1'b0), .sign(1'b1));
+   cla_16b pcImmAdd(.sum(compPC), .c_out(), .ofl(), .a(pcOrSLBI), .b(signImm), .c_in(imm8Or11[15]), .sign(imm8Or11[15]));
    
    // 2:1 muxes to control PC and register wb values
    assign jmpPC = (jmpSel) ? compPC : incPC;
