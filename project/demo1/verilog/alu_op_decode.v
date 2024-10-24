@@ -39,111 +39,111 @@ output reg [3:0] aluOp;
       case (instruction[15:11])
          5'b01000:          // ADDI
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          5'b01001:          // SUBI
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          5'b01010:          // XORI
             begin
-               aluOp <= XOR;
+               aluOp = XOR;
             end
          5'b01011:          // ANDNI
             begin
-               aluOp <= AND;
+               aluOp = AND;
             end
          5'b10100:          // ROLI
             begin
-               aluOp <= RLL;
+               aluOp = RLL;
             end
          5'b10101:          // SLLI
             begin
-               aluOp <= SLL;
+               aluOp = SLL;
             end
          5'b10110:          // RORI
             begin
-               aluOp <= RRL;
+               aluOp = RRL;
             end
          5'b10111:          // SRLI
             begin
-               aluOp <= SRL;
+               aluOp = SRL;
             end
          5'b10000:          // ST
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          5'b10001:          // LD
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          5'b10011:          // STU
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          5'b11001:          // BTR
             begin
-               aluOp <= BTR;
+               aluOp = BTR;
             end
          5'b11011:          // Standard ALU operations
             begin
-               aluOp <= (instruction[1:0] == 2'b10) ? XOR : (instruction[1:0] == 2'b11) ? AND : ADD;
+               aluOp = (instruction[1:0] == 2'b10) ? XOR : (instruction[1:0] == 2'b11) ? AND : ADD;
             end
          5'b11010:          // Standard ALU shifts
             begin
-               aluOp <= (instruction[1:0] == 2'b00) ? RLL : (instruction[1:0] == 2'b01) ? SLL : (instruction[1:0] == 2'b10) ? RRL : SRL;
+               aluOp = (instruction[1:0] == 2'b00) ? RLL : (instruction[1:0] == 2'b01) ? SLL : (instruction[1:0] == 2'b10) ? RRL : SRL;
             end
          5'b11100:          // SEQ
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          5'b11101:          // SLT
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          5'b11110:          // SLE
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          5'b11111:          // SCO
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          5'b01100:          // BEQZ
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          5'b01101:          // BNEZ
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          5'b01110:          // BLTZ
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          5'b01111:          // BGEZ
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          5'b10010:          // SLBI
             begin
-               aluOp <= SLBI;
+               aluOp = SLBI;
             end
          5'b00101:          // JR
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          5'b00111:          // JALR
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          5'b00111:          // JALR
             begin
-               aluOp <= ADD;
+               aluOp = ADD;
             end
          default:           // All other operations
             begin
-               aluOp <= RLL;
+               aluOp = RLL;
             end
       endcase
    end
