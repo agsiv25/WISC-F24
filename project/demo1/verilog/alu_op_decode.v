@@ -36,6 +36,7 @@ output reg [3:0] aluOp;
    parameter RRL = 4'b1010;
 
    always@(*) begin
+      aluOp = RLL;
       case (instruction[15:11])
          5'b01000:          // ADDI
             begin
