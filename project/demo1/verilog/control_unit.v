@@ -48,189 +48,189 @@ always @(instruction[15:11]) begin
    sOpSel = 1'b0;
    case(instruction[15:11])
       5'b0_0000: begin // HALT
-         createDump = 1'b1;
+         createDump <= 1'b1;
       end
       5'b0_0001: begin // NOP
          // Do nothing
       end
       5'b0_1000: begin //ADDI
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b10; //select alu as wb src
-         BSrc = 2'b01; //select imm5 as inB
-         zeroSel = 1'b0; //select sign extended imm5
-         regDestSel = 2'b01; //select instr bits [7:5] as write back
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b10; //select alu as wb src
+         BSrc <= 2'b01; //select imm5 as inB
+         zeroSel <= 1'b0; //select sign extended imm5
+         regDestSel <= 2'b01; //select instr bits [7:5] as write back
       end
       5'b0_1001: begin //SUBI
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b10; //select alu as wb src
-         Cin = 1'b1; //enable carry in for 2s comp add(sub)
-         invA = 1'b1; //invert inB for 2s comp add(sub)
-         BSrc = 2'b01; //select imm5 as inB
-         zeroSel = 1'b0; //select sign extended imm5
-         regDestSel = 2'b01; //select instr bits [7:5] as write back
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b10; //select alu as wb src
+         Cin <= 1'b1; //enable carry in for 2s comp add(sub)
+         invA <= 1'b1; //invert inB for 2s comp add(sub)
+         BSrc <= 2'b01; //select imm5 as inB
+         zeroSel <= 1'b0; //select sign extended imm5
+         regDestSel <= 2'b01; //select instr bits [7:5] as write back
       end
       5'b0_1010: begin //XORI
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b10; //select alu as wb src
-         BSrc = 2'b01; //select imm5 as inB
-         zeroSel = 1'b1; //select zero extended imm5
-         regDestSel = 2'b01; //select instr bits [7:5] as write back
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b10; //select alu as wb src
+         BSrc <= 2'b01; //select imm5 as inB
+         zeroSel <= 1'b1; //select zero extended imm5
+         regDestSel <= 2'b01; //select instr bits [7:5] as write back
       end
       5'b0_1011: begin //ANDNI
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b10; //select alu as wb src
-         invB = 1'b1; //invert inB for not
-         BSrc = 2'b01; //select imm5 as inB
-         zeroSel = 1'b1; //select zero extended imm5
-         regDestSel = 2'b01; //select instr bits [7:5] as write back
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b10; //select alu as wb src
+         invB <= 1'b1; //invert inB for not
+         BSrc <= 2'b01; //select imm5 as inB
+         zeroSel <= 1'b1; //select zero extended imm5
+         regDestSel <= 2'b01; //select instr bits [7:5] as write back
       end
       5'b1_0100: begin //ROLI
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b10; //select alu as wb src
-         BSrc = 2'b01; //select imm5 as inB
-         zeroSel = 1'b1; //select zero extended imm5
-         regDestSel = 2'b01; //select instr bits [7:5] as write back
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b10; //select alu as wb src
+         BSrc <= 2'b01; //select imm5 as inB
+         zeroSel <= 1'b1; //select zero extended imm5
+         regDestSel <= 2'b01; //select instr bits [7:5] as write back
       end
       5'b1_0101: begin //SLLI
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b10; //select alu as wb src
-         BSrc = 2'b01; //select imm5 as inB
-         zeroSel = 1'b1; //select zero extended imm5
-         regDestSel = 2'b01; //select instr bits [7:5] as write back
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b10; //select alu as wb src
+         BSrc <= 2'b01; //select imm5 as inB
+         zeroSel <= 1'b1; //select zero extended imm5
+         regDestSel <= 2'b01; //select instr bits [7:5] as write back
       end
       5'b1_0110: begin //RORI
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b10; //select alu as wb src
-         BSrc = 2'b01; //select imm5 as inB
-         zeroSel = 1'b1; //select zero extended imm5
-         regDestSel = 2'b01; //select instr bits [7:5] as write back
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b10; //select alu as wb src
+         BSrc <= 2'b01; //select imm5 as inB
+         zeroSel <= 1'b1; //select zero extended imm5
+         regDestSel <= 2'b01; //select instr bits [7:5] as write back
       end
       5'b1_0111: begin //SRLI
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b10; //select alu as wb src
-         BSrc = 2'b01; //select imm5 as inB
-         zeroSel = 1'b1; //select zero extended imm5
-         regDestSel = 2'b01; //select instr bits [7:5] as write back
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b10; //select alu as wb src
+         BSrc <= 2'b01; //select imm5 as inB
+         zeroSel <= 1'b1; //select zero extended imm5
+         regDestSel <= 2'b01; //select instr bits [7:5] as write back
       end
       5'b1_0000: begin //ST
-         memWrt = 1'b1; //enable memory write
-         BSrc = 2'b01; //select imm5 as inB
-         stuSel = 1'b1; //select regB as memory write data
-         BSrc = 2'b01; //select imm5 as inB
-         zeroSel = 1'b0; //select sign extended imm5
+         memWrt <= 1'b1; //enable memory write
+         BSrc <= 2'b01; //select imm5 as inB
+         stuSel <= 1'b1; //select regB as memory write data
+         BSrc <= 2'b01; //select imm5 as inB
+         zeroSel <= 1'b0; //select sign extended imm5
       end
       5'b1_0001: begin //LD
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b01; //select memory as wb src
-         BSrc = 2'b01; //select imm5 as inB
-         zeroSel = 1'b0; //select sign extended imm5
-         regDestSel = 2'b01; //select instr bits [7:5] as write back
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b01; //select memory as wb src
+         BSrc <= 2'b01; //select imm5 as inB
+         zeroSel <= 1'b0; //select sign extended imm5
+         regDestSel <= 2'b01; //select instr bits [7:5] as write back
       end
       5'b1_0011: begin //STU
-         memWrt = 1'b1; //enable memory write
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b10; //select ALU as wb src
-         stuSel = 1'b1; //select regB as memory write data
-         BSrc = 2'b01; //select imm5 as inB
-         zeroSel = 1'b0; //select sign extended imm5
-         regDestSel = 2'b01; //select instr bits [7:5] as write back
+         memWrt <= 1'b1; //enable memory write
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b10; //select ALU as wb src
+         stuSel <= 1'b1; //select regB as memory write data
+         BSrc <= 2'b01; //select imm5 as inB
+         zeroSel <= 1'b0; //select sign extended imm5
+         regDestSel <= 2'b01; //select instr bits [7:5] as write back
       end
       5'b1_1001: begin //BTR
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b10; //select ALU as wb src
-         regDestSel = 2'b10; //select instr bits [4:2] as write back
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b10; //select ALU as wb src
+         regDestSel <= 2'b10; //select instr bits [4:2] as write back
       end
       5'b1_1011: begin //ALU (ADD, SUB, XOR, ANDN)
-         assign Cin = (instruction[1:0] == 2'b01) ? 1'b1 : 1'b0;
-         assign invA = (instruction[1:0] == 2'b01) ? 1'b1 : 1'b0;
-         assign invB = (instruction[1:0] == 2'b11) ? 1'b1 : 1'b0;
-         wbDataSel = 2'b10; //select ALU as wb src
-         regWrt = 1'b1; //enable write back
-         BSrc = 2'b00; //select regB
-         regDestSel = 2'b10; //select instr bits [4:2] as write back
+         assign Cin <= (instruction[1:0] == 2'b01) ? 1'b1 : 1'b0;
+         assign invA <= (instruction[1:0] == 2'b01) ? 1'b1 : 1'b0;
+         assign invB <= (instruction[1:0] == 2'b11) ? 1'b1 : 1'b0;
+         wbDataSel <= 2'b10; //select ALU as wb src
+         regWrt <= 1'b1; //enable write back
+         BSrc <= 2'b00; //select regB
+         regDestSel <= 2'b10; //select instr bits [4:2] as write back
       end
       5'b1_1010: begin //ALU (ROL, SLL, ROR, SRL)
-         wbDataSel = 2'b10; //select ALU as wb src
-         regWrt = 1'b1; //enable write back
-         BSrc = 2'b00; //select regB
-         regDestSel = 2'b10; //select instr bits [4:2] as write back
+         wbDataSel <= 2'b10; //select ALU as wb src
+         regWrt <= 1'b1; //enable write back
+         BSrc <= 2'b00; //select regB
+         regDestSel <= 2'b10; //select instr bits [4:2] as write back
       end
       5'b1_1100: begin //SEQ
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b10; //select aluOut as wb src
-         regDestSel = 2'b10; //select instr bits [4:2] as write back
-         brchSig = 3'b010; //if zero flag then true
-         sOpSel = 1'b1; //select special to tell you to use brch cond output
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b10; //select aluOut as wb src
+         regDestSel <= 2'b10; //select instr bits [4:2] as write back
+         brchSig <= 3'b010; //if zero flag then true
+         sOpSel <= 1'b1; //select special to tell you to use brch cond output
       end
       5'b1_1101: begin //SLT
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b10; //select aluOut as wb src
-         regDestSel = 2'b10; //select instr bits [4:2] as write back
-         brchSig = 3'b100; //if sign flag then true
-         sOpSel = 1'b1; //select special to tell you to use brch cond output
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b10; //select aluOut as wb src
+         regDestSel <= 2'b10; //select instr bits [4:2] as write back
+         brchSig <= 3'b100; //if sign flag then true
+         sOpSel <= 1'b1; //select special to tell you to use brch cond output
       end
       5'b1_1110: begin //SLE
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b10; //select aluOut as wb src
-         regDestSel = 2'b10; //select instr bits [4:2] as write back
-         brchSig = 3'b110; //if zero or sign then true
-         sOpSel = 1'b1; //select special to tell you to use brch cond output
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b10; //select aluOut as wb src
+         regDestSel <= 2'b10; //select instr bits [4:2] as write back
+         brchSig <= 3'b110; //if zero or sign then true
+         sOpSel <= 1'b1; //select special to tell you to use brch cond output
       end
       5'b1_1111: begin //SCO
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b10; //select aluOut as wb src
-         regDestSel = 2'b10; //select instr bits [4:2] as write back
-         brchSig = 3'b001; //if carry out then true
-         sOpSel = 1'b1; //select special to tell you to use brch cond output
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b10; //select aluOut as wb src
+         regDestSel <= 2'b10; //select instr bits [4:2] as write back
+         brchSig <= 3'b001; //if carry out then true
+         sOpSel <= 1'b1; //select special to tell you to use brch cond output
       end
       5'b0_1100: begin //BEQZ
-         brchSig = 3'b010; //select zero flag
-         BSrc = 2'b11; //select 0 as inB
+         brchSig <= 3'b010; //select zero flag
+         BSrc <= 2'b11; //select 0 as inB
       end
       5'b0_1101: begin //BNEZ
-         brchSig = 3'b101; //select not zero flag
-         BSrc = 2'b11; //select 0 as inB
+         brchSig <= 3'b101; //select not zero flag
+         BSrc <= 2'b11; //select 0 as inB
       end
       5'b0_1110: begin //BLTZ
-         brchSig = 3'b100; //select sign flag
-         BSrc = 2'b11; //select 0 as inB
+         brchSig <= 3'b100; //select sign flag
+         BSrc <= 2'b11; //select 0 as inB
       end
       5'b0_1111: begin //BGEZ
-         brchSig = 3'b011; //if not sign or zero
-         BSrc = 2'b11; //select 0 as inB
+         brchSig <= 3'b011; //if not sign or zero
+         BSrc <= 2'b11; //select 0 as inB
       end
       5'b1_1000: begin //LBI
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b11; //select imm8 as wb src
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b11; //select imm8 as wb src
       end
       5'b1_0010: begin //SLBI
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b00; //select addPC as wb src
-         SLBIsel = 1'b1; //select ALU output as PC
-         zeroSel = 1'b1; //select zero extended imm8
-         brchSig = 2'b11; //select special to tell you to go ALU
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b00; //select addPC as wb src
+         SLBIsel <= 1'b1; //select ALU output as PC
+         zeroSel <= 1'b1; //select zero extended imm8
+         brchSig <= 2'b11; //select special to tell you to go ALU
       end
       5'b0_0100: begin //J
-         immSrc = 1'b1; //select imm11 as PC adder input
+         immSrc <= 1'b1; //select imm11 as PC adder input
       end
       5'b0_0101: begin //JR
-         SLBIsel = 1'b1; //select ALU output as PC
-         BSrc = 2'b11; //select 0 as inB
+         SLBIsel <= 1'b1; //select ALU output as PC
+         BSrc <= 2'b11; //select 0 as inB
       end
       5'b0_0110: begin //JAL
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b00; //select addPC as wb src
-         immSrc = 1'b1; //select imm11 as PC adder input
-         jalSel = 1'b1; //select ALU output as PC
-         regDestSel = 2'b11; //select instr R7 as write back
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b00; //select addPC as wb src
+         immSrc <= 1'b1; //select imm11 as PC adder input
+         jalSel <= 1'b1; //select ALU output as PC
+         regDestSel <= 2'b11; //select instr R7 as write back
       end
       5'b0_0111: begin //JALR
-         aluJmp = 1'b1; //enable ALU jump
-         regWrt = 1'b1; //enable write back
-         wbDataSel = 2'b00; //select addPC as wb src
-         jalSel = 1'b1; //select ALU output as PC
-         BSrc = 2'b11; //select 0 as inB
-         regDestSel = 2'b11; //select instr R7 as write back
+         aluJmp <= 1'b1; //enable ALU jump
+         regWrt <= 1'b1; //enable write back
+         wbDataSel <= 2'b00; //select addPC as wb src
+         jalSel <= 1'b1; //select ALU output as PC
+         BSrc <= 2'b11; //select 0 as inB
+         regDestSel <= 2'b11; //select instr R7 as write back
       end
       5'b0_0010: begin //siic
 
@@ -239,7 +239,7 @@ always @(instruction[15:11]) begin
 
       end
       default: begin
-         err = 1'b1;
+         err <= 1'b1;
       end
    endcase
 end
