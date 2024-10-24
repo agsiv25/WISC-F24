@@ -134,6 +134,8 @@ module alu (InA, InB, Cin, Oper, invA, invB, sign, Out, Zero, Ofl, Cout, signFla
 
 	assign signFlag = Out[15];
 
-	$display("The value of signFlag is: %d", signFlag); // %d for decimal format
+	always @ (signFlag) begin
+		$display("The value of signFlag is: %d", signFlag); // %d for decimal format
+	end
 	
 endmodule
