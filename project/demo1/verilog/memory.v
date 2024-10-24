@@ -20,7 +20,9 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn);
 
    output wire [15:0]memOut;
 
-   memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(~createDump), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
+   wire enable = ~createDump & readEn;
+
+   memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(enable), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
    
 endmodule
 `default_nettype wire
