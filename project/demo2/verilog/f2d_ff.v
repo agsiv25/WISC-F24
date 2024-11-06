@@ -5,7 +5,7 @@
    Description     : This is the flip flop between the fetch and decode cycles.
 */
 `default_nettype none
-module fetch (instructionF, incPCF, errF, clk, rst, instructionD, wbDataD);
+module f2d_ff (instructionF, incPCF, errF, clk, rst, instructionD, wbDataD);
 
 input wire [15:0] instructionF;
 input wire [15:0] incPCF;
