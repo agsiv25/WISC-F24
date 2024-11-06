@@ -1,11 +1,11 @@
 /*
    CS/ECE 552 Spring '22
   
-   Filename        : f2d_ff.v
-   Description     : This is the flip flop between the fetch and decode cycles.
+   Filename        : d2x_ff.v
+   Description     : This is the flip flop between the decode and execute cycles.
 */
 `default_nettype none
-module f2d_ff (instructionF, incPCF, errF, clk, rst, instructionD, incPCD);
+module d2x_ff (instructionF, incPCF, errF, clk, rst, instructionD, wbDataD);
 
 input wire [15:0] instructionF;
 input wire [15:0] incPCF;
