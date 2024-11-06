@@ -20,7 +20,5 @@ dff instructLatch[15:0](.Q(instructionD), .D(instructionF), .clk(clk), .rst(rst)
 
 dff incPCLatch[15:0](.Q(incPCD), .D(incPCF), .clk(clk), .rst(rst));
 
-
-   
 endmodule
 `default_nettype wire
