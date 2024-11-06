@@ -5,15 +5,17 @@
    Description     : This is the flip flop between the memory and write back cycles.
 */
 `default_nettype none
-module  m2w_ff(memOutM, wbDataSelM, addPCM, aluFinalM, imm8M, clk, rst, wbDataSelW, addPCW, memOutW, aluFinalW, imm8W);
+module  m2w_ff(clk, rst, memOutM, wbDataSelM, addPCM, aluFinalM, imm8M, wbDataSelW, addPCW, memOutW, aluFinalW, imm8W);
+
+input wire clk;
+input wire rst;
 
 input wire [15:0]memOutM;
 input wire [1:0]wbDataSelM;
 input wire [15:0]addPCM;
 input wire [15:0]aluFinalM;
 input wire [15:0]imm8M;
-input wire clk;
-input wire rst;
+
 output wire [1:0]wbDataSelW;
 output wire [15:0]addPCW;
 output wire [15:0]memOutW;
