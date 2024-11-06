@@ -5,7 +5,10 @@
    Description     : This is the flip flop between the execute and memory cycles.
 */
 `default_nettype none
-module  x2m_ff();
+module  x2m_ff(clk, rst, aluFinalX, newPCX, addPCX, aluOutX, dataAddrX, wrtDataX, memWrtX, createDumpX, readEnX, wbDataSelX, dataAddrM, wrtDataM, memWrtM, createDumpM, readEnM, aluFinalM, newPCM, addPCM, aluOutM, readEnM, wbDataSelM);
+
+input wire clk;
+input wire rst;
 
 input wire [15:0] aluFinalX;
 input wire [15:0] newPCX;
@@ -17,8 +20,6 @@ input wire memWrtX;
 input wire createDumpX;
 input wire readEnX;
 input wire wbDataSelX;
-input wire clk;
-input wire rst;
 
 output wire [15:0]dataAddrM;
 output wire [15:0]wrtDataM;
