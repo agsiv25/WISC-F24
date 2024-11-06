@@ -1,11 +1,11 @@
 /*
    CS/ECE 552 Spring '22
   
-   Filename        : fetch.v
+   Filename        : x2m.v
    Description     : This is the flip flop between the execute and memory cycles.
 */
 `default_nettype none
-module  x2wm_ff();
+module  x2m_ff();
 
 input wire [15:0] aluFinalX;
 input wire [15:0] newPCX;
@@ -32,16 +32,16 @@ output wire [15:0] aluOutM;
 output wire readEnM;
 output wire [1:0] wbDataSelM;
 
-dff aluFinalLatch[15:0](.Q(aluFinalM), .D(aluFinalX), .clk(clk), .rst(rst));
-dff newPCLatch[15:0](.Q(newPCM), .D(newPCX), .clk(clk), .rst(rst));
-dff addPCLatch[15:0](.Q(addPCM), .D(addPCX), .clk(clk), .rst(rst));
-dff aluOutLatch[15:0](.Q(aluOutM), .D(aluOutX), .clk(clk), .rst(rst));
-dff dataAddrLatch[15:0](.Q(dataAddrM), .D(dataAddrX), .clk(clk), .rst(rst));
-dff wrtDataLatch[15:0](.Q(wrtDataM), .D(wrtDataX), .clk(clk), .rst(rst));
+dff aluFinalLatch [15:0] (.Q(aluFinalM), .D(aluFinalX), .clk(clk), .rst(rst));
+dff newPCLatch [15:0] (.Q(newPCM), .D(newPCX), .clk(clk), .rst(rst));
+dff addPCLatch [15:0] (.Q(addPCM), .D(addPCX), .clk(clk), .rst(rst));
+dff aluOutLatch [15:0] (.Q(aluOutM), .D(aluOutX), .clk(clk), .rst(rst));
+dff dataAddrLatch [15:0] (.Q(dataAddrM), .D(dataAddrX), .clk(clk), .rst(rst));
+dff wrtDataLatch [15:0] (.Q(wrtDataM), .D(wrtDataX), .clk(clk), .rst(rst));
 dff memWrtLatch(.Q(memWrtM), .D(memWrtX), .clk(clk), .rst(rst));
 dff createDumpLatch(.Q(createDumpM), .D(createDumpX), .clk(clk), .rst(rst));
 dff readEnLatch(.Q(readEnM), .D(readEnX), .clk(clk), .rst(rst));
-dff wbDataSelLatch[1:0](.Q(wbDataSelM), .D(wbDataSelX), .clk(clk), .rst(rst));
+dff wbDataSelLatch [1:0] (.Q(wbDataSelM), .D(wbDataSelX), .clk(clk), .rst(rst));
    
 endmodule
 `default_nettype wire
