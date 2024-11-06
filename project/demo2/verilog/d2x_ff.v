@@ -78,7 +78,7 @@ dff sOpSelLatch(.Q(sOpSelX), .D(sOpSelD), .clk(clk), .rst(rst));
 dff aluPCLatch(.Q(aluPCX), .D(aluPCD), .clk(clk), .rst(rst));
 
 dff memWrtLatch(.Q(memWrtM), .D(memWrtD), .clk(clk), .rst(rst));
-dff wbDataSelLatch[1:0](.Q(wbDataSelW), .D(wbDataSelD), .clk(clk), .rst(rst));
+dff wbDataSelLatch [1:0] (.Q(wbDataSelW), .D(wbDataSelD), .clk(clk), .rst(rst));
 dff readEnLatch(.Q(readEnW), .D(readEnD), .clk(clk), .rst(rst));
 
 dff inALatch [15:0] (.Q(inAX), .D(inAD), .clk(clk), .rst(rst));
