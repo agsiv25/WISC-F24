@@ -21,15 +21,19 @@ wire [15:0]nextPC;
 wire pcIncErr;
 wire pcRegErr;
 
+// wires for hazard detection registers
+wire [15:0] instruction2;
+
 cla_16b pc_inc(.sum(incPC), .c_out(), .ofl(pcIncErr), .a(pcRegAddr), .b(16'h2), .c_in(1'b0), .sign(1'b0));
 
 reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(newPC), .writeEn(~createDump));
 
-
 // assign error signal to be an OR between the PC adder and the PC register
 assign err = pcRegErr | pcIncErr;
 
-memory2c instruction_memory(.data_out(instruction), .data_in(16'b0), .addr(pcRegAddr), .enable(1'b1), .wr(1'b0), .createdump(createDump), .clk(clk), .rst(rst));
+memory2c instruction_memory(.data_out(instruction2), .data_in(16'b0), .addr(pcRegAddr), .enable(1'b1), .wr(1'b0), .createdump(createDump), .clk(clk), .rst(rst));
    
+hazard hazard_det(.rst(rst), .clk(clk), .fetch_inst(instruction2), .next_inst(instruction));
+
 endmodule
 `default_nettype wire
