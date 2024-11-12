@@ -40,7 +40,7 @@ reg controlHazard;
 // Data hazards
 always @(*) begin
 
-    next_inst = NOP;
+    next_inst = 16'b0000100000000000;
     branchInstF = 1'b0;
     controlHazard = 1'b0;
 
