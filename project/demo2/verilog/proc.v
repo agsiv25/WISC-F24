@@ -101,7 +101,7 @@ module proc (/*AUTOARG*/
    wire wrtRegW;
    
 
-   fetch fetchSection(.newPC(newPCM), .createDump(createDump), .rst(rst), .clk(clk), .incPC(incPCF), .instruction(instructionF), .err(fetchErr));
+   fetch fetchSection(.newPC(newPCM), .createDump(createDump), .rst(rst), .clk(clk), .incPC(incPCF), .instruction(instructionF), .err(fetchErr), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW));
 
    f2d_ff fetch2decode(.instructionF(instructionF), .incPCF(incPCF), .errF(fetchErr), .clk(clk), .rst(rst), .instructionD(instructionD), .incPCD(incPCD));
    
