@@ -27,7 +27,7 @@ input wire [2:0] wrtRegX;
 input wire [2:0] wrtRegM;
 input wire [2:0] wrtRegW;
 
-output reg branchInstF;
+output wire branchInstF;
 
 input wire branchInstD;
 input wire branchInstX;
