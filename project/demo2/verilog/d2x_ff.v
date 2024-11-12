@@ -7,8 +7,8 @@
 `default_nettype none
 module d2x_ff (clk, rst, imm8D, imm11D, aluJmpD, SLBIselD, memWrtD, brchSigD, CinD, invAD, invBD, wbDataSelD, immSrcD, aluOpD, jalSelD, sOpSelD, readEnD, aluPCD, inAD, inBD, wrtDataD, SLBIselX, incPCX, immSrcX, imm8X, imm11X, brchSigX, CinX, inAX, inBX, invAX, invBX, aluOpX, aluJmpX, jalSelX, sOpSelX, aluPCX, memWrtX, wbDataSelX, readEnX, wrtDataX, incPCD, regWrtD, regWrtX);
 
-input clk;
-input rst;
+input wire clk;
+input wire rst;
 
 // from instruction decoder stage  
 input wire [15:0] imm8D;
@@ -77,14 +77,14 @@ dff jalSelLatch(.Q(jalSelX), .D(jalSelD), .clk(clk), .rst(rst));
 dff sOpSelLatch(.Q(sOpSelX), .D(sOpSelD), .clk(clk), .rst(rst));
 dff aluPCLatch(.Q(aluPCX), .D(aluPCD), .clk(clk), .rst(rst));
 
-dff memWrtLatch(.Q(memWrtM), .D(memWrtD), .clk(clk), .rst(rst));
-dff wbDataSelLatch [1:0] (.Q(wbDataSelW), .D(wbDataSelD), .clk(clk), .rst(rst));
-dff readEnLatch(.Q(readEnW), .D(readEnD), .clk(clk), .rst(rst));
+dff memWrtLatch(.Q(memWrtX), .D(memWrtD), .clk(clk), .rst(rst));
+dff wbDataSelLatch [1:0] (.Q(wbDataSelX), .D(wbDataSelD), .clk(clk), .rst(rst));
+dff readEnLatch(.Q(readEnX), .D(readEnD), .clk(clk), .rst(rst));
 
 dff inALatch [15:0] (.Q(inAX), .D(inAD), .clk(clk), .rst(rst));
 dff inBLatch [15:0] (.Q(inBX), .D(inBD), .clk(clk), .rst(rst));
 
-dff wrtDataLatch [15:0] (.Q(wrtDataW), .D(wrtDataD), .clk(clk), .rst(rst));
+dff wrtDataLatch [15:0] (.Q(wrtDataD), .D(wrtDataD), .clk(clk), .rst(rst));
 
 dff incPCLatch [15:0] (.Q(incPCX), .D(incPCD), .clk(clk), .rst(rst));
 
