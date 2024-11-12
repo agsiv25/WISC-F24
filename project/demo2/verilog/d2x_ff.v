@@ -5,7 +5,7 @@
    Description     : This is the flip flop between the decode and execute cycles.
 */
 `default_nettype none
-module d2x_ff (clk, rst, imm8D, imm11D, aluJmpD, SLBIselD, createDumpD, memWrtD, brchSigD, CinD, invAD, invBD, wbDataSelD, immSrcD, aluOpD, jalSelD, sOpSelD, readEnD, aluPCD, inAD, inBD, wrtDataD, SLBIselX, incPCX, immSrcX, imm8X, imm11X, brchSigX, CinX, inAX, inBX, invAX, invBX, aluOpX, aluJmpX, jalSelX, sOpSelX, aluPCX, memWrtX, wbDataSelX, readEnX, wrtDataX, incPCD, regWrtD, regWrtX);
+module d2x_ff (clk, rst, imm8D, imm11D, aluJmpD, SLBIselD, memWrtD, brchSigD, CinD, invAD, invBD, wbDataSelD, immSrcD, aluOpD, jalSelD, sOpSelD, readEnD, aluPCD, inAD, inBD, wrtDataD, SLBIselX, incPCX, immSrcX, imm8X, imm11X, brchSigX, CinX, inAX, inBX, invAX, invBX, aluOpX, aluJmpX, jalSelX, sOpSelX, aluPCX, memWrtX, wbDataSelX, readEnX, wrtDataX, incPCD, regWrtD, regWrtX);
 
 input clk;
 input rst;
@@ -16,7 +16,6 @@ input wire [15:0] imm11D;
 
 input wire aluJmpD;
 input wire SLBIselD;
-input wire createDumpD;
 input wire memWrtD;           // memory write or read signal 
 input wire [2:0] brchSigD;
 input wire CinD;
@@ -68,8 +67,6 @@ dff imm11Latch [15:0] (.Q(imm11X), .D(imm11D), .clk(clk), .rst(rst));
 
 dff aluJmpLatch(.Q(aluJmpX), .D(aluJmpD), .clk(clk), .rst(rst));
 dff SLBIselLatch(.Q(SLBIselX), .D(SLBIselD), .clk(clk), .rst(rst));
-dff createDumpLatch(.Q(createDumpX), .D(createDumpD), .clk(clk), .rst(rst));
-dff createDumpLatch(.Q(createDumpX), .D(createDumpD), .clk(clk), .rst(rst));
 dff brchSigLatch [2:0] (.Q(brchSigX), .D(brchSigD), .clk(clk), .rst(rst));
 dff CinLatch(.Q(CinX), .D(CinD), .clk(clk), .rst(rst));
 dff invALatch(.Q(invAX), .D(invAD), .clk(clk), .rst(rst));
