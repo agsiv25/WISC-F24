@@ -3,19 +3,19 @@
 /* $Rev: 45 $ */
 // D-flipflop
 `default_nettype none
-module dff (Q, D, clk, rst);
+module dff (q, d, clk, rst);
 
-    output wire        Q;
-    input wire         D;
+    output wire        q;
+    input wire         d;
     input wire         clk;
     input wire         rst;
 
     reg            state;
 
-    assign #(1) Q = state;
+    assign #(1) q = state;
 
     always @(posedge clk) begin
-      state = rst? 0 : D;
+      state = rst? 0 : d;
     end
 endmodule
 `default_nettype wire

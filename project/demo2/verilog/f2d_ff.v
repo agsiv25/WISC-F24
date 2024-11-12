@@ -16,9 +16,9 @@ input wire rst;
 output wire [15:0] instructionD;
 output wire [15:0] incPCD;
 
-dff instructLatch[15:0](.Q(instructionD), .D(instructionF), .clk(clk), .rst(rst));
+dff instructLatch[15:0](.q(instructionD), .d(instructionF), .clk(clk), .rst(rst));
 
-dff incPCLatch[15:0](.Q(incPCD), .D(incPCF), .clk(clk), .rst(rst));
+dff incPCLatch[15:0](.q(incPCD), .d(incPCF), .clk(clk), .rst(rst));
 
 endmodule
 `default_nettype wire

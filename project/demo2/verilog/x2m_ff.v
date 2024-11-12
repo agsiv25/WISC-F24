@@ -32,16 +32,16 @@ output wire [1:0] wbDataSelM;
 output wire [15:0] imm8M;
 output wire regWrtM;
 
-dff aluFinalLatch [15:0] (.Q(aluFinalM), .D(aluFinalX), .clk(clk), .rst(rst));
-dff newPCLatch [15:0] (.Q(newPCM), .D(newPCX), .clk(clk), .rst(rst));
-dff addPCLatch [15:0] (.Q(addPCM), .D(addPCX), .clk(clk), .rst(rst));
-dff aluOutLatch [15:0] (.Q(aluOutM), .D(aluOutX), .clk(clk), .rst(rst));
-dff wrtDataLatch [15:0] (.Q(wrtDataM), .D(wrtDataX), .clk(clk), .rst(rst));
-dff memWrtLatch(.Q(memWrtM), .D(memWrtX), .clk(clk), .rst(rst));
-dff readEnLatch(.Q(readEnM), .D(readEnX), .clk(clk), .rst(rst));
-dff wbDataSelLatch [1:0] (.Q(wbDataSelM), .D(wbDataSelX), .clk(clk), .rst(rst));
-dff imm8Latch [15:0] (.Q(imm8M), .D(imm8X), .clk(clk), .rst(rst));
-dff regWrtLatch (.Q(regWrtM), .D(regWrtX), .clk(clk), .rst(rst));
+dff aluFinalLatch [15:0] (.q(aluFinalM), .d(aluFinalX), .clk(clk), .rst(rst));
+dff newPCLatch [15:0] (.q(newPCM), .d(newPCX), .clk(clk), .rst(rst));
+dff addPCLatch [15:0] (.q(addPCM), .d(addPCX), .clk(clk), .rst(rst));
+dff aluOutLatch [15:0] (.q(aluOutM), .d(aluOutX), .clk(clk), .rst(rst));
+dff wrtDataLatch [15:0] (.q(wrtDataM), .d(wrtDataX), .clk(clk), .rst(rst));
+dff memWrtLatch(.q(memWrtM), .d(memWrtX), .clk(clk), .rst(rst));
+dff readEnLatch(.q(readEnM), .d(readEnX), .clk(clk), .rst(rst));
+dff wbDataSelLatch [1:0] (.q(wbDataSelM), .d(wbDataSelX), .clk(clk), .rst(rst));
+dff imm8Latch [15:0] (.q(imm8M), .d(imm8X), .clk(clk), .rst(rst));
+dff regWrtLatch (.q(regWrtM), .d(regWrtX), .clk(clk), .rst(rst));
    
 endmodule
 `default_nettype wire

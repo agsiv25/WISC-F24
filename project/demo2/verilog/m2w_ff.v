@@ -24,12 +24,12 @@ output wire [15:0]aluFinalW;
 output wire [15:0]imm8W;
 output wire regWrtW;
 
-dff wbDataSelLatch[1:0](.Q(wbDataSelW), .D(wbDataSelM), .clk(clk), .rst(rst));
-dff addPCLatch[15:0](.Q(addPCW), .D(addPCM), .clk(clk), .rst(rst));
-dff memOutLatch[15:0](.Q(memOutW), .D(memOutM), .clk(clk), .rst(rst));
-dff aluFinalLatch[15:0](.Q(aluFinalW), .D(aluFinalM), .clk(clk), .rst(rst));
-dff imm8Latch[15:0](.Q(imm8W), .D(imm8M), .clk(clk), .rst(rst));
-dff regWrtLatch(.Q(regWrtW), .D(regWrtM), .clk(clk), .rst(rst));
+dff wbDataSelLatch[1:0](.q(wbDataSelW), .d(wbDataSelM), .clk(clk), .rst(rst));
+dff addPCLatch[15:0](.q(addPCW), .d(addPCM), .clk(clk), .rst(rst));
+dff memOutLatch[15:0](.q(memOutW), .d(memOutM), .clk(clk), .rst(rst));
+dff aluFinalLatch[15:0](.q(aluFinalW), .d(aluFinalM), .clk(clk), .rst(rst));
+dff imm8Latch[15:0](.q(imm8W), .d(imm8M), .clk(clk), .rst(rst));
+dff regWrtLatch(.q(regWrtW), .d(regWrtM), .clk(clk), .rst(rst));
    
 endmodule
 `default_nettype wire
