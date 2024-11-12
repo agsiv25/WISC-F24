@@ -17,7 +17,7 @@ input wire [15:0] aluOutX;
 input wire [15:0] wrtDataX;
 input wire memWrtX;
 input wire readEnX;
-input wire wbDataSelX;
+input wire [1:0]wbDataSelX;
 input wire [15:0] imm8X;
 input wire regWrtX;
 
