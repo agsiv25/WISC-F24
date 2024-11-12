@@ -107,7 +107,7 @@ module proc (/*AUTOARG*/
 
    execute executeSection(.SLBIsel(SLBIselX), .incPC(incPCX), .immSrc(immSrcX), .imm8(imm8X), .imm11(imm11X), .brchSig(brchSigX), .Cin(CinX), .inA(inAX), .inB(inBX), .invA(invAX), .invB(invBX), .aluOp(aluOpX), .aluJmp(aluJmpX), .jalSel(jalSelX), .aluFinal(aluFinalX), .newPC(newPCX), .sOpSel(sOpSelX), .aluOut(aluOutX), .addPC(addPCX), .aluPC(aluPCX));
 
-   x2m_ff exec2mem(.clk(clk), .rst(rst), .aluFinalX(aluFinalX), .aluFinalM(aluFinalM), .newPCX(newPCX), .newPCM(newPCM), .addPCX(addPCX), .addPCM(addPCM), .aluOutX(aluOutX), .aluOutM(aluOutM), .wrtDataX(wrtDataX), .wrtDataM(wrtDataM), .memWrtX(memWrtX), .memWrtM(memWrtM), .createDump(createDump), .readEnX(readEnX), .readEnM(readEnM), .wbDataSelX(wbDataSelX), .wbDataSelM(wbDataSelM), .imm8X(imm8X), .imm8M(imm8M), .regWrtX(regWrtX), .regWrtM(regWrtM));
+   x2m_ff exec2mem(.clk(clk), .rst(rst), .aluFinalX(aluFinalX), .aluFinalM(aluFinalM), .newPCX(newPCX), .newPCM(newPCM), .addPCX(addPCX), .addPCM(addPCM), .aluOutX(aluOutX), .aluOutM(aluOutM), .wrtDataX(wrtDataX), .wrtDataM(wrtDataM), .memWrtX(memWrtX), .memWrtM(memWrtM), .readEnX(readEnX), .readEnM(readEnM), .wbDataSelX(wbDataSelX), .wbDataSelM(wbDataSelM), .imm8X(imm8X), .imm8M(imm8M), .regWrtX(regWrtX), .regWrtM(regWrtM));
 
    memory memorySection(.dataAddr(aluOutM), .wrtData(wrtDataM), .memWrt(memWrtM), .createDump(createDump), .clk(clk), .rst(rst), .memOut(memOutM), .readEn(readEnM));
 
