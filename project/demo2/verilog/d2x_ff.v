@@ -57,7 +57,7 @@ output wire aluPCX;
 
 // outputs to stages other than execute
 output wire memWrtX;
-output wire wbDataSelX;
+output wire [1:0]wbDataSelX;
 output wire readEnX;
 output wire [15:0] wrtDataX;
 
