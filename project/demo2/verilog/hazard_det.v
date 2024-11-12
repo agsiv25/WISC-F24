@@ -19,10 +19,10 @@ input wire regWrtX;
 input wire regWrtM;
 input wire regWrtW;
 
-input wire wrtRegD;
-input wire wrtRegX;
-input wire wrtRegM;
-input wire wrtRegW;
+input wire [2:0] wrtRegD;
+input wire [2:0] wrtRegX;
+input wire [2:0] wrtRegM;
+input wire [2:0] wrtRegW;
 
 output reg branchInstF;
 
