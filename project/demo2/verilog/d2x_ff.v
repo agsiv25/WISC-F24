@@ -65,7 +65,7 @@ output wire readEnX;
 output wire [15:0] wrtDataX;
 output wire [2:0] wrtRegX;
 
-output branchInstX;
+output wire branchInstX;
 
 // latches
 dff imm8Latch [15:0] (.q(imm8X), .d(imm8D), .clk(clk), .rst(rst));
