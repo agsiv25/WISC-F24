@@ -160,7 +160,7 @@ module proc_hier_pbench();
    // Signal indicating a valid instruction read request to cache
    // Above assignment is a dummy example
    
-   assign ICacheHit = 1'b0a;
+   assign ICacheHit = 1'b0;
    // Signal indicating a valid instruction cache hit
    // Above assignment is a dummy example
 
