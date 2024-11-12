@@ -5,7 +5,7 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (instruction, wbData, clk, rst, imm8, imm11, aluJmp, SLBIsel, createDump, memWrt, brchSig, Cin, invA, invB, wbDataSel, immSrc, aluOp, jalSel, sOpSel, inA, inB, wrtData, err, readEn, aluPC, regWrtOut, regWrt, wrtRegOut, wrtReg);
+module decode (instruction, wbData, clk, rst, imm8, imm11, aluJmp, SLBIsel, createDump, memWrt, brchSig, Cin, invA, invB, wbDataSel, immSrc, aluOp, jalSel, sOpSel, inA, inB, wrtData, err, readEn, aluPC, regWrtOut, regWrt, wrtRegOut, wrtReg, instrValidD);
 
 input wire [15:0] instruction;
 input wire [15:0] wbData;
@@ -13,6 +13,7 @@ input wire clk;
 input wire rst;
 input wire regWrt;           // register file write enable
 input  wire [2:0] wrtReg;       // register to write to in register file
+input wire instrValidD;
 
 // immediate outputs
 output wire [15:0] imm8;
@@ -54,6 +55,7 @@ wire [1:0] BSrc;          // select signal for inB mux
 wire stuSel;              // for STU instruction, choose memory write data source
 wire regErr;
 wire cntrlErr;
+wire inst;
 
 // 4:1 mux for register write select
 assign wrtRegOut = (regDestSel == 2'b00) ? instruction[10:8] : (regDestSel == 2'b01) ? instruction[7:5] : (regDestSel == 2'b10) ? instruction[4:2] : 3'b111;
@@ -78,8 +80,10 @@ regFile register_file(.read1Data(inA), .read2Data(regB), .err(regErr), .clk(clk)
 // 4:1 mux for ALU B input 
 assign inB = (BSrc == 2'b00) ? regB : (BSrc == 2'b01) ? imm5 : (BSrc == 2'b10) ? imm11 : 16'b0;
 
+assign inst = (instrValidD) ? instruction : 16'b0000100000000000;
+
 // instruction decoder
-control_unit instruction_decoder(.instruction(instruction), .aluJmp(aluJmp), .memWrt(memWrt), .brchSig(brchSig), .Cin(Cin), .invA(invA), .invB(invB), .regWrt(regWrtOut), .wbDataSel(wbDataSel), .stuSel(stuSel), .immSrc(immSrc), .SLBIsel(SLBIsel), .createDump(createDump), .BSrc(BSrc), .zeroSel(zeroSel), .regDestSel(regDestSel), .jalSel(jalSel), .sOpSel(sOpSel), .err(cntrlErr), .aluPC(aluPC));
+control_unit instruction_decoder(.instruction(inst), .aluJmp(aluJmp), .memWrt(memWrt), .brchSig(brchSig), .Cin(Cin), .invA(invA), .invB(invB), .regWrt(regWrtOut), .wbDataSel(wbDataSel), .stuSel(stuSel), .immSrc(immSrc), .SLBIsel(SLBIsel), .createDump(createDump), .BSrc(BSrc), .zeroSel(zeroSel), .regDestSel(regDestSel), .jalSel(jalSel), .sOpSel(sOpSel), .err(cntrlErr), .aluPC(aluPC));
 
 assign err = regErr | cntrlErr;
 
