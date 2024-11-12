@@ -55,7 +55,7 @@ wire [1:0] BSrc;          // select signal for inB mux
 wire stuSel;              // for STU instruction, choose memory write data source
 wire regErr;
 wire cntrlErr;
-wire inst;
+wire [15:0]inst;
 
 // 4:1 mux for register write select
 assign wrtRegOut = (regDestSel == 2'b00) ? instruction[10:8] : (regDestSel == 2'b01) ? instruction[7:5] : (regDestSel == 2'b10) ? instruction[4:2] : 3'b111;

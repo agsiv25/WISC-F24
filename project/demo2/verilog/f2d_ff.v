@@ -21,7 +21,7 @@ output wire branchInstD;
 output wire instrValidD;
 
 // on reset signal, latch instruction to NOP instead of HALT
-dff instructLatch[15:0](.q(instructionD[15:1]), .d(instructionF[15:1]), .clk(clk), .rst(rst));
+dff instructLatch[15:0](.q(instructionD[15:0]), .d(instructionF[15:0]), .clk(clk), .rst(rst));
 
 dff incPCLatch[15:0](.q(incPCD), .d(incPCF), .clk(clk), .rst(rst));
 
