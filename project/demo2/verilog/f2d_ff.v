@@ -16,7 +16,9 @@ input wire rst;
 output wire [15:0] instructionD;
 output wire [15:0] incPCD;
 
-dff instructLatch[15:0](.q(instructionD), .d(instructionF), .clk(clk), .rst(rst));
+dff instructLatch[15:1](.q(instructionD[15:1]), .d(instructionF[15:1]), .clk(clk), .rst(rst));
+
+dff_high_rst rst_instructLatch(.q(instructionD[0]), .d(instructionF[0]), .clk(clk), .rst(rst));
 
 dff incPCLatch[15:0](.q(incPCD), .d(incPCF), .clk(clk), .rst(rst));
 
