@@ -86,6 +86,7 @@ module proc (/*AUTOARG*/
    wire [15:0] addPCW;
    wire fetchErr;
    wire decodeErr;
+
    wire readEnD;
    wire readEnX;
    wire readEnM;
@@ -99,15 +100,18 @@ module proc (/*AUTOARG*/
    wire wrtRegX;
    wire wrtRegM;
    wire wrtRegW;
+   wire branchInstF;
+   wire branchInstD;
+   wire branchInstX;
    
 
-   fetch fetchSection(.newPC(newPCM), .createDump(createDump), .rst(rst), .clk(clk), .incPC(incPCF), .instruction(instructionF), .err(fetchErr), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW));
+   fetch fetchSection(.newPC(newPCM), .createDump(createDump), .rst(rst), .clk(clk), .incPC(incPCF), .instruction(instructionF), .err(fetchErr), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .branchInstF(branchInstF), .branchInstD(branchInstD), .branchInstX(branchInstX));
 
-   f2d_ff fetch2decode(.instructionF(instructionF), .incPCF(incPCF), .errF(fetchErr), .clk(clk), .rst(rst), .instructionD(instructionD), .incPCD(incPCD));
+   f2d_ff fetch2decode(.instructionF(instructionF), .incPCF(incPCF), .errF(fetchErr), .clk(clk), .rst(rst), .branchInstF(branchInstF), .instructionD(instructionD), .incPCD(incPCD), .branchInstD(branchInstD));
    
    decode decodeSection(.instruction(instructionD), .wbData(wbData), .clk(clk), .rst(rst), .imm8(imm8D), .imm11(imm11D), .aluJmp(aluJmpD), .SLBIsel(SLBIselD), .createDump(createDump), .memWrt(memWrtD), .brchSig(brchSigD), .Cin(CinD), .invA(invAD), .invB(invBD), .wbDataSel(wbDataSelD), .immSrc(immSrcD), .aluOp(aluOpD), .inA(inAD), .inB(inBD), .wrtData(wrtDataD), .jalSel(jalSelD), .sOpSel(sOpSelD), .err(decodeErr), .readEn(readEnD), .aluPC(aluPCD), .regWrtOut(regWrtW), .regWrt(regWrtD), .wrtRegOut(wrtRegW), .wrtReg(wrtRegD));
 
-   d2x_ff decode2exec(.imm11D(imm11D), .imm8D(imm8D), .imm11X(imm11X), .imm8X(imm8X), .aluJmpD(aluJmpD), .aluJmpX(aluJmpX), .SLBIselD(SLBIselD), .SLBIselX(SLBIselX), .memWrtD(memWrtD), .memWrtX(memWrtX), .brchSigD(brchSigD), .brchSigX(brchSigX), .CinD(CinD), .CinX(CinX), .invAD(invAD), .invAX(invAX), .invBD(invBD), .invBX(invBX), .wbDataSelD(wbDataSelD), .wbDataSelX(wbDataSelX), .immSrcD(immSrcD), .immSrcX(immSrcX), .aluOpD(aluOpD), .aluOpX(aluOpX), .jalSelD(jalSelD), .jalSelX(jalSelX), .sOpSelD(sOpSelD), .sOpSelX(sOpSelX), .readEnD(readEnD), .readEnX(readEnX), .inAD(inAD), .inAX(inAX), .inBD(inBD), .inBX(inBX), .wrtDataD(wrtDataD), .wrtDataX(wrtDataX), .aluPCD(aluPCD), .aluPCX(aluPCX), .clk(clk), .rst(rst), .incPCD(incPCD), .incPCX(incPCX), .regWrtD(regWrtD), .regWrtX(regWrtX), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX));
+   d2x_ff decode2exec(.imm11D(imm11D), .imm8D(imm8D), .imm11X(imm11X), .imm8X(imm8X), .aluJmpD(aluJmpD), .aluJmpX(aluJmpX), .SLBIselD(SLBIselD), .SLBIselX(SLBIselX), .memWrtD(memWrtD), .memWrtX(memWrtX), .brchSigD(brchSigD), .brchSigX(brchSigX), .CinD(CinD), .CinX(CinX), .invAD(invAD), .invAX(invAX), .invBD(invBD), .invBX(invBX), .wbDataSelD(wbDataSelD), .wbDataSelX(wbDataSelX), .immSrcD(immSrcD), .immSrcX(immSrcX), .aluOpD(aluOpD), .aluOpX(aluOpX), .jalSelD(jalSelD), .jalSelX(jalSelX), .sOpSelD(sOpSelD), .sOpSelX(sOpSelX), .readEnD(readEnD), .readEnX(readEnX), .inAD(inAD), .inAX(inAX), .inBD(inBD), .inBX(inBX), .wrtDataD(wrtDataD), .wrtDataX(wrtDataX), .aluPCD(aluPCD), .aluPCX(aluPCX), .clk(clk), .rst(rst), .incPCD(incPCD), .incPCX(incPCX), .regWrtD(regWrtD), .regWrtX(regWrtX), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .branchInstD(branchInstD), .branchInstX(branchInstX));
 
    execute executeSection(.SLBIsel(SLBIselX), .incPC(incPCX), .immSrc(immSrcX), .imm8(imm8X), .imm11(imm11X), .brchSig(brchSigX), .Cin(CinX), .inA(inAX), .inB(inBX), .invA(invAX), .invB(invBX), .aluOp(aluOpX), .aluJmp(aluJmpX), .jalSel(jalSelX), .aluFinal(aluFinalX), .newPC(newPCX), .sOpSel(sOpSelX), .aluOut(aluOutX), .addPC(addPCX), .aluPC(aluPCX));
 

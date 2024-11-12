@@ -5,7 +5,7 @@
    Description     : This is the flip flop between the decode and execute cycles.
 */
 `default_nettype none
-module d2x_ff (clk, rst, imm8D, imm11D, aluJmpD, SLBIselD, memWrtD, brchSigD, CinD, invAD, invBD, wbDataSelD, immSrcD, aluOpD, jalSelD, sOpSelD, readEnD, aluPCD, inAD, inBD, wrtDataD, SLBIselX, incPCX, immSrcX, imm8X, imm11X, brchSigX, CinX, inAX, inBX, invAX, invBX, aluOpX, aluJmpX, jalSelX, sOpSelX, aluPCX, memWrtX, wbDataSelX, readEnX, wrtDataX, incPCD, regWrtD, regWrtX, wrtRegD, wrtRegX);
+module d2x_ff (clk, rst, imm8D, imm11D, aluJmpD, SLBIselD, memWrtD, brchSigD, CinD, invAD, invBD, wbDataSelD, immSrcD, aluOpD, jalSelD, sOpSelD, readEnD, aluPCD, inAD, inBD, wrtDataD, SLBIselX, incPCX, immSrcX, imm8X, imm11X, brchSigX, CinX, inAX, inBX, invAX, invBX, aluOpX, aluJmpX, jalSelX, sOpSelX, aluPCX, memWrtX, wbDataSelX, readEnX, wrtDataX, incPCD, regWrtD, regWrtX, wrtRegD, wrtRegX, branchInstD, branchInstX);
 
 input wire clk;
 input wire rst;
@@ -37,6 +37,8 @@ input wire [15:0] wrtDataD;
 input wire regWrtD;
 input wire [2:0] wrtRegD;
 
+input wire branchInstD;
+
 // to execute stage 
 output wire regWrtX;
 output wire SLBIselX;
@@ -62,6 +64,8 @@ output wire [1:0]wbDataSelX;
 output wire readEnX;
 output wire [15:0] wrtDataX;
 output wire [2:0] wrtRegX;
+
+output branchInstX;
 
 // latches
 dff imm8Latch [15:0] (.q(imm8X), .d(imm8D), .clk(clk), .rst(rst));
@@ -93,6 +97,8 @@ dff incPCLatch [15:0] (.q(incPCX), .d(incPCD), .clk(clk), .rst(rst));
 dff regWrtLatch(.q(regWrtX), .d(regWrtD), .clk(clk), .rst(rst));
 
 dff wrtRegLatch [2:0] (.q(wrtRegX), .d(wrtRegD), .clk(clk), .rst(rst));
+
+dff branchInstLatch(.q(branchInstX), .d(branchInstD), .clk(clk), .rst(rst));
 
 endmodule
 `default_nettype wire
