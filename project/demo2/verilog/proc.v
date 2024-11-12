@@ -25,46 +25,90 @@ module proc (/*AUTOARG*/
    
    /* your code here -- should include instantiations of fetch, decode, execute, mem and wb modules */
 
-   wire [15:0] newPC;
-   wire [15:0] instruction;
+   wire [15:0] newPCX;
+   wire [15:0] newPCM;
+   wire [15:0] instructionF;
+   wire [15:0] instructionD;
    wire [15:0] wbData;
    wire createDump;
-   wire [15:0] incPC;
-   wire [15:0] imm8;
-   wire [15:0] imm11;
-   wire aluJmp;
-   wire SLBIsel;
-   wire memWrt;
-   wire [2:0] brchSig;
-   wire Cin;
-   wire invA;
-   wire invB;
-   wire [1:0] wbDataSel;
-   wire immSrc;
-   wire [3:0] aluOp;
-   wire [15:0] inA;
-   wire [15:0] inB;
-   wire [15:0] wrtData;
-   wire jalSel;
-   wire sOpSel;
-   wire [15:0] aluFinal;
-   wire [15:0] aluOut;
-   wire [15:0] memOut;
-   wire [15:0] addPC;
+   wire [15:0] incPCF;
+   wire [15:0] incPCD;
+   wire [15:0] imm8D;
+   wire [15:0] imm8X;
+   wire [15:0] imm8M;
+   wire [15:0] imm8W;
+   wire [15:0] imm11D;
+   wire [15:0] imm11X;
+   wire aluJmpD;
+   wire aluJmpX;
+   wire SLBIselD;
+   wire SLBIselX;
+   wire memWrtD;
+   wire memWrtX;
+   wire memWrtM;
+   wire [2:0] brchSigD;
+   wire [2:0] brchSigX;
+   wire CinD;
+   wire CinX;
+   wire invAD;
+   wire invAX;
+   wire invBD;
+   wire invBX;
+   wire [1:0] wbDataSelD;
+   wire [1:0] wbDataSelX;
+   wire [1:0] wbDataSelM;
+   wire [1:0] wbDataSelW;
+   wire immSrcD;
+   wire immSrcX;
+   wire [3:0] aluOpD;
+   wire [3:0] aluOpX;
+   wire [15:0] inAD;
+   wire [15:0] inAX;
+   wire [15:0] inBD;
+   wire [15:0] inBX;
+   wire [15:0] wrtDataD;
+   wire [15:0] wrtDataX;
+   wire [15:0] wrtDataM;
+   wire jalSelD;
+   wire jalSelX; 
+   wire sOpSelD;
+   wire sOpSelX;
+   wire [15:0] aluFinalX;
+   wire [15:0] aluFinalM;
+   wire [15:0] aluFinalW;
+   wire [15:0] aluOutX;
+   wire [15:0] aluOutM;
+   wire [15:0] memOutM;
+   wire [15:0] memOutW;
+   wire [15:0] addPCX;
+   wire [15:0] addPCM;
+   wire [15:0] addPCW;
    wire fetchErr;
    wire decodeErr;
-   wire readEn;
-   wire aluPC;
+   wire readEnD;
+   wire readEnX;
+   wire readEnM;
+   wire aluPCD;
+   wire aluPCX;
+   
 
-   fetch fetchSection(.newPC(newPC), .createDump(createDump), .rst(rst), .clk(clk), .incPC(incPC), .instruction(instruction), .err(fetchErr));
+   fetch fetchSection(.newPC(newPCM), .createDump(createDump), .rst(rst), .clk(clk), .incPC(incPCF), .instruction(instructionF), .err(fetchErr));
 
-   decode decodeSection(.instruction(instruction), .wbData(wbData), .clk(clk), .rst(rst), .imm8(imm8), .imm11(imm11), .aluJmp(aluJmp), .SLBIsel(SLBIsel), .createDump(createDump), .memWrt(memWrt), .brchSig(brchSig), .Cin(Cin), .invA(invA), .invB(invB), .wbDataSel(wbDataSel), .immSrc(immSrc), .aluOp(aluOp), .inA(inA), .inB(inB), .wrtData(wrtData), .jalSel(jalSel), .sOpSel(sOpSel), .err(decodeErr), .readEn(readEn), .aluPC(aluPC));
+   f2d_ff fetch2decode(.instructionF(instructionF), .incPCF(incPCF), .errF(fetchErr), .clk(clk), .rst(rst), .instructionD(instructionD), .incPCD(incPCD));
+   
+   decode decodeSection(.instruction(instructionD), .wbData(wbData), .clk(clk), .rst(rst), .imm8(imm8D), .imm11(imm11D), .aluJmp(aluJmpD), .SLBIsel(SLBIselD), .createDump(createDump), .memWrt(memWrtD), .brchSig(brchSigD), .Cin(CinD), .invA(invAD), .invB(invBD), .wbDataSel(wbDataSelD), .immSrc(immSrcD), .aluOp(aluOpD), .inA(inAD), .inB(inBD), .wrtData(wrtDataD), .jalSel(jalSelD), .sOpSel(sOpSelD), .err(decodeErr), .readEn(readEnD), .aluPC(aluPCD));
 
-   execute executeSection(.SLBIsel(SLBIsel), .incPC(incPC), .immSrc(immSrc), .imm8(imm8), .imm11(imm11), .brchSig(brchSig), .Cin(Cin), .inA(inA), .inB(inB), .invA(invA), .invB(invB), .aluOp(aluOp), .aluJmp(aluJmp), .jalSel(jalSel), .aluFinal(aluFinal), .newPC(newPC), .sOpSel(sOpSel), .aluOut(aluOut), .addPC(addPC), .aluPC(aluPC));
+   d2x_ff decode2exec(.imm11D(imm11D), .imm8D(imm8D), .imm11X(imm11X), .imm8X(imm8X), .aluJmpD(aluJmpD), .aluJmpX(aluJmpX), .SLBIselD(SLBIselD), .SLBIselX(SLBIselX), .memWrtD(memWrtD), .memWrtX(memWrtX), .brchSigD(brchSigD), .brchSigX(brchSigX), .CinD(CinD), .CinX(CinX), .invAD(invAD), .invAX(invAX), .wbDataSelD(wbDataSelD), .wbDataSelX(wbDataSelX), .immSrcD(immSrcD), .immSrcX(immSrcX), .aluOpD(aluOpD), .aluOpX(aluOpX), .jalSelD(jalSelD), .jalSelX(jalSelX), .sOpSelD(sOpSelD), .sOpSelX(sOpSelX), .readEnD(readEnD), .readEnX(readEnX), .inAD(inAD), .inAX(inAX), .inBD(inBD), .inBX(inBX), .wrtDataD(wrtDataD), .wrtDataX(wrtDataX), .aluPCD(aluPCD), .aluPCX(aluPCX), .clk(clk), .rst(rst));
 
-   memory memorySection(.dataAddr(aluOut), .wrtData(wrtData), .memWrt(memWrt), .createDump(createDump), .clk(clk), .rst(rst), .memOut(memOut), .readEn(readEn));
+   execute executeSection(.SLBIsel(SLBIselX), .incPC(incPCX), .immSrc(immSrcX), .imm8(imm8X), .imm11(imm11X), .brchSig(brchSigX), .Cin(CinX), .inA(inAX), .inB(inBX), .invA(invAX), .invB(invBX), .aluOp(aluOpX), .aluJmp(aluJmpX), .jalSel(jalSelX), .aluFinal(aluFinalX), .newPC(newPC), .sOpSel(sOpSelX), .aluOut(aluOutX), .addPC(addPCX), .aluPC(aluPCX));
 
-   wb wbSection(.wbData(wbData), .addPC(addPC), .memOut(memOut), .aluFinal(aluFinal), .imm8(imm8), .wbDataSel(wbDataSel));
+   x2m_ff exec2mem(.clk(clk), .rst(rst), .aluFinalX(aluFinalX), .aluFinalM(aluFinalM), .newPCX(newPCX), .newPCM(newPCM), .addPCX(addPCX), .addPCM(addPCM), .aluOutX(aluOutX), .aluOutM(aluOutM), .wrtDataX(wrtDataX), .wrtDataM(wrtDataM), .memWrtX(memWrtX), .memWrtM(memWrtM), .createDumpX(createDump), .createDumpM(createDump), .readEnX(readEnX), .readEnM(readEnM), .wbDataSelX(wbDataSelX), .wbDataSelM(wbDataSelM), .imm8X(imm8X), .imm8M(imm8M));
+
+   memory memorySection(.dataAddr(aluOutM), .wrtData(wrtDataM), .memWrt(memWrtM), .createDump(createDump), .clk(clk), .rst(rst), .memOut(memOutM), .readEn(readEnM));
+
+   m2w_ff mem2wb(.clk(clk), .rst(rst), .memOutM(memOutM), .memOutW(memOutW), .wbDataSelM(wbDataSelM), .wbDataSelW(wbDataSelW), .addPCM(addPCM), .addPCW(addPCW), .aluFinalM(aluFinalM), .aluFinalW(aluFinalW), .imm8M(imm8M), .imm8W(imm8W));
+
+   wb wbSection(.wbData(wbDataW), .addPC(addPCW), .memOut(memOutW), .aluFinal(aluFinalW), .imm8(imm8W), .wbDataSel(wbDataSelW));
 
    // assign err <= fetchErr | decodeErr;
    

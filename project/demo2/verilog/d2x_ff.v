@@ -5,7 +5,7 @@
    Description     : This is the flip flop between the decode and execute cycles.
 */
 `default_nettype none
-module d2x_ff (clk, rst, imm8D, imm11D, aluJmpD, SLBIselD, createDumpD, memWrtD, brchSigD, CinD, invAD, invBD, wbDataSelD, immSrcD, aluOpD, jalSelD, sOpSelD, readEnD, aluPCD, inAD, inBD, wrtDataD, SLBIselX, incPCX, immSrcX, imm8X, imm11X, brchSigX, CinX, inAX, inBX, invAX, invBX, aluOpX, aluJmpX, jalSelX, sOpSelX, aluPCX, memWrtX);
+module d2x_ff (clk, rst, imm8D, imm11D, aluJmpD, SLBIselD, createDumpD, memWrtD, brchSigD, CinD, invAD, invBD, wbDataSelD, immSrcD, aluOpD, jalSelD, sOpSelD, readEnD, aluPCD, inAD, inBD, wrtDataD, SLBIselX, incPCX, immSrcX, imm8X, imm11X, brchSigX, CinX, inAX, inBX, invAX, invBX, aluOpX, aluJmpX, jalSelX, sOpSelX, aluPCX, memWrtX, wbDataSelX, readEnX, wrtDataX);
 
 input clk;
 input rst;
@@ -54,10 +54,10 @@ output wire sOpSelX;
 output wire aluPCX;
 
 // outputs to stages other than execute
-output wire memWrtM;
-output wire wbDataSelW;
-output wire readEnW;
-output wire [15:0] wrtDataW;
+output wire memWrtX;
+output wire wbDataSelX;
+output wire readEnX;
+output wire [15:0] wrtDataX;
 
 // latches
 dff imm8Latch [15:0] (.Q(imm8X), .D(imm8D), .clk(clk), .rst(rst));
