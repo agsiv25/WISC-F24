@@ -96,10 +96,10 @@ module proc (/*AUTOARG*/
    wire regWrtX;
    wire regWrtM;
    wire regWrtW;
-   wire wrtRegD;
-   wire wrtRegX;
-   wire wrtRegM;
-   wire wrtRegW;
+   wire [2:0] wrtRegD;
+   wire [2:0] wrtRegX;
+   wire [2:0] wrtRegM;
+   wire [2:0] wrtRegW;
    wire branchInstF;
    wire branchInstD;
    wire branchInstX;
