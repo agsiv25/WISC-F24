@@ -155,7 +155,7 @@ always @(*) begin
             rsHazard = (((fetch_inst[10:8] == wrtRegD) && regWrtD) || ((fetch_inst[10:8] == wrtRegX) && regWrtX) || ((fetch_inst[10:8] == wrtRegM) && regWrtM) || ((fetch_inst[10:8] == wrtRegW) && regWrtW)) ? 1'b1 : 1'b0; 
             pcNop = rsHazard || branchInstD || branchInstX || branchInstF;
 
-            next_inst = (pcNop || rst) ? NOP : fetch_inst;
+            next_inst = fetch_inst;
         end
 
         // Only reads from RS and no control hazards
