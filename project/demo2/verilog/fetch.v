@@ -47,7 +47,7 @@ assign instrValid = 1'b1;
 
 cla_16b pc_inc(.sum(incPC), .c_out(), .ofl(pcIncErr), .a(pcRegAddr), .b(16'h2), .c_in(1'b0), .sign(1'b0));
 
-assign pcIfBranch = (branchInstF) ? newPC : incPC;
+assign pcIfBranch = (branchInstX) ? newPC : incPC;
 
 reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(pcIfBranch), .writeEn(~createDump & ~pcNop));
 
