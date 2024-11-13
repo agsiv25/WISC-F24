@@ -101,43 +101,53 @@ always @(*) begin
             pcNop = 1'b1;
             next_inst = fetch_inst;
         end
+        // NOP 000xx Not reading from anything. 
+        5'b0_0001: begin
+            next_inst = fetch_inst;
+        end
+
         // NOP / siic / RTI: 000xx Not reading from anything. 
-        5'b0_00xx: begin
+        5'b0_0010: begin
+            next_inst = fetch_inst;
+        end
+
+        // NOP / siic / RTI: 000xx Not reading from anything. 
+        5'b0_0011: begin
             next_inst = fetch_inst;
         end
 
         // control hazards
 
-        // J displacement: 00100 pure control 
-        5'b0_0100: begin
-            branchInstF = 1'b1;
-            pcNop = branchInstF;
-            next_inst = fetch_inst;
-        end
-        // JR Rs, imm: 00101 Rs + control 
-        5'b0_0101: begin
-            branchInstF = 1'b1;
+        // // J displacement: 00100 pure control 
+        // 5'b0_0100: begin
+        //     branchInstF = 1'b1;
+        //     pcNop = branchInstF;
+        //     next_inst = fetch_inst;
+        // end
+        // // JR Rs, imm: 00101 Rs + control 
+        // 5'b0_0101: begin
+        //     branchInstF = 1'b1;
 
-            rsHazard = (((fetch_inst[10:8] == wrtRegD) && regWrtD) || ((fetch_inst[10:8] == wrtRegX) && regWrtX) || ((fetch_inst[10:8] == wrtRegM) && regWrtM) || ((fetch_inst[10:8] == wrtRegW) && regWrtW)) ? 1'b1 : 1'b0; 
-            pcNop = rsHazard || branchInstD || branchInstX || branchInstF;
+        //     rsHazard = (((fetch_inst[10:8] == wrtRegD) && regWrtD) || ((fetch_inst[10:8] == wrtRegX) && regWrtX) || ((fetch_inst[10:8] == wrtRegM) && regWrtM) || ((fetch_inst[10:8] == wrtRegW) && regWrtW)) ? 1'b1 : 1'b0; 
+        //     pcNop = rsHazard || branchInstD || branchInstX || branchInstF;
 
-            next_inst = (pcNop || rst) ? NOP : fetch_inst;
-        end
-        // JAL displacement: 00110 pure control
-        5'b0_0110: begin
-            branchInstF = 1'b1;    
-            pcNop = branchInstF;        
-            next_inst = fetch_inst;
-        end
-        // JALR Rs, imm: 00111 Rs + control 
-        5'b0_0111: begin
-            branchInstF = 1'b1;
+        //     next_inst = (pcNop || rst) ? NOP : fetch_inst;
+        // end
+        // // JAL displacement: 00110 pure control
+        // 5'b0_0110: begin
+        //     branchInstF = 1'b1;    
+        //     pcNop = branchInstF;        
+        //     next_inst = fetch_inst;
+        // end
+        // // JALR Rs, imm: 00111 Rs + control 
+        // 5'b0_0111: begin
+        //     branchInstF = 1'b1;
 
-            rsHazard = (((fetch_inst[10:8] == wrtRegD) && regWrtD) || ((fetch_inst[10:8] == wrtRegX) && regWrtX) || ((fetch_inst[10:8] == wrtRegM) && regWrtM) || ((fetch_inst[10:8] == wrtRegW) && regWrtW)) ? 1'b1 : 1'b0; 
-            pcNop = rsHazard || branchInstD || branchInstX || branchInstF;
+        //     rsHazard = (((fetch_inst[10:8] == wrtRegD) && regWrtD) || ((fetch_inst[10:8] == wrtRegX) && regWrtX) || ((fetch_inst[10:8] == wrtRegM) && regWrtM) || ((fetch_inst[10:8] == wrtRegW) && regWrtW)) ? 1'b1 : 1'b0; 
+        //     pcNop = rsHazard || branchInstD || branchInstX || branchInstF;
 
-            next_inst = (pcNop || rst) ? NOP : fetch_inst;
-        end
+        //     next_inst = (pcNop || rst) ? NOP : fetch_inst;
+        // end
         // Branches: 011xx Rs + control 
         5'b0_011xx: begin
             branchInstF = 1'b1;
