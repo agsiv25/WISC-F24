@@ -90,7 +90,7 @@ dff readEnLatch(.q(readEnX), .d(readEnD), .clk(clk), .rst(rst));
 dff inALatch [15:0] (.q(inAX), .d(inAD), .clk(clk), .rst(rst));
 dff inBLatch [15:0] (.q(inBX), .d(inBD), .clk(clk), .rst(rst));
 
-dff wrtDataLatch [15:0] (.q(wrtDataD), .d(wrtDataD), .clk(clk), .rst(rst));
+dff wrtDataLatch [15:0] (.q(wrtDataX), .d(wrtDataD), .clk(clk), .rst(rst));
 
 dff incPCLatch [15:0] (.q(incPCX), .d(incPCD), .clk(clk), .rst(rst));
 

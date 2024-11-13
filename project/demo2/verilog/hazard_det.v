@@ -36,7 +36,6 @@ reg rdHazard;  // rdHazard = (((fetch_inst[7:5] == wrtRegD) && regWrtD) || ((fet
 reg rtHazard;  // 
 
 reg controlHazard;
-reg first;
 
 // Data hazards
 always @(*) begin
