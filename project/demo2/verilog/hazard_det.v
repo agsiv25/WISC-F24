@@ -149,7 +149,7 @@ always @(*) begin
         //     next_inst = (pcNop || rst) ? NOP : fetch_inst;
         // end
         // Branches: 011xx Rs + control 
-        5'b0_011xx: begin
+        5'b0_11xx: begin
             branchInstF = 1'b1;
 
             rsHazard = (((fetch_inst[10:8] == wrtRegD) && regWrtD) || ((fetch_inst[10:8] == wrtRegX) && regWrtX) || ((fetch_inst[10:8] == wrtRegM) && regWrtM) || ((fetch_inst[10:8] == wrtRegW) && regWrtW)) ? 1'b1 : 1'b0; 
