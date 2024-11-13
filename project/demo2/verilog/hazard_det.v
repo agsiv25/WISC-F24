@@ -99,7 +99,7 @@ always @(*) begin
         // halt stall
         5'b0_0000: begin
             pcNop = 1'b1;
-            next_inst = NOP;
+            next_inst = fetch_inst;
         end
         // NOP / siic / RTI: 000xx Not reading from anything. 
         5'b0_00xx: begin
