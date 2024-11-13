@@ -43,6 +43,9 @@ always @(*) begin
     next_inst = 16'b0000100000000000;
     branchInstF = 1'b0;
     controlHazard = 1'b0;
+    rsHazard = 1'b0;
+    rdHazard = 1'b0;
+    rtHazard = 1'b0;
 
     casex(fetch_inst[15:11])
 
