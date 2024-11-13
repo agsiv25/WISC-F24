@@ -41,7 +41,7 @@ wire pcRegErr;
 wire [15:0] instruction2;
 wire pcNop;
 
-wire pcIfBranch;
+wire [15:0]pcIfBranch;
 
 assign instrValid = 1'b1;
 
