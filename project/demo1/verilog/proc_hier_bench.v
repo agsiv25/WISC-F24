@@ -125,8 +125,8 @@ module proc_hier_bench();
    // Edit the example below. You must change the signal
    // names on the right hand side
     
-   assign PC = DUT.p0.fetchSection.pcRegAddr;
-   assign Inst = DUT.p0.fetchSection.instruction;
+   assign PC = DUT.p0.mem2wb.newPCW;
+   assign Inst = DUT.p0.mem2wb.instructionW;
    
    assign RegWrite = DUT.p0.decodeSection.register_file.writeEn;
    // Is register being written, one bit signal (1 means yes, 0 means no)
