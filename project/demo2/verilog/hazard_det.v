@@ -106,8 +106,8 @@ always @(*) begin
         end
         // halt stall
         5'b0_0000: begin
-            pcNop = 1'b1;
-            next_inst = fetch_inst;
+            pcNop = (branchInstD || branchInstX || branchInstF || branchInstM || branchInstW) ? 1'b1 : 1'b0;
+            next_inst = (pcNop || rst) ? NOP : fetch_inst;
         end
         // NOP 000xx Not reading from anything. 
         5'b0_0001: begin
