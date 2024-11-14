@@ -15,7 +15,7 @@ input wire rst;
 input wire instrValidF;
 
 output wire [15:0] incPCD;
-output wire branchInstD;
+output wire [15:0] instructionD;
 output wire instrValidD;
 
 // on reset signal, latch instruction to NOP instead of HALT
