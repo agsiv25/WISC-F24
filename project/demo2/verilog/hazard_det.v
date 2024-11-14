@@ -98,6 +98,12 @@ always @(*) begin
 
             next_inst = (pcNop || rst) ? NOP : fetch_inst;
         end
+
+        // LBI: 11000
+        5'b1_1000: begin
+            pcNop = (branchInstD || branchInstX || branchInstM || branchInstF) ? 1'b1 : 1'b0;
+            next_inst = (pcNop || rst) ? NOP : fetch_inst;
+        end
         // halt stall
         5'b0_0000: begin
             pcNop = 1'b1;
@@ -105,7 +111,8 @@ always @(*) begin
         end
         // NOP 000xx Not reading from anything. 
         5'b0_0001: begin
-            next_inst = fetch_inst;
+            pcNop = (branchInstD || branchInstX || branchInstM || branchInstF) ? 1'b1 : 1'b0;
+            next_inst = (pcNop || rst) ? NOP : fetch_inst;
         end
 
         // NOP / siic / RTI: 000xx Not reading from anything. 
