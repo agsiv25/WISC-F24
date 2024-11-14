@@ -5,7 +5,7 @@
    Description     : This is the module that detects data hazards and stalls the processor if one is detected.
 */
 `default_nettype none
-module hazard_det (rst, clk, fetch_inst, next_inst, pcNop, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstF, branchInstD, branchInstX, branchInstM, branchInstW);
+module hazard_det (rst, clk, fetch_inst, next_inst, pcNop, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstD, branchInstX, branchInstM, branchInstW);
 
 input wire rst;
 input wire clk;
@@ -24,8 +24,6 @@ input wire [2:0] wrtRegX;
 input wire [2:0] wrtRegM;
 input wire [2:0] wrtRegW;
 
-output reg branchInstF;
-
 input wire branchInstD;
 input wire branchInstX;
 input wire branchInstM;
@@ -43,7 +41,6 @@ reg controlHazard;
 always @(*) begin
 
     next_inst = 16'b0000100000000000;
-    branchInstF = 1'b0;
     controlHazard = 1'b0;
     rsHazard = 1'b0;
     rdHazard = 1'b0;
@@ -159,8 +156,6 @@ always @(*) begin
         // end
         // Branches: 011xx Rs + control 
         5'b0_11xx: begin
-            branchInstF = 1'b1;
-
             rsHazard = (((fetch_inst[10:8] == wrtRegD) && regWrtD) || ((fetch_inst[10:8] == wrtRegX) && regWrtX) || ((fetch_inst[10:8] == wrtRegM) && regWrtM)) ? 1'b1 : 1'b0; 
             pcNop = rsHazard || branchInstD || branchInstX || branchInstM || branchInstW;
 
@@ -169,7 +164,6 @@ always @(*) begin
 
          // J commands displacement: 00100 pure control 
         5'b0_01xx: begin
-            branchInstF = 1'b1;
             rsHazard = (((fetch_inst[10:8] == wrtRegD) && regWrtD) || ((fetch_inst[10:8] == wrtRegX) && regWrtX) || ((fetch_inst[10:8] == wrtRegM) && regWrtM)) ? 1'b1 : 1'b0; 
 
             pcNop = rsHazard || branchInstD || branchInstX || branchInstM || branchInstW;
