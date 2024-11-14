@@ -53,6 +53,8 @@ assign pcIfBranch = (branchInstM) ? newPC : incPC;
 
 reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(pcIfBranch), .writeEn(~createDump & ~(pcNop & ~branchInstM)));
 
+$display("PC: %h", pcRegAddr);
+
 // assign error signal to be an OR between the PC adder and the PC register
 assign err = pcRegErr | pcIncErr;
 
