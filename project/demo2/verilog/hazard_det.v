@@ -160,6 +160,12 @@ always @(*) begin
             next_inst = (pcNop || rst) ? NOP : fetch_inst;
         end
 
+         // J displacement: 00100 pure control 
+        5'b0_0100: begin
+            branchInstF = 1'b1;
+            next_inst = (pcNop || rst) ? NOP : fetch_inst;
+        end
+
         // Only reads from RS and no control hazards
         default: begin
             rsHazard = (((fetch_inst[10:8] == wrtRegD) && regWrtD) || ((fetch_inst[10:8] == wrtRegX) && regWrtX) || ((fetch_inst[10:8] == wrtRegM) && regWrtM)) ? 1'b1 : 1'b0; 
