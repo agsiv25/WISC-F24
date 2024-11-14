@@ -8,7 +8,7 @@
 /u/s/i/sinclair/courses/cs552/spring2022/handouts/testprograms/public/rand_simple/t_1_bnez.asm SUCCESS CPI:16.7 CYCLES:317 ICOUNT:19 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2022/handouts/testprograms/public/rand_simple/t_1_btr.asm SUCCESS CPI:2.6 CYCLES:83 ICOUNT:32 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2022/handouts/testprograms/public/rand_simple/t_1_j.asm SUCCESS CPI:86.1 CYCLES:87 ICOUNT:1 IHITRATE: 0 DHITRATE: 0
-/u/s/i/sinclair/courses/cs552/spring2022/handouts/testprograms/public/rand_simple/t_1_jal.asm RELAX-PASS
+/u/s/i/sinclair/courses/cs552/spring2022/handouts/testprograms/public/rand_simple/t_1_jal.asm SUCCESS CPI:5.1 CYCLES:87 ICOUNT:17 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2022/handouts/testprograms/public/rand_simple/t_1_jalr.asm SUCCESS CPI:4.3 CYCLES:281 ICOUNT:65 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2022/handouts/testprograms/public/rand_simple/t_1_jr.asm SUCCESS CPI:4.3 CYCLES:281 ICOUNT:65 IHITRATE: 0 DHITRATE: 0
 /u/s/i/sinclair/courses/cs552/spring2022/handouts/testprograms/public/rand_simple/t_1_lbi.asm SUCCESS CPI:2.0 CYCLES:63 ICOUNT:32 IHITRATE: 0 DHITRATE: 0
