@@ -5,10 +5,9 @@
    Description     : This is the module for the overall fetch stage of the processor.
 */
 `default_nettype none
-module fetch (newPC, createDump, rst, clk, incPC, instruction, err, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstF, branchInstD, branchInstX, branchInstM, branchInstW, instrValid, midPC);
+module fetch (newPC, createDump, rst, clk, incPC, instruction, err, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstF, branchInstD, branchInstX, branchInstM, branchInstW, instrValid);
 
 input wire [15:0]newPC;
-input wire [15:0]midPC;
 input wire createDump;
 input wire rst;
 input wire clk;
@@ -36,6 +35,7 @@ input wire branchInstM;
 input wire branchInstW;
 
 wire [15:0]pcRegAddr; 
+wire [15:0]nextPC;
 wire pcIncErr;
 wire pcRegErr;
 
@@ -49,9 +49,9 @@ assign instrValid = 1'b1;
 
 cla_16b pc_inc(.sum(incPC), .c_out(), .ofl(pcIncErr), .a(pcRegAddr), .b(16'h2), .c_in(1'b0), .sign(1'b0));
 
-assign pcIfBranch = (branchInstM | branchInstW) ? newPC : midPC;
+assign pcIfBranch = (branchInstM) ? newPC : incPC;
 
-reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(pcIfBranch), .writeEn(~createDump & ~(pcNop ^ (branchInstM | branchInstW))));
+reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(pcIfBranch), .writeEn(~createDump & ~(pcNop & ~branchInstM)));
 
 // assign error signal to be an OR between the PC adder and the PC register
 assign err = pcRegErr | pcIncErr;
