@@ -50,7 +50,7 @@ cla_16b pc_inc(.sum(incPC), .c_out(), .ofl(pcIncErr), .a(pcRegAddr), .b(16'h2), 
 
 assign pcIfBranch = (branchInstW) ? newPC : incPC;
 
-reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(pcIfBranch), .writeEn(~createDump & ~(pcNop ^ branchInstW)));
+reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(pcIfBranch), .writeEn(~createDump & ~(pcNop & ~branchInstW)));
 
 
 
@@ -60,6 +60,8 @@ assign err = pcRegErr | pcIncErr;
 memory2c instruction_memory(.data_out(instruction2), .data_in(16'b0), .addr(pcRegAddr), .enable(1'b1), .wr(1'b0), .createdump(createDump), .clk(clk), .rst(rst));
    
 hazard_det hazard(.rst(rst), .clk(clk), .fetch_inst(instruction2), .next_inst(instruction), .pcNop(pcNop), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .branchInstF(branchInstF), .branchInstD(branchInstD), .branchInstX(branchInstX), .branchInstM(branchInstM), .branchInstW(branchInstW));
-
+always @(posedge clk) begin
+    $display("Fetch: incPC: %h newPC: %h pcIfBranch: %h PC to read: %h, Instruction: %h", incPC, newPC, pcIfBranch, pcRegAddr, instruction);
+end
 endmodule
 `default_nettype wire
