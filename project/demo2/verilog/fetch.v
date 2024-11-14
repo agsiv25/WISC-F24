@@ -35,7 +35,6 @@ input wire branchInstM;
 input wire branchInstW;
 
 wire [15:0]pcRegAddr; 
-wire [15:0]nextPC;
 wire pcIncErr;
 wire pcRegErr;
 
@@ -51,7 +50,7 @@ cla_16b pc_inc(.sum(incPC), .c_out(), .ofl(pcIncErr), .a(pcRegAddr), .b(16'h2), 
 
 assign pcIfBranch = (branchInstW) ? newPC : incPC;
 
-reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(pcIfBranch), .writeEn(~createDump & ~(pcNop & ~branchInstW)));
+reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(pcIfBranch), .writeEn(~createDump & ~(pcNop & ~branchInstM)));
 
 
 
