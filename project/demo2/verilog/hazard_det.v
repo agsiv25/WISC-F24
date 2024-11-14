@@ -167,9 +167,12 @@ always @(*) begin
             next_inst = (pcNop || rst) ? NOP : fetch_inst;
         end
 
-         // J displacement: 00100 pure control 
-        5'b0_0100: begin
+         // J commands displacement: 00100 pure control 
+        5'b0_01xx: begin
             branchInstF = 1'b1;
+            rsHazard = (((fetch_inst[10:8] == wrtRegD) && regWrtD) || ((fetch_inst[10:8] == wrtRegX) && regWrtX) || ((fetch_inst[10:8] == wrtRegM) && regWrtM)) ? 1'b1 : 1'b0; 
+
+            pcNop = rsHazard;
             next_inst = (pcNop || rst) ? NOP : fetch_inst;
         end
 
