@@ -58,7 +58,7 @@ always @(*) begin
             rsHazard = (((fetch_inst[10:8] == wrtRegD) && regWrtD) || ((fetch_inst[10:8] == wrtRegX) && regWrtX) || ((fetch_inst[10:8] == wrtRegM) && regWrtM)) ? 1'b1 : 1'b0;
             rdHazard = (((fetch_inst[7:5] == wrtRegD) && regWrtD) || ((fetch_inst[7:5] == wrtRegX) && regWrtX) || ((fetch_inst[7:5] == wrtRegM) && regWrtM)) ? 1'b1 : 1'b0; 
  
-            pcNop = (rsHazard || rdHazard || branchInstD || branchInstX || branchInstF) ? 1'b1 : 1'b0; 
+            pcNop = (rsHazard || rdHazard || branchInstD || branchInstX || branchInstF|| branchInstM) ? 1'b1 : 1'b0; 
 
             next_inst = (pcNop || rst) ? NOP : fetch_inst;
         end
@@ -67,7 +67,7 @@ always @(*) begin
             rsHazard = (((fetch_inst[10:8] == wrtRegD) && regWrtD) || ((fetch_inst[10:8] == wrtRegX) && regWrtX) || ((fetch_inst[10:8] == wrtRegM) && regWrtM)) ? 1'b1 : 1'b0;
             rdHazard = (((fetch_inst[7:5] == wrtRegD) && regWrtD) || ((fetch_inst[7:5] == wrtRegX) && regWrtX) || ((fetch_inst[7:5] == wrtRegM) && regWrtM)) ? 1'b1 : 1'b0; 
  
-            pcNop = (rsHazard || rdHazard || branchInstD || branchInstX || branchInstF) ? 1'b1 : 1'b0; 
+            pcNop = (rsHazard || rdHazard || branchInstD || branchInstX || branchInstF|| branchInstM) ? 1'b1 : 1'b0; 
 
             next_inst = (pcNop || rst) ? NOP : fetch_inst;
         end
@@ -85,7 +85,7 @@ always @(*) begin
             rsHazard = (((fetch_inst[10:8] == wrtRegD) && regWrtD) || ((fetch_inst[10:8] == wrtRegX) && regWrtX) || ((fetch_inst[10:8] == wrtRegM) && regWrtM)) ? 1'b1 : 1'b0;
             rtHazard = (((fetch_inst[7:5] == wrtRegD) && regWrtD) || ((fetch_inst[7:5] == wrtRegX) && regWrtX) || ((fetch_inst[7:5] == wrtRegM) && regWrtM)) ? 1'b1 : 1'b0; 
  
-            pcNop = (rsHazard || rtHazard || branchInstD || branchInstX || branchInstF) ? 1'b1 : 1'b0;
+            pcNop = (rsHazard || rtHazard || branchInstD || branchInstX || branchInstF|| branchInstM) ? 1'b1 : 1'b0;
 
             next_inst = (pcNop || rst) ? NOP : fetch_inst;
         end
@@ -94,7 +94,7 @@ always @(*) begin
             rsHazard = (((fetch_inst[10:8] == wrtRegD) && regWrtD) || ((fetch_inst[10:8] == wrtRegX) && regWrtX) || ((fetch_inst[10:8] == wrtRegM) && regWrtM)) ? 1'b1 : 1'b0;
             rtHazard = (((fetch_inst[7:5] == wrtRegD) && regWrtD) || ((fetch_inst[7:5] == wrtRegX) && regWrtX) || ((fetch_inst[7:5] == wrtRegM) && regWrtM)) ? 1'b1 : 1'b0; 
  
-            pcNop = (rsHazard || rtHazard || branchInstD || branchInstX || branchInstF) ? 1'b1 : 1'b0;
+            pcNop = (rsHazard || rtHazard || branchInstD || branchInstX || branchInstF|| branchInstM) ? 1'b1 : 1'b0;
 
             next_inst = (pcNop || rst) ? NOP : fetch_inst;
         end
@@ -111,7 +111,7 @@ always @(*) begin
         end
         // NOP 000xx Not reading from anything. 
         5'b0_0001: begin
-            pcNop = (branchInstD || branchInstX || branchInstF) ? 1'b1 : 1'b0;
+            pcNop = (branchInstD || branchInstX || branchInstF || branchInstM) ? 1'b1 : 1'b0;
             next_inst = (pcNop || rst) ? NOP : fetch_inst;
         end
 
@@ -176,7 +176,7 @@ always @(*) begin
         // Only reads from RS and no control hazards
         default: begin
             rsHazard = (((fetch_inst[10:8] == wrtRegD) && regWrtD) || ((fetch_inst[10:8] == wrtRegX) && regWrtX) || ((fetch_inst[10:8] == wrtRegM) && regWrtM)) ? 1'b1 : 1'b0; 
-            pcNop = rsHazard || branchInstD || branchInstX || branchInstF;
+            pcNop = rsHazard || branchInstD || branchInstX || branchInstF || branchInstM;
 
             next_inst = (pcNop || rst) ? NOP : fetch_inst;
         end
