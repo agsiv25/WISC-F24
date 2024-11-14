@@ -101,7 +101,7 @@ always @(*) begin
 
         // LBI: 11000
         5'b1_1000: begin
-            pcNop = (branchInstD || branchInstX || branchInstF || branchInstM) ? 1'b1 : 1'b0;
+            pcNop = (branchInstD || branchInstX || branchInstF || branchInstM || branchInstW) ? 1'b1 : 1'b0;
             next_inst = (pcNop || rst) ? NOP : fetch_inst;
         end
         // halt stall
