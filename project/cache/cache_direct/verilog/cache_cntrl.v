@@ -15,7 +15,7 @@ output reg [2:0] offset_cntrl;
 
 localparam IDLE = 4'b0000; // 0 
 localparam COMP_RD = 4'b0001; // 2
-localparam COMP_WT = 4'b0010; // 3
+localparam COMP_WR = 4'b0010; // 3
 localparam ACCESS_RD_0 = 4'b0011; // 4
 localparam ACCESS_RD_1 = 4'b0100; // 5
 localparam ACCESS_RD_2 = 4'b0101; // 6
@@ -145,7 +145,7 @@ always @(*) begin
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b000;
             tag_cntrl = addr[15:11];
-            data_in_cntrl = (wr & (addr[2:0] == 3'b000)) ? data_in : DataOut;
+            DataIn_cntrl = (wr & (addr[2:0] == 3'b000)) ? data_in : DataOut;
             data_out_cntrl = (rd & (addr[2:0] == 3'b000)) ? DataOut : data_temp;
             nxt_state = ACCESS_WR_3;
         end
@@ -158,7 +158,7 @@ always @(*) begin
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b010;
             tag_cntrl = addr[15:11];
-            data_in_cntrl = (wr & (addr[2:0] == 3'b010)) ? data_in : DataOut;
+            DataIn_cntrl = (wr & (addr[2:0] == 3'b010)) ? data_in : DataOut;
             data_out_cntrl = (rd & (addr[2:0] == 3'b010)) ? DataOut : data_temp;
             nxt_state = ACCESS_WR_3;
         end
@@ -169,7 +169,7 @@ always @(*) begin
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b100;
             tag_cntrl = addr[15:11];
-            data_in_cntrl = (wr & (addr[2:0] == 3'b100)) ? data_in : DataOut;
+            DataIn_cntrl = (wr & (addr[2:0] == 3'b100)) ? data_in : DataOut;
             data_out_cntrl = (rd & (addr[2:0] == 3'b100)) ? DataOut : data_temp;
             nxt_state = ACCESS_WR_5;
         end
@@ -181,7 +181,7 @@ always @(*) begin
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b110;
             tag_cntrl = addr[15:11];
-            data_in_cntrl = (wr & (addr[2:0] == 3'b110)) ? data_in : DataOut;
+            DataIn_cntrl = (wr & (addr[2:0] == 3'b110)) ? data_in : DataOut;
             data_out_cntrl = (rd & (addr[2:0] == 3'b110)) ? DataOut : data_temp;
             Done = 1'b1;
             nxt_state = IDLE;
