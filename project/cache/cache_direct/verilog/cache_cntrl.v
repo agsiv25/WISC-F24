@@ -2,9 +2,9 @@
 module cache_cntrl(clk, rst, addr, data_in, rd, wr , hit_cache, dirty_cache, tag_out, DataOut_cache, valid_cache, DataOut, enable_cntrl, idx_cntrl, offset_cntrl, comp_cntrl, write_cntrl, tag_cache, data_in_cntrl, valid_cntrl, addr_in_mem, data_in_mem, wrt_mem, rd_mem, Done, Stall, CacheHit, data_out_cntrl, done, data_temp)
 
 
-input clk, rst, rd, wr, hit_cache, dirty_cache, valid_cache;
-input [15:0] addr, data_in, DataOut_cache, data_temp;
-input [4:0] tag_out;
+input wire clk, rst, rd, wr, hit_cache, dirty_cache, valid_cache;
+input wire [15:0] addr, data_in, DataOut_cache, data_temp;
+input wire [4:0] tag_out;
 
 output reg enable_cntrl, comp_cntrl, write_cntrl, valid_cntrl, wrt_mem, rd_mem, Done, Stall, CacheHit, done;
 output reg [15:0] DataOut, DataIn_cntrl, addr_in_mem, data_in_mem, data_out_cntrl;
@@ -199,3 +199,4 @@ always @(*) begin
     endcase
 end
 endmodule
+`default_nettype wire
