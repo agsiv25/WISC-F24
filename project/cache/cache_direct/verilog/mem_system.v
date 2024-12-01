@@ -101,8 +101,7 @@ module mem_system(/*AUTOARG*/
                      .Stall             (Stall),
                      .CacheHit          (CacheHit),
                      .data_out_cntrl    (data_out_cntrl),
-                     .done              (done_state)
-   )
+                     .done              (done_state));
    
    // your code here
 

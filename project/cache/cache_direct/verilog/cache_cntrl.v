@@ -12,24 +12,23 @@ output reg [7:0] index_cntrl;
 output reg [4:0] tag_cntrl;
 output reg [2:0] offset_cntrl;
 
-typedef enum state [3:0](
-    IDLE,
-    COMP_RD,
-    COMP_WR,
-    ACCESS_RD_0,
-    ACCESS_RD_1,
-    ACCESS_RD_2,
-    ACCESS_RD_3,
-    ACCESS_WR_0,
-    ACCESS_WR_1,
-    ACCESS_WR_2,
-    ACCESS_WR_3,
-    ACCESS_WR_4,
-    ACCESS_WR_5,
-    DONE
-) state_t;
 
-state_t state, flop_state;
+localparam IDLE = 4'b0000; // 0 
+localparam CoMP_RD = 4'b0001; // 2
+localparam CoMP_WT = 4'b0010; // 3
+localparam ACCESS_RD_0 = 4'b0011; // 4
+localparam ACCESS_RD_1 = 4'b0100; // 5
+localparam ACCESS_RD_2 = 4'b0101; // 6
+localparam ACCESS_RD_3 = 4'b0110; // 7
+localparam ACCESS_WR_0 = 4'b0111; // 8
+localparam ACCESS_WR_1 = 4'b1000; // 9
+localparam ACCESS_WR_2 = 4'b1001; // 10
+localparam ACCESS_WR_3 = 4'b1010; // 11
+localparam ACCESS_WR_4 = 4'b1011; // 12
+localparam ACCESS_WR_5 = 4'b1100; // 13
+localparam DONE = 4'b1101; // 14\
+
+wire [3:0] state, flop_state;
 reg [3:0] nxt_state;
 wire flop_hit, flop_write, flop_read;
 reg hit, write, read;
