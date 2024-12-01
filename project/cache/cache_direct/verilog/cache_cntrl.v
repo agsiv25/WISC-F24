@@ -1,5 +1,5 @@
 `default_nettype none
-module cache_cntrl(clk, rst, addr, data_in, rd, wr , hit_cache, dirty_cache, tag_out, DataOut_cache, valid_cache, DataOut, enable_cntrl, idx_cntrl, offset_cntrl, comp_cntrl, write_cntrl, tag_cache, data_in_cntrl, valid_cntrl, addr_in_mem, data_in_mem, wrt_mem, rd_mem, Done, Stall, CacheHit, data_out_cntrl, done, data_temp)
+module cache_cntrl(clk, rst, addr, data_in, rd, wr , hit_cache, dirty_cache, tag_out, DataOut_cache, valid_cache, DataOut, enable_cntrl, idx_cntrl, offset_cntrl, comp_cntrl, write_cntrl, tag_cache, data_in_cntrl, valid_cntrl, addr_in_mem, data_in_mem, wrt_mem, rd_mem, Done, Stall, CacheHit, data_out_cntrl, done, data_temp);
 
 
 input wire clk, rst, rd, wr, hit_cache, dirty_cache, valid_cache;
