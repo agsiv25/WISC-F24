@@ -1,5 +1,5 @@
 `default_nettype none
-module cache_cntrl(clk, rst, addr, data_in, rd, wr , hit_cache, dirty_cache, tag_out, DataOut_cache, valid_cache, DataOut, enable_cntrl, idx_cntrl, offset_cntrl, comp_cntrl, write_cntrl, tag_cache, data_in_cntrl, valid_cntrl, addr_in_mem, data_in_mem, wrt_mem, rd_mem, Done, Stall, CacheHit, data_out_cntrl, done, data_temp);
+module cache_cntrl(clk, rst, addr, data_in, rd, wr , hit_cache, dirty_cache, tag_out, DataOut_cache, valid_cache, DataOut, enable_cntrl, idx_cntrl, offset_cntrl, comp_cntrl, write_cntrl, tag_cntrl, DataIn_cntrl, valid_cntrl, addr_in_mem, data_in_mem, wrt_mem, rd_mem, Done, Stall, CacheHit, data_out_cntrl, done, data_temp);
 
 
 input wire clk, rst, rd, wr, hit_cache, dirty_cache, valid_cache;
@@ -8,7 +8,7 @@ input wire [4:0] tag_out;
 
 output reg enable_cntrl, comp_cntrl, write_cntrl, valid_cntrl, wrt_mem, rd_mem, Done, Stall, CacheHit, done;
 output reg [15:0] DataOut, DataIn_cntrl, addr_in_mem, data_in_mem, data_out_cntrl;
-output reg [7:0] index_cntrl;
+output reg [7:0] idx_cntrl;
 output reg [4:0] tag_cntrl;
 output reg [2:0] offset_cntrl;
 
@@ -32,10 +32,10 @@ wire [3:0] state, flop_state;
 reg [3:0] nxt_state;
 wire flop_hit, flop_write, flop_read;
 reg hit, write, read;
-dff dff_hit(.clk(clk), .rst(rst), q(flop_hit), d(hit));
-dff dff_write(.clk(clk), .rst(rst), q(flop_write), d(write));
+dff dff_hit(.clk(clk), .rst(rst), .q(flop_hit), .d(hit));
+dff dff_write(.clk(clk), .rst(rst), .q(flop_write), .d(write));
 dff dff_read(.clk(clk), .rst(rst), .q(flop_read), .d(read));
-dff dff_state[4:0](.clk(clk), .rst(rst), q(flop_state), d(nxt_state));
+dff dff_state[4:0](.clk(clk), .rst(rst), .q(flop_state), .d(nxt_state));
 assign state = rst ? IDLE : flop_state;
 
 
@@ -126,20 +126,20 @@ always @(*) begin
         ACCESS_WR_0: begin
             enable_cntrl = 1'b1;
             rd_mem = 1'b1;
-            addr_in_mem = (addr[15:3], 3'b000);
+            addr_in_mem = {addr[15:3], 3'b000};
             hit = 1'b0;
             nxt_state = ACCESS_WR_1;
         end
         ACCESS_WR_1: begin
             enable_cntrl = 1'b1;
             rd_mem = 1'b1;
-            addr_in_mem = (addr[15:3], 3'b010);
+            addr_in_mem = {addr[15:3], 3'b010};
             nxt_state = ACCESS_WR_2;
         end
         ACCESS_WR_2: begin
             enable_cntrl = 1'b1;
             rd_mem = 1'b1;
-            addr_in_mem = (addr[15:3], 3'b100);
+            addr_in_mem = {addr[15:3], 3'b100};
             write_cntrl = 1'b1;
             valid_cntrl = 1'b1;
             idx_cntrl = addr[10:3];
@@ -152,7 +152,7 @@ always @(*) begin
         ACCESS_WR_3: begin
             enable_cntrl = 1'b1;
             rd_mem = 1'b1;
-            addr_in_mem = (addr[15:3], 3'b110);
+            addr_in_mem = {addr[15:3], 3'b110};
             write_cntrl = 1'b1;
             valid_cntrl = 1'b1;
             idx_cntrl = addr[10:3];
