@@ -14,8 +14,8 @@ output reg [2:0] offset_cntrl;
 
 
 localparam IDLE = 4'b0000; // 0 
-localparam CoMP_RD = 4'b0001; // 2
-localparam CoMP_WT = 4'b0010; // 3
+localparam COMP_RD = 4'b0001; // 2
+localparam COMP_WT = 4'b0010; // 3
 localparam ACCESS_RD_0 = 4'b0011; // 4
 localparam ACCESS_RD_1 = 4'b0100; // 5
 localparam ACCESS_RD_2 = 4'b0101; // 6
@@ -47,7 +47,7 @@ always @(*) begin
     comp_cntrl = 1'b0;
     write_cntrl = 1'b0;
     tag_cntrl = 5'bx;
-    data_in_cntrl = 16'bx;
+    DataIn_cntrl = 16'bx;
     valid_cntrl = 1'b0;
     addr_in_mem = 16'bx;
     data_in_mem = 16'bx;
@@ -146,7 +146,7 @@ always @(*) begin
             offset_cntrl = 3'b000;
             tag_cntrl = addr[15:11];
             data_in_cntrl = (wr & (addr[2:0] == 3'b000)) ? data_in : DataOut;
-            data_out_cntrl = (rd & (addr[2:0] == 3'b000)) ? data_out_mem : data_temp;
+            data_out_cntrl = (rd & (addr[2:0] == 3'b000)) ? DataOut : data_temp;
             nxt_state = ACCESS_WR_3;
         end
         ACCESS_WR_3: begin
@@ -159,7 +159,7 @@ always @(*) begin
             offset_cntrl = 3'b010;
             tag_cntrl = addr[15:11];
             data_in_cntrl = (wr & (addr[2:0] == 3'b010)) ? data_in : DataOut;
-            data_out_cntrl = (rd & (addr[2:0] == 3'b010)) ? data_out_mem : data_temp;
+            data_out_cntrl = (rd & (addr[2:0] == 3'b010)) ? DataOut : data_temp;
             nxt_state = ACCESS_WR_3;
         end
         ACCESS_WR_4: begin
@@ -170,7 +170,7 @@ always @(*) begin
             offset_cntrl = 3'b100;
             tag_cntrl = addr[15:11];
             data_in_cntrl = (wr & (addr[2:0] == 3'b100)) ? data_in : DataOut;
-            data_out_cntrl = (rd & (addr[2:0] == 3'b100)) ? data_out_mem : data_temp;
+            data_out_cntrl = (rd & (addr[2:0] == 3'b100)) ? DataOut : data_temp;
             nxt_state = ACCESS_WR_5;
         end
         ACCESS_WR_5: begin
@@ -182,7 +182,7 @@ always @(*) begin
             offset_cntrl = 3'b110;
             tag_cntrl = addr[15:11];
             data_in_cntrl = (wr & (addr[2:0] == 3'b110)) ? data_in : DataOut;
-            data_out_cntrl = (rd & (addr[2:0] == 3'b110)) ? data_out_mem : data_temp;
+            data_out_cntrl = (rd & (addr[2:0] == 3'b110)) ? DataOut : data_temp;
             Done = 1'b1;
             nxt_state = IDLE;
             done = 1'b1;
