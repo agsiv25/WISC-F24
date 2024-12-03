@@ -19,19 +19,19 @@ output reg [2:0] offset_cntrl;
 
 
 localparam IDLE = 4'b0000; // 0 
-localparam COMP_RD = 4'b0001; // 2
-localparam COMP_WR = 4'b0010; // 3
-localparam ACCESS_RD_0 = 4'b0011; // 4
-localparam ACCESS_RD_1 = 4'b0100; // 5
-localparam ACCESS_RD_2 = 4'b0101; // 6
-localparam ACCESS_RD_3 = 4'b0110; // 7
-localparam ACCESS_WR_0 = 4'b0111; // 8
-localparam ACCESS_WR_1 = 4'b1000; // 9
-localparam ACCESS_WR_2 = 4'b1001; // 10
-localparam ACCESS_WR_3 = 4'b1010; // 11
-localparam ACCESS_WR_4 = 4'b1011; // 12
-localparam ACCESS_WR_5 = 4'b1100; // 13
-localparam DONE = 4'b1101; // 14\
+localparam COMP_RD = 4'b0001; // 1
+localparam COMP_WR = 4'b0010; // 2
+localparam ACCESS_RD_0 = 4'b0011; // 3
+localparam ACCESS_RD_1 = 4'b0100; // 4
+localparam ACCESS_RD_2 = 4'b0101; // 5
+localparam ACCESS_RD_3 = 4'b0110; // 6
+localparam ACCESS_WR_0 = 4'b0111; // 7
+localparam ACCESS_WR_1 = 4'b1000; // 8
+localparam ACCESS_WR_2 = 4'b1001; // 9
+localparam ACCESS_WR_3 = 4'b1010; // 10
+localparam ACCESS_WR_4 = 4'b1011; // 11
+localparam ACCESS_WR_5 = 4'b1100; // 12
+localparam DONE = 4'b1101; // 13
 
 wire [3:0] state, flop_state;
 reg [3:0] nxt_state;
@@ -186,8 +186,8 @@ always @(*) begin
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b110;
             tag_cntrl = addr[15:11];
-            data_in_cntrl = (wr & (addr[2:0] == 3'b110)) ? data_in : data_out_mem;
-            data_out_cntrl = (rd & (addr[2:0] == 3'b110)) ? data_out_mem : data_temp;
+            data_in_cntrl = (flop_write & (addr[2:0] == 3'b110)) ? data_in : data_out_mem;
+            data_out_cntrl = (flop_read & (addr[2:0] == 3'b110)) ? data_out_mem : data_temp;
             Done = 1'b1;
             nxt_state = IDLE;
             end_state = 1'b1;
