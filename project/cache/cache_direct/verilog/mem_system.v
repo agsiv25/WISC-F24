@@ -25,11 +25,11 @@ module mem_system(/*AUTOARG*/
    output reg        err;
 
    wire err_cache, err_mem;
-   wire [15:0] data_out_cntrl, data_out_mem, data_in_mem, data_in_cntrl, DataOut_cache, addr_in_mem, data_temp;
-   wire [4:0] tag_cache, tag_cntrl;
+   wire [15:0] data_out_cntrl, data_out_mem, data_in_mem, data_in_cntrl, data_out_cache, addr_in_mem, data_temp;
+   wire [4:0] tag_out, tag_cntrl;
    wire hit_cache, dirty_cache, valid_cache, done_state;
    wire enable_cntrl, comp_cntrl, write_cntrl, valid_cntrl;
-   wire wrt_mem, rd_mem;
+   wire write_mem, read_mem;
    wire  stall_mem;
    wire [2:0] offset_cntrl;
    wire [7:0] busy_mem;
@@ -38,8 +38,8 @@ module mem_system(/*AUTOARG*/
     * needed for cache parameter */
    parameter memtype = 0;
    cache #(0 + memtype) c0(// Outputs
-                          .tag_out              (tag_cache),
-                          .data_out             (DataOut_cache),
+                          .tag_out              (tag_out),
+                          .data_out             (data_out_cache),
                           .hit                  (hit_cache),
                           .dirty                (dirty_cache),
                           .valid                (valid_cache),
@@ -68,12 +68,13 @@ module mem_system(/*AUTOARG*/
                      .createdump        (createdump),
                      .addr              (addr_in_mem),
                      .data_in           (data_in_mem),
-                     .wr                (wrt_mem),
-                     .rd                (rd_mem));
+                     .wr                (write_mem),
+                     .rd                (read_mem));
 
    cache_cntrl controller(
                      .clk               (clk),
                      .rst               (rst),
+                     .createdump        (createdump),
                      .data_temp         (data_temp),
                      .addr              (Addr),
                      .data_in           (DataIn),
@@ -81,31 +82,34 @@ module mem_system(/*AUTOARG*/
                      .wr                (Wr),
                      .hit_cache         (hit_cache),
                      .dirty_cache       (dirty_cache),
-                     .tag_out           (tag_cache),
-                     .DataOut_cache     (DataOut_cache),
+                     .tag_out           (tag_out),
+                     .data_out_cache    (data_out_cache),
                      .valid_cache       (valid_cache),
-                     .DataOut           (data_out_mem),
+                     .data_out_mem      (data_out_mem),
                      .enable_cntrl      (enable_cntrl),
                      .idx_cntrl         (idx_cntrl),
                      .offset_cntrl      (offset_cntrl),
                      .comp_cntrl        (comp_cntrl),
                      .write_cntrl       (write_cntrl),
                      .tag_cntrl         (tag_cntrl),
-                     .DataIn_cntrl     (data_in_cntrl),
+                     .data_in_cntrl     (data_in_cntrl),
                      .valid_cntrl       (valid_cntrl),
                      .addr_in_mem       (addr_in_mem),
                      .data_in_mem       (data_in_mem),
-                     .wrt_mem           (wrt_mem),
-                     .rd_mem            (rd_mem),
+                     .write_mem         (write_mem),
+                     .read_mem          (read_mem),
                      .Done              (Done),
                      .Stall             (Stall),
                      .CacheHit          (CacheHit),
                      .data_out_cntrl    (data_out_cntrl),
-                     .done              (done_state));
+                     .end_state         (done_state));
    
    // your code here
+   assign err = err_cache | err_mem;
 
-   
+   dff dff_data[15:0](.clk(clk), .rst(rst), .q(data_temp), .d(data_out_cntrl));
+
+   assign DataOut = end_state ? data_out_cntrl : data_temp;
 endmodule // mem_system
 `default_nettype wire
 // DUMMY LINE FOR REV CONTROL :9:
