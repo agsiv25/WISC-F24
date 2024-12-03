@@ -18,11 +18,11 @@ module mem_system(/*AUTOARG*/
    input wire        clk;
    input wire        rst;
    
-   output reg [15:0] DataOut;
+   output wire [15:0] DataOut;
    output reg        Done;
    output reg        Stall;
    output reg        CacheHit;
-   output reg        err;
+   output wire        err;
 
    wire err_cache, err_mem;
    wire [15:0] data_out_cntrl, data_out_mem, data_in_mem, data_in_cntrl, data_out_cache, addr_in_mem, data_temp;
