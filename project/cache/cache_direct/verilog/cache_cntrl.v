@@ -126,7 +126,7 @@ always @(*) begin
             addr_in_mem = {tag_out, idx_cntrl, offset_cntrl}; 
             data_in_mem = data_out_cache;
             write_mem = 1'b1;
-            nxt_state = IDLE;
+            nxt_state = ACCESS_WR_0;
         end
         ACCESS_WR_0: begin
             enable_cntrl = 1'b1;
