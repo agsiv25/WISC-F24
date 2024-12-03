@@ -109,7 +109,7 @@ module mem_system(/*AUTOARG*/
 
    dff dff_data[15:0](.clk(clk), .rst(rst), .q(data_temp), .d(data_out_cntrl));
 
-   assign DataOut = end_state ? data_out_cntrl : data_temp;
+   assign DataOut = done_state ? data_out_cntrl : data_temp;
 endmodule // mem_system
 `default_nettype wire
 // DUMMY LINE FOR REV CONTROL :9:
