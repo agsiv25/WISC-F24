@@ -19,9 +19,9 @@ module mem_system(/*AUTOARG*/
    input wire        rst;
    
    output wire [15:0] DataOut;
-   output reg        Done;
-   output reg        Stall;
-   output reg        CacheHit;
+   output wire        Done;
+   output wire        Stall;
+   output wire        CacheHit;
    output wire        err;
 
    wire err_cache, err_mem;
