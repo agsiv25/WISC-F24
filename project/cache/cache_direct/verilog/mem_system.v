@@ -32,8 +32,8 @@ module mem_system(/*AUTOARG*/
    wire write_mem, read_mem;
    wire  stall_mem;
    wire [2:0] offset_cntrl;
-   wire [7:0] busy_mem;
-   wire [4:0] idx_cntrl;
+   wire [3:0] busy_mem;
+   wire [7:0] idx_cntrl;
    /* data_mem = 1, inst_mem = 0 *
     * needed for cache parameter */
    parameter memtype = 0;
