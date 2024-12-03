@@ -41,7 +41,7 @@ reg hit, write, read;
 dff dff_hit(.clk(clk), .rst(rst), .q(flop_hit), .d(hit));
 dff dff_write(.clk(clk), .rst(rst), .q(flop_write), .d(write));
 dff dff_read(.clk(clk), .rst(rst), .q(flop_read), .d(read));
-dff dff_state[4:0](.clk(clk), .rst(rst), .q(flop_state), .d(nxt_state));
+dff dff_state[3:0](.clk(clk), .rst(rst), .q(flop_state), .d(nxt_state));
 assign state = rst ? IDLE : flop_state;
 
 
