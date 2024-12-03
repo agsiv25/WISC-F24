@@ -1,11 +1,10 @@
 `default_nettype none
 module cache_cntrl(
 // inputs 
-clk, rst, createdump, data_temp, addr, data_in, rd, wr, hit_cache, tag_out, 
+clk, rst, createdump, data_temp, addr, data_in, rd, wr, hit_cache, tag_out, dirty_cache, valid_cache, data_out_cache, data_out_mem, 
 // outputs
-dirty_cache, data_out_cache, valid_cache, data_out_mem, enable_cntrl, idx_cntrl, offset_cntrl, 
-comp_cntrl, write_cntrl, tag_cntrl, data_in_cntrl, valid_in_cntrl, addr_in_mem, data_in_mem, 
-write_mem, read_mem, Done, Stall, CacheHit, data_out_cntrl, end_state);
+enable_cntrl, idx_cntrl, offset_cntrl, comp_cntrl, write_cntrl, tag_cntrl, data_in_cntrl, 
+valid_in_cntrl, addr_in_mem, data_in_mem, write_mem, read_mem, Done, Stall, CacheHit, data_out_cntrl, end_state);
 
 
 input wire clk, rst, createdump, rd, wr, hit_cache, dirty_cache, valid_cache;
@@ -127,7 +126,7 @@ always @(*) begin
             addr_in_mem = {tag_out, idx_cntrl, offset_cntrl}; 
             data_in_mem = data_out_cache;
             write_mem = 1'b1;
-            nxt_state = ACCESS_WR_0;
+            nxt_state = IDLE;
         end
         ACCESS_WR_0: begin
             enable_cntrl = 1'b1;
@@ -166,7 +165,7 @@ always @(*) begin
             tag_cntrl = addr[15:11];
             data_in_cntrl = (wr & (addr[2:0] == 3'b010)) ? data_in : data_out_mem;
             data_out_cntrl = (rd & (addr[2:0] == 3'b010)) ? data_out_mem : data_temp;
-            nxt_state = ACCESS_WR_3;
+            nxt_state = ACCESS_WR_4;
         end
         ACCESS_WR_4: begin
             enable_cntrl = 1'b1;
