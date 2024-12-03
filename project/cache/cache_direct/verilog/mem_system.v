@@ -28,7 +28,7 @@ module mem_system(/*AUTOARG*/
    wire [15:0] data_out_cntrl, data_out_mem, data_in_mem, data_in_cntrl, data_out_cache, addr_in_mem, data_temp;
    wire [4:0] tag_out, tag_cntrl;
    wire hit_cache, dirty_cache, valid_cache, done_state;
-   wire enable_cntrl, comp_cntrl, write_cntrl, valid_cntrl;
+   wire enable_cntrl, comp_cntrl, write_cntrl, valid_in_cntrl;
    wire write_mem, read_mem;
    wire  stall_mem;
    wire [2:0] offset_cntrl;
@@ -55,7 +55,7 @@ module mem_system(/*AUTOARG*/
                           .data_in              (data_in_cntrl),
                           .comp                 (comp_cntrl),
                           .write                (write_cntrl),
-                          .valid_in             (valid_cntrl));
+                          .valid_in             (valid_in_cntrl));
 
    four_bank_mem mem(// Outputs
                      .data_out          (data_out_mem),
@@ -93,7 +93,7 @@ module mem_system(/*AUTOARG*/
                      .write_cntrl       (write_cntrl),
                      .tag_cntrl         (tag_cntrl),
                      .data_in_cntrl     (data_in_cntrl),
-                     .valid_cntrl       (valid_cntrl),
+                     .valid_in_cntrl    (valid_in_cntrl),
                      .addr_in_mem       (addr_in_mem),
                      .data_in_mem       (data_in_mem),
                      .write_mem         (write_mem),

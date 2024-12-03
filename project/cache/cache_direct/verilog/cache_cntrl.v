@@ -1,5 +1,11 @@
 `default_nettype none
-module cache_cntrl(clk, rst, createdump, data_temp, addr, data_in, rd, wr, hit_cache, tag_out, dirty_cache, data_out_cache, valid_cache, data_out_mem, enable_cntrl, idx_cntrl, offset_cntrl, comp_cntrl, write_cntrl, tag_cntrl, data_in_cntrl, valid_in_cntrl, addr_in_mem, data_in_mem, write_mem, read_mem, Done, Stall, CacheHit, data_out_cntrl, end_state);
+module cache_cntrl(
+// inputs 
+clk, rst, createdump, data_temp, addr, data_in, rd, wr, hit_cache, tag_out, 
+// outputs
+dirty_cache, data_out_cache, valid_cache, data_out_mem, enable_cntrl, idx_cntrl, offset_cntrl, 
+comp_cntrl, write_cntrl, tag_cntrl, data_in_cntrl, valid_in_cntrl, addr_in_mem, data_in_mem, 
+write_mem, read_mem, Done, Stall, CacheHit, data_out_cntrl, end_state);
 
 
 input wire clk, rst, createdump, rd, wr, hit_cache, dirty_cache, valid_cache;
