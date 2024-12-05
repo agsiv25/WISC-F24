@@ -93,7 +93,7 @@ module mem_system(/*AUTOARG*/
                      .wr                (write_mem),
                      .rd                (read_mem));
    
-   cache_cntrl_assoc control(
+   cache_cntrl control(
                      // Inputs
                      .clk                      (clk),
                      .rst                      (rst),
