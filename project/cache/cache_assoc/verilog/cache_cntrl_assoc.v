@@ -32,24 +32,23 @@ localparam ACCESS_WR_3 = 4'b1010; // 10
 localparam ACCESS_WR_4 = 4'b1011; // 11
 localparam ACCESS_WR_5 = 4'b1100; // 12
 
-wire [3:0] state, flop_state;
+wire [3:0] state;
 reg [3:0] nxt_state;
 wire flop_write, flop_read, flop_en, en_en;
 reg write, read, en, en_flag;
 
 assign en_en = (en_flag) ? en : flop_en;
-assign state = rst ? IDLE : flop_state;
 
 dff dff_enable(.clk(clk), .rst(rst), .q(flop_en), .d(en_en));
 dff dff_write(.clk(clk), .rst(rst), .q(flop_write), .d(write));
 dff dff_read(.clk(clk), .rst(rst), .q(flop_read), .d(read));
-dff dff_state[3:0](.clk(clk), .rst(rst), .q(flop_state), .d(nxt_state));
+dff dff_state[3:0](.clk(clk), .rst(rst), .q(state), .d(nxt_state));
 
 always @(*) begin
     nxt_state = IDLE;
     enable_cntrl = 1'b0;
-    idx_cntrl = 8'b0;
-    offset_cntrl = 3'b0;
+    idx_cntrl = 8'bxxxxxxxx;
+    offset_cntrl = 3'bxxx;
     comp_cntrl = 1'b0;
     write_cntrl = 1'b0;
     tag_cntrl = 5'bx;
@@ -146,13 +145,13 @@ always @(*) begin
             nxt_state = ACCESS_WR_0; 
         end
         ACCESS_WR_0: begin
-            enable_cntrl = 1'b1;
+            enable_cntrl = flop_en;
             read_mem = 1'b1;
             addr_in_mem = {addr[15:3], 3'b000};
             nxt_state = ACCESS_WR_1;
         end
         ACCESS_WR_1: begin
-            enable_cntrl = 1'b1;
+            enable_cntrl = flop_en;
             read_mem = 1'b1;
             addr_in_mem = {addr[15:3], 3'b010};
             nxt_state = ACCESS_WR_2;
