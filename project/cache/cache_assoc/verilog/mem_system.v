@@ -27,7 +27,7 @@ module mem_system(/*AUTOARG*/
    // added signals 
    
    wire err_cache_1, err_cache_2, err_mem;
-   wire [15:0] data_out_cntrl, data_out_mem, data_in_mem, data_in_cntrl, data_out_cache_1, data_out_cache_2, addr_in_mem, data_temp, data_outfinal;
+   wire [15:0] data_out_cntrl, data_out_mem, data_in_mem, data_in_cntrl, data_out_cache_1, data_out_cache_2, addr_in_mem, data_temp, data_out_final;
    wire [4:0] tag_out_1, tag_out_2, tag_cntrl, tag_out_final;
    wire hit_cache_1, hit_cache_2, cache_hit_final, dirty_cache_1, dirty_cache_2, valid_cache_1, valid_cache_2, done_state, flop_victim_cntrl, comp_rw, victim_cntrl;
    wire enable_cntrl_1, enable_cntrl_2, enable_cntrl, comp_cntrl, write_cntrl, valid_in_cntrl;
@@ -134,7 +134,7 @@ module mem_system(/*AUTOARG*/
                      .comp_rw           (comp_rw),
                      .victim_cntrl      (victim_cntrl),
                      .tag_out_final     (tag_out_final),
-                     .data_outfinal     (data_outfinal),
+                     .data_out_final     (data_out_final),
                      .hit_cache_final   (cache_hit_final));
    
    
@@ -144,7 +144,7 @@ module mem_system(/*AUTOARG*/
    assign DataOut = done_state ? data_out_cntrl : data_temp;
    assign cache_hit_final = valid_cache_1 & hit_cache_1 |valid_cache_2 & hit_cache_2;
    assign tag_out_final = enable_cntrl ? tag_out_1 : tag_out_2;
-   assign data_outfinal = enable_cntrl ? data_out_cache_1 : data_out_cache_2;
+   assign data_out_final = enable_cntrl ? data_out_cache_1 : data_out_cache_2;
 
    dff dff_data[15:0](.clk(clk), .rst(rst), .q(data_temp), .d(data_out_cntrl));
    dff dff_victim(.clk(clk), .rst(rst), .q(victim_cntrl), .d(flop_victim_cntrl));
