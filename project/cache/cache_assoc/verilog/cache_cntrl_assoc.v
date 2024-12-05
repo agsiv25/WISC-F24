@@ -51,7 +51,7 @@ reg dirty_cache;
 reg way_to_vict;
 
 // victimway signal
-reg victimway;
+reg cur_victimway;
 reg victimway_invert;
 
 always @(*) begin
@@ -102,7 +102,7 @@ always @(*) begin
             cache_done = (valid_cache_1 & hit_cache_1) | (valid_cache_2 & hit_cache_2);
             valid_cache = valid_cache_1 | valid_cache_2;
             dirty_cache = dirty_cache_1 | dirty_cache_2;
-            victimway_invert = victimway ? 1'b0 : 1'b1;
+            victimway_invert = cur_victimway ? 1'b0 : 1'b1;
 
             //nxt_state = valid_cache ? (hit_cache ? DONE : (dirty_cache ? ACCESS_RD_0 : ACCESS_WR_0)) : ACCESS_WR_0;
 
@@ -124,7 +124,7 @@ always @(*) begin
             cache_done = (valid_cache_1 & hit_cache_1) | (valid_cache_2 & hit_cache_2);
             valid_cache = valid_cache_1 | valid_cache_2;
             dirty_cache = dirty_cache_1 | dirty_cache_2;
-            victimway_invert = victimway ? 1'b0 : 1'b1;
+            victimway_invert = cur_victimway ? 1'b0 : 1'b1;
 
             //nxt_state = valid_cache ? (hit_cache ? DONE : (dirty_cache ? ACCESS_RD_0 : ACCESS_WR_0)) : ACCESS_WR_0;
 
@@ -136,7 +136,7 @@ always @(*) begin
             offset_cntrl = 3'b000;
 
             // victimization logic 
-            way_to_vict = valid_cache_1 ? (valid_cache_2 ? victimway : 1'b1) : 1'b0;
+            way_to_vict = valid_cache_1 ? (valid_cache_2 ? cur_victimway : 1'b1) : 1'b0;
 
             addr_in_mem = way_to_vict ? {tag_out_2, idx_cntrl, offset_cntrl} : {tag_out_1, idx_cntrl, offset_cntrl}; 
             data_in_mem = way_to_vict ? data_out_cache_2 : data_out_cache_1;
@@ -181,7 +181,7 @@ always @(*) begin
             nxt_state = ACCESS_WR_1;
 
             // victimization logic 
-            way_to_vict = valid_cache_1 ? (valid_cache_2 ? victimway : 1'b1) : 1'b0;
+            way_to_vict = valid_cache_1 ? (valid_cache_2 ? cur_victimway : 1'b1) : 1'b0;
         end
         ACCESS_WR_1: begin
             enable_cntrl = 1'b1;
@@ -267,7 +267,7 @@ always @(*) begin
     endcase
 end
 
-dff victimway(.clk(clk), .rst(rst), .q(victimway), .d(victimway_invert));
+dff victimway(.clk(clk), .rst(rst), .q(cur_victimway), .d(victimway_invert));
 
 
 endmodule
