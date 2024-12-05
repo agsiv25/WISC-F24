@@ -3,7 +3,7 @@ module cache_cntrl_assoc(
 // inputs 
 clk, rst, createdump, data_temp, addr, data_in, rd, wr, hit_cache_1, hit_cache_2, tag_out_1, tag_out_2, dirty_cache_1, dirty_cache_2, valid_cache_1, valid_cache_2, data_out_cache_1, data_out_cache_2, data_out_mem, 
 // outputs
-enable_cntrl, idx_cntrl, offset_cntrl, comp_cntrl, write_cntrl, tag_cntrl, data_in_cntrl, 
+enable_cntrl, idx_cntrl, offset_cntrl, comp_cntrl, write_cntrl_1, write_cntrl_2, tag_cntrl, data_in_cntrl, 
 valid_in_cntrl, addr_in_mem, data_in_mem, write_mem, read_mem, Done, Stall, CacheHit, data_out_cntrl, end_state);
 
 
@@ -11,7 +11,7 @@ input wire clk, rst, createdump, rd, wr, hit_cache_1, hit_cache_2, dirty_cache_1
 input wire [15:0] addr, data_in, data_out_mem, data_out_cache_1, data_out_cache_2, data_temp;
 input wire [4:0] tag_out_1, tag_out_2;
 
-output reg enable_cntrl, comp_cntrl, write_cntrl, valid_in_cntrl, write_mem, read_mem, Done, Stall, CacheHit, end_state;
+output reg enable_cntrl, comp_cntrl, write_cntrl_1, write_cntrl_2, valid_in_cntrl, write_mem, read_mem, Done, Stall, CacheHit, end_state;
 output reg [15:0] data_in_cntrl, addr_in_mem, data_in_mem, data_out_cntrl;
 output reg [7:0] idx_cntrl;
 output reg [4:0] tag_cntrl;
@@ -43,6 +43,16 @@ dff dff_read(.clk(clk), .rst(rst), .q(flop_read), .d(read));
 dff dff_state[3:0](.clk(clk), .rst(rst), .q(flop_state), .d(nxt_state));
 assign state = rst ? IDLE : flop_state;
 
+// assoc logic signals 
+reg hit_cache;
+reg cache_done;
+reg valid_cache;
+reg dirty_cache;
+reg way_to_vict;
+
+// victimway signal
+reg victimway;
+reg victimway_invert;
 
 always @(*) begin
     nxt_state = IDLE;
@@ -50,7 +60,8 @@ always @(*) begin
     idx_cntrl = 8'b0;
     offset_cntrl = 3'b0;
     comp_cntrl = 1'b0;
-    write_cntrl = 1'b0;
+    write_cntrl_1 = 1'b0;
+    write_cntrl_2 = 1'b0;
     tag_cntrl = 5'bx;
     data_in_cntrl = 16'bx;
     valid_in_cntrl = 1'b0;
@@ -62,12 +73,19 @@ always @(*) begin
     Stall = 1'b1;
     CacheHit = 1'b0;
     end_state = 1'b0;
+    hit_cache = 1'b0;
+    cache_done = 1'b0;
+    valid_cache = 1'b0;
+    dirty_cache = 1'b0;
+
     case(state)
         IDLE: begin
             Stall = 1'b0;
             write = 1'b0;
             read = 1'b0;
             nxt_state = rd ? COMP_RD : (wr ? COMP_WR : IDLE);
+            way_to_vict = 1'b0;
+
         end
         COMP_RD: begin
             enable_cntrl = 1'b1;
@@ -75,29 +93,53 @@ always @(*) begin
             idx_cntrl = addr[10:3];
             offset_cntrl = addr[2:0];
             tag_cntrl = addr[15:11];
-            data_out_cntrl = data_out_cache;
+            data_out_cntrl = hit_cache_1 ? data_out_cache_1 : data_out_cache_2;
             hit = 1'b1;
             read = 1'b1;
-            nxt_state = valid_cache ? (hit_cache ? DONE : (dirty_cache ? ACCESS_RD_0 : ACCESS_WR_0)) : ACCESS_WR_0;
+
+            // associative logic 
+            hit_cache = hit_cache_1 | hit_cache_2;
+            cache_done = (valid_cache_1 & hit_cache_1) | (valid_cache_2 & hit_cache_2);
+            valid_cache = valid_cache_1 | valid_cache_2;
+            dirty_cache = dirty_cache_1 | dirty_cache_2;
+            victimway_invert = victimway ? 1'b0 : 1'b1;
+
+            //nxt_state = valid_cache ? (hit_cache ? DONE : (dirty_cache ? ACCESS_RD_0 : ACCESS_WR_0)) : ACCESS_WR_0;
+
+            nxt_state = cache_done ? DONE : (valid_cache ? (dirty_cache ? ACCESS_RD_0 : ACCESS_WR_0) : ACCESS_WR_0) ;
         end
         COMP_WR: begin
             enable_cntrl = 1'b1;
             comp_cntrl = 1'b1;
-            write_cntrl = 1'b1;
+            // write_cntrl = 1'b1;        // why is this asserted here but not in ACCES_WR_0 or ACCESS_WR_1??
             data_in_cntrl = data_in;
             idx_cntrl = addr[10:3];
             offset_cntrl = addr[2:0];
             tag_cntrl = addr[15:11];
             hit = 1'b1;
             write = 1'b1;
-            nxt_state = valid_cache ? (hit_cache ? DONE : (dirty_cache ? ACCESS_RD_0 : ACCESS_WR_0)) : ACCESS_WR_0;
+
+            // associative logic 
+            hit_cache = hit_cache_1 | hit_cache_2;
+            cache_done = (valid_cache_1 & hit_cache_1) | (valid_cache_2 & hit_cache_2);
+            valid_cache = valid_cache_1 | valid_cache_2;
+            dirty_cache = dirty_cache_1 | dirty_cache_2;
+            victimway_invert = victimway ? 1'b0 : 1'b1;
+
+            //nxt_state = valid_cache ? (hit_cache ? DONE : (dirty_cache ? ACCESS_RD_0 : ACCESS_WR_0)) : ACCESS_WR_0;
+
+            nxt_state = cache_done ? DONE : (valid_cache ? (dirty_cache ? ACCESS_RD_0 : ACCESS_WR_0) : ACCESS_WR_0) ;
         end
         ACCESS_RD_0: begin
             enable_cntrl = 1'b1;
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b000;
             addr_in_mem = {tag_out, idx_cntrl, offset_cntrl}; 
-            data_in_mem = data_out_cache;
+
+            // victimization logic 
+            way_to_vict = valid_cache_1 ? (valid_cache_2 ? victimway : 1'b1) : 1'b0;
+
+            data_in_mem = way_to_vict ? data_out_cache_1 : data_out_cache_2;
             write_mem = 1'b1;
             nxt_state = ACCESS_RD_1;               
         end
@@ -106,7 +148,7 @@ always @(*) begin
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b010;
             addr_in_mem = {tag_out, idx_cntrl, offset_cntrl}; 
-            data_in_mem = data_out_cache;
+            data_in_mem = way_to_vict ? data_out_cache_1 : data_out_cache_2;
             write_mem = 1'b1;
             nxt_state = ACCESS_RD_2;    
         end
@@ -115,7 +157,7 @@ always @(*) begin
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b100;
             addr_in_mem = {tag_out, idx_cntrl, offset_cntrl}; 
-            data_in_mem = data_out_cache;
+            data_in_mem = way_to_vict ? data_out_cache_1 : data_out_cache_2;
             write_mem = 1'b1;
             nxt_state = ACCESS_RD_3;    
         end
@@ -124,7 +166,7 @@ always @(*) begin
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b110;
             addr_in_mem = {tag_out, idx_cntrl, offset_cntrl}; 
-            data_in_mem = data_out_cache;
+            data_in_mem = way_to_vict ? data_out_cache_1 : data_out_cache_2;
             write_mem = 1'b1;
             nxt_state = ACCESS_WR_0;
         end
@@ -134,6 +176,9 @@ always @(*) begin
             addr_in_mem = {addr[15:3], 3'b000};
             hit = 1'b0;
             nxt_state = ACCESS_WR_1;
+
+            // victimization logic 
+            way_to_vict = valid_cache_1 ? (valid_cache_2 ? victimway : 1'b1) : 1'b0;
         end
         ACCESS_WR_1: begin
             enable_cntrl = 1'b1;
@@ -145,7 +190,11 @@ always @(*) begin
             enable_cntrl = 1'b1;
             read_mem = 1'b1;
             addr_in_mem = {addr[15:3], 3'b100};
-            write_cntrl = 1'b1;
+
+            // assoc write logic 
+            write_cntrl_1 = way_to_vict ? 1'b0 : 1'b1;
+            write_cntrl_2 = way_to_vict;
+
             valid_in_cntrl = 1'b1;
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b000;
@@ -158,7 +207,11 @@ always @(*) begin
             enable_cntrl = 1'b1;
             read_mem = 1'b1;
             addr_in_mem = {addr[15:3], 3'b110};
-            write_cntrl = 1'b1;
+
+            // assoc write logic 
+            write_cntrl_1 = way_to_vict ? 1'b0 : 1'b1;
+            write_cntrl_2 = way_to_vict;
+            
             valid_in_cntrl = 1'b1;
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b010;
@@ -169,7 +222,11 @@ always @(*) begin
         end
         ACCESS_WR_4: begin
             enable_cntrl = 1'b1;
-            write_cntrl = 1'b1;
+
+            // assoc write logic 
+            write_cntrl_1 = way_to_vict ? 1'b0 : 1'b1;
+            write_cntrl_2 = way_to_vict;
+            
             valid_in_cntrl = 1'b1;
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b100;
@@ -181,7 +238,11 @@ always @(*) begin
         ACCESS_WR_5: begin
             enable_cntrl = 1'b1;
             comp_cntrl = flop_write ? 1'b1 : 1'b0;
-            write_cntrl = 1'b1;
+
+            // assoc write logic 
+            write_cntrl_1 = way_to_vict ? 1'b0 : 1'b1;
+            write_cntrl_2 = way_to_vict;
+            
             valid_in_cntrl = 1'b1;
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b110;
@@ -202,5 +263,9 @@ always @(*) begin
         end
     endcase
 end
+
+dff victimway(.clk(clk), .rst(rst), .q(victimway), .d(victimway_invert));
+
+
 endmodule
 `default_nettype wire
