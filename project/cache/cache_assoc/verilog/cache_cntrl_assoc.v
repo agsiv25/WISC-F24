@@ -54,6 +54,8 @@ reg way_to_vict;
 reg cur_victimway;
 reg victimway_invert;
 
+wire cur_victimway_wire;
+
 always @(*) begin
     nxt_state = IDLE;
     enable_cntrl = 1'b0;
@@ -77,6 +79,7 @@ always @(*) begin
     cache_done = 1'b0;
     valid_cache = 1'b0;
     dirty_cache = 1'b0;
+    cur_victimway = cur_victimway_wire;
 
     case(state)
         IDLE: begin
@@ -267,7 +270,7 @@ always @(*) begin
     endcase
 end
 
-dff victimway(.clk(clk), .rst(rst), .q(cur_victimway), .d(victimway_invert));
+dff victimway(.clk(clk), .rst(rst), .q(cur_victimway_wire), .d(victimway_invert));
 
 
 endmodule
