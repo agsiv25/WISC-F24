@@ -113,7 +113,7 @@ module mem_system(/*AUTOARG*/
                      .dirty_cache_2            (dirty_cache_2),
                      .valid_cache_2            (valid_cache_2),
                      .data_out_mem             (data_out_mem),
-                     .victim_cntrl             (flop_victim_cntrl),
+                     .flop_victim_cntrl        (flop_victim_cntrl),
                      
                      // Outputs
                      .enable_cntrl             (enable_cntrl),
@@ -133,7 +133,7 @@ module mem_system(/*AUTOARG*/
                      .Stall                    (Stall), 
                      .CacheHit                 (CacheHit), 
                      .end_state                (done_state),
-                     .flop_victim_cntrl        (victim_cntrl),
+                     .victim_cntrl        (victim_cntrl),
                      .comp_rw                  (comp_rw));
    
    
