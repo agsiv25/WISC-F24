@@ -64,7 +64,7 @@ always @(*) begin
     end_state = 1'b0;
     en = 1'b0;
     en_flag = 1'b0;
-    flop_victim_cntrl = victim_cntrl;
+    victim_cntrl = flop_victim_cntrl;
     comp_rw = 1'b0;
 
     case(state)
@@ -87,8 +87,8 @@ always @(*) begin
             end_state = hit_cache_final;
             data_out_cntrl = data_out_final;
             read = 1'b1;
-            enable_cntrl = (valid_cache_1 & hit_cache_1) | (~valid_cache_1 & valid_cache_2 & ~hit_cache_final) | (~valid_cache_1 & ~valid_cache_2 & ~hit_cache_final) | (valid_cache_1 & valid_cache_2 & ~hit_cache_final & victim_cntrl);
-            en = (valid_cache_1 & hit_cache_1) | (~valid_cache_1 & valid_cache_2 & ~hit_cache_final) | (~valid_cache_1 & ~valid_cache_2 & ~hit_cache_final) | (valid_cache_1 & valid_cache_2 & ~hit_cache_final & victim_cntrl);
+            enable_cntrl = (valid_cache_1 & hit_cache_1) | (~valid_cache_1 & valid_cache_2 & ~hit_cache_final) | (~valid_cache_1 & ~valid_cache_2 & ~hit_cache_final) | (valid_cache_1 & valid_cache_2 & ~hit_cache_final & flop_victim_cntrl);
+            en = (valid_cache_1 & hit_cache_1) | (~valid_cache_1 & valid_cache_2 & ~hit_cache_final) | (~valid_cache_1 & ~valid_cache_2 & ~hit_cache_final) | (valid_cache_1 & valid_cache_2 & ~hit_cache_final & flop_victim_cntrl);
             nxt_state = (hit_cache_final) ? IDLE : (((~hit_cache_final) & (enable_cntrl) & (valid_cache_1) & (dirty_cache_1)) | (((~hit_cache_final) & (~enable_cntrl) & (valid_cache_2) & (dirty_cache_2)))) ? ACCESS_RD_0 : ACCESS_WR_0;
         end
         COMP_WR: begin
@@ -104,8 +104,8 @@ always @(*) begin
             write = 1'b1;
             write_cntrl = 1'b1;
             data_in_cntrl = data_in;
-            enable_cntrl = (valid_cache_1 & hit_cache_1) | (~valid_cache_1 & valid_cache_2 & ~hit_cache_final) | (~valid_cache_1 & ~valid_cache_2 & ~hit_cache_final) | (valid_cache_1 & valid_cache_2 & ~hit_cache_final & victim_cntrl);
-            en = (valid_cache_1 & hit_cache_1) | (~valid_cache_1 & valid_cache_2 & ~hit_cache_final) | (~valid_cache_1 & ~valid_cache_2 & ~hit_cache_final) | (valid_cache_1 & valid_cache_2 & ~hit_cache_final & victim_cntrl);
+            enable_cntrl = (valid_cache_1 & hit_cache_1) | (~valid_cache_1 & valid_cache_2 & ~hit_cache_final) | (~valid_cache_1 & ~valid_cache_2 & ~hit_cache_final) | (valid_cache_1 & valid_cache_2 & ~hit_cache_final & flop_victim_cntrl);
+            en = (valid_cache_1 & hit_cache_1) | (~valid_cache_1 & valid_cache_2 & ~hit_cache_final) | (~valid_cache_1 & ~valid_cache_2 & ~hit_cache_final) | (valid_cache_1 & valid_cache_2 & ~hit_cache_final & flop_victim_cntrl);
             nxt_state = (hit_cache_final) ? IDLE : (((~hit_cache_final) & (enable_cntrl) & (valid_cache_1) & (dirty_cache_1)) | (((~hit_cache_final) & (~enable_cntrl) & (valid_cache_2) & (dirty_cache_2)))) ? ACCESS_RD_0 : ACCESS_WR_0;
         end
         ACCESS_RD_0: begin
@@ -194,7 +194,7 @@ always @(*) begin
             nxt_state = ACCESS_WR_5;
         end
         ACCESS_WR_5: begin
-            flop_victim_cntrl = ~victim_cntrl;
+            victim_cntrl = ~flop_victim_cntrl;
             enable_cntrl = flop_en;
             write_cntrl = 1'b1;
             valid_in_cntrl = 1'b1;
