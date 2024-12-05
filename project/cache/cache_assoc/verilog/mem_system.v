@@ -147,7 +147,7 @@ module mem_system(/*AUTOARG*/
    assign data_out_final = enable_cntrl ? data_out_cache_1 : data_out_cache_2;
 
    dff dff_data[15:0](.clk(clk), .rst(rst), .q(data_temp), .d(data_out_cntrl));
-   dff dff_victim(.clk(clk), .rst(rst), .q(victim_cntrl), .d(flop_victim_cntrl));
+   dff dff_victim(.clk(clk), .rst(rst), .q(flop_victim_cntrl), .d(victim_cntrl));
    
 endmodule // mem_system
 `default_nettype wire
