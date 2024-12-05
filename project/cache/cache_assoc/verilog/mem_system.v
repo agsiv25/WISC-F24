@@ -125,7 +125,7 @@ module mem_system(/*AUTOARG*/
 
                      .temp_DataOut             (data_temp),
                      .Addr                     (Addr),
-                     .DataIn                   (data_in),
+                     .DataIn                   (DataIn),
                      .Rd                       (Rd),
                      .Wr                       (Wr),
 
