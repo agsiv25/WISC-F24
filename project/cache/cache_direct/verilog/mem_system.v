@@ -24,6 +24,8 @@ module mem_system(/*AUTOARG*/
    output wire        CacheHit;
    output wire        err;
 
+   // added signals 
+   
    wire err_cache, err_mem;
    wire [15:0] data_out_cntrl, data_out_mem, data_in_mem, data_in_cntrl, data_out_cache, addr_in_mem, data_temp;
    wire [4:0] tag_out, tag_cntrl;
