@@ -7,11 +7,11 @@ enable_cntrl, idx_cntrl, offset_cntrl, comp_cntrl, write_cntrl, tag_cntrl, data_
 valid_in_cntrl, addr_in_mem, data_in_mem, write_mem, read_mem, Done, Stall, CacheHit, data_out_cntrl, end_state, flop_victim_cntrl, comp_rw, victim_cntrl, tag_out_final, data_out_final, hit_cache_final);
 
 
-input wire clk, rst, createdump, rd, wr, hit_cache_1, hit_cache_2, dirty_cache_1, dirty_cache_2, valid_cache_1, valid_cache_2, victim_cntrl;
+input wire clk, rst, createdump, rd, wr, hit_cache_1, hit_cache_2, dirty_cache_1, dirty_cache_2, valid_cache_1, valid_cache_2, flop_victim_cntrl, hit_cache_final;
 input wire [15:0] addr, data_in, data_out_mem,  data_temp, data_out_final;
-input wire [4:0] tag_out_1, tag_out_2, tag_out_final;
+input wire [4:0] tag_out_final;
 
-output reg enable_cntrl, comp_cntrl, write_cntrl, valid_in_cntrl, write_mem, read_mem, Done, Stall, CacheHit, end_state, flop_victim_cntrl, comp_rw, hit_cache_final;
+output reg enable_cntrl, comp_cntrl, write_cntrl, valid_in_cntrl, write_mem, read_mem, Done, Stall, CacheHit, end_state, victim_cntrl, comp_rw;
 output reg [15:0] data_in_cntrl, addr_in_mem, data_in_mem, data_out_cntrl;
 output reg [7:0] idx_cntrl;
 output reg [4:0] tag_cntrl;
@@ -51,11 +51,11 @@ always @(*) begin
     offset_cntrl = 3'bxxx;
     comp_cntrl = 1'b0;
     write_cntrl = 1'b0;
-    tag_cntrl = 5'bx;
-    data_in_cntrl = 16'bx;
+    tag_cntrl = 5'bxxxxx;
+    data_in_cntrl = 16'bxxxxxxxxxxxxxxx;
     valid_in_cntrl = 1'b0;
-    addr_in_mem = 16'bx;
-    data_in_mem = 16'bx;
+    addr_in_mem = 16'bxxxxxxxxxxxxxxxx;
+    data_in_mem = 16'bxxxxxxxxxxxxxxxx;
     write_mem = 1'b0;
     read_mem = 1'b0;
     Done = 1'b0;
