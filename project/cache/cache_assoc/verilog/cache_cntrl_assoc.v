@@ -203,8 +203,8 @@ always @(*) begin
             tag_cntrl = addr[15:11];
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b110;
-            data_in_cntrl = (wr & (addr[2:0] == 3'b110)) ? data_in : data_out_mem;
-            data_out_cntrl = (rd & (addr[2:0] == 3'b110)) ? data_out_mem : data_temp;
+            data_in_cntrl = (flop_write & (addr[2:0] == 3'b110)) ? data_in : data_out_mem;
+            data_out_cntrl = (flop_read & (addr[2:0] == 3'b110)) ? data_out_mem : data_temp;
             Done = 1'b1;
             end_state = 1'b1;
             nxt_state = IDLE;
