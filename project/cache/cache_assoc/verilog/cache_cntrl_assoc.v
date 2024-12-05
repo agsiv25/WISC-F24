@@ -208,9 +208,6 @@ always @(*) begin
             end_state = 1'b1;
             nxt_state = IDLE;
         end
-        default: begin
-            nxt_state = IDLE;
-        end
     endcase
 end
 
