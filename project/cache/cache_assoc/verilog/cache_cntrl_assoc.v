@@ -65,7 +65,8 @@ always @(*) begin
     end_state = 1'b0;
     en = 1'b0;
     en_flag = 1'b0;
-    data_out_cntrl = 16'bx;
+    flop_victim_cntrl = victim_cntrl;
+    comp_rw = 1'b0;
 
     case(state)
         IDLE: begin
