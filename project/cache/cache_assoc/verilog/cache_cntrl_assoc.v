@@ -134,12 +134,12 @@ always @(*) begin
             enable_cntrl = 1'b1;
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b000;
-            addr_in_mem = {tag_out, idx_cntrl, offset_cntrl}; 
 
             // victimization logic 
             way_to_vict = valid_cache_1 ? (valid_cache_2 ? victimway : 1'b1) : 1'b0;
 
-            data_in_mem = way_to_vict ? data_out_cache_1 : data_out_cache_2;
+            addr_in_mem = way_to_vict ? {tag_out_2, idx_cntrl, offset_cntrl} : {tag_out_1, idx_cntrl, offset_cntrl}; 
+            data_in_mem = way_to_vict ? data_out_cache_2 : data_out_cache_1;
             write_mem = 1'b1;
             nxt_state = ACCESS_RD_1;               
         end
@@ -147,8 +147,9 @@ always @(*) begin
             enable_cntrl = 1'b1;
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b010;
-            addr_in_mem = {tag_out, idx_cntrl, offset_cntrl}; 
-            data_in_mem = way_to_vict ? data_out_cache_1 : data_out_cache_2;
+
+            addr_in_mem = way_to_vict ? {tag_out_2, idx_cntrl, offset_cntrl} : {tag_out_1, idx_cntrl, offset_cntrl}; 
+            data_in_mem = way_to_vict ? data_out_cache_2 : data_out_cache_1;
             write_mem = 1'b1;
             nxt_state = ACCESS_RD_2;    
         end
@@ -156,8 +157,9 @@ always @(*) begin
             enable_cntrl = 1'b1;
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b100;
-            addr_in_mem = {tag_out, idx_cntrl, offset_cntrl}; 
-            data_in_mem = way_to_vict ? data_out_cache_1 : data_out_cache_2;
+
+            addr_in_mem = way_to_vict ? {tag_out_2, idx_cntrl, offset_cntrl} : {tag_out_1, idx_cntrl, offset_cntrl}; 
+            data_in_mem = way_to_vict ? data_out_cache_2 : data_out_cache_1;
             write_mem = 1'b1;
             nxt_state = ACCESS_RD_3;    
         end
@@ -165,8 +167,9 @@ always @(*) begin
             enable_cntrl = 1'b1;
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b110;
-            addr_in_mem = {tag_out, idx_cntrl, offset_cntrl}; 
-            data_in_mem = way_to_vict ? data_out_cache_1 : data_out_cache_2;
+
+            addr_in_mem = way_to_vict ? {tag_out_2, idx_cntrl, offset_cntrl} : {tag_out_1, idx_cntrl, offset_cntrl}; 
+            data_in_mem = way_to_vict ? data_out_cache_2 : data_out_cache_1;
             write_mem = 1'b1;
             nxt_state = ACCESS_WR_0;
         end
