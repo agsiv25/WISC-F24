@@ -130,9 +130,9 @@ module mem_system(/*AUTOARG*/
                      .CacheHit          (CacheHit),
                      .data_out_cntrl    (data_out_cntrl),
                      .end_state         (done_state),
-                     .flop_victim_cntrl (flop_victim_cntrl),
+                     .flop_victim_cntrl (victim_cntrl),
                      .comp_rw           (comp_rw),
-                     .victim_cntrl      (victim_cntrl),
+                     .victim_cntrl      (flop_victim_cntrl),
                      .tag_out_final     (tag_out_final),
                      .data_out_final     (data_out_final),
                      .hit_cache_final   (cache_hit_final));
