@@ -1,7 +1,7 @@
 `default_nettype none
 module cache_cntrl_assoc(
 // inputs 
-clk, rst, createdump, data_temp, addr, data_in, rd, wr, hit_cache_1, hit_cache_2, dirty_cache_1, dirty_cache_2, valid_cache_1, valid_cache_2, data_out_cache_1, data_out_cache_2, data_out_mem, 
+clk, rst, createdump, data_temp, addr, data_in, rd, wr, hit_cache_1, hit_cache_2, dirty_cache_1, dirty_cache_2, valid_cache_1, valid_cache_2, data_out_mem, 
 // outputs
 enable_cntrl, idx_cntrl, offset_cntrl, comp_cntrl, write_cntrl, tag_cntrl, data_in_cntrl, 
 valid_in_cntrl, addr_in_mem, data_in_mem, write_mem, read_mem, Done, Stall, CacheHit, data_out_cntrl, end_state, flop_victim_cntrl, comp_rw, victim_cntrl, tag_out_final, data_out_final, hit_cache_final);
