@@ -142,7 +142,7 @@ module mem_system(/*AUTOARG*/
    assign enable_cntrl_1 = comp_rw | enable_cntrl;
    assign enable_cntrl_2 = comp_rw | ~enable_cntrl;
    assign DataOut = done_state ? data_out_cntrl : data_temp;
-   assign cache_hit_final = valid_cache_1 & hit_cache_1 |valid_cache_2 & hit_cache_2;
+   assign cache_hit_final = valid_cache_1 & hit_cache_1 | valid_cache_2 & hit_cache_2;
    assign tag_out_final = enable_cntrl ? tag_out_1 : tag_out_2;
    assign data_out_final = enable_cntrl ? data_out_cache_1 : data_out_cache_2;
 

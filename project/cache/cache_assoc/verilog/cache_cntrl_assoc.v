@@ -102,7 +102,6 @@ always @(*) begin
             Done = hit_cache_final;
             CacheHit = hit_cache_final;
             end_state = hit_cache_final;
-            data_out_cntrl = data_out_final;
             write = 1'b1;
             write_cntrl = 1'b1;
             data_in_cntrl = data_in;
