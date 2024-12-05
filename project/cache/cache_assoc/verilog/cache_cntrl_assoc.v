@@ -90,7 +90,7 @@ always @(*) begin
             read = 1'b1;
             enable_cntrl = (valid_cache_1 & hit_cache_1) | (~valid_cache_1 & valid_cache_2 & ~hit_cache_final) | (~valid_cache_1 & ~valid_cache_2 & ~hit_cache_final) | (valid_cache_1 & valid_cache_2 & ~hit_cache_final & victim_cntrl);
             en = (valid_cache_1 & hit_cache_1) | (~valid_cache_1 & valid_cache_2 & ~hit_cache_final) | (~valid_cache_1 & ~valid_cache_2 & ~hit_cache_final) | (valid_cache_1 & valid_cache_2 & ~hit_cache_final & victim_cntrl);
-            nxt_state = (hit_cache_final ? IDLE) : (((~hit_cache_final) & (enable_cntrl) & (valid_cache_1) & (dirty_cache_1)) | (((~hit_cache_final) & (~enable_cntrl) & (valid_cache_2) & (dirty_cache_2)))) ? ACCESS_RD_0 : ACCESS_WR_0;
+            nxt_state = (hit_cache_final) ? IDLE : (((~hit_cache_final) & (enable_cntrl) & (valid_cache_1) & (dirty_cache_1)) | (((~hit_cache_final) & (~enable_cntrl) & (valid_cache_2) & (dirty_cache_2)))) ? ACCESS_RD_0 : ACCESS_WR_0;
         end
         COMP_WR: begin
             comp_cntrl = 1'b1;
