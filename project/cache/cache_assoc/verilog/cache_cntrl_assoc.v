@@ -158,7 +158,7 @@ always @(*) begin
             nxt_state = ACCESS_WR_2;
         end
         ACCESS_WR_2: begin
-            enable_cntrl = en;
+            enable_cntrl = flop_en;
             read_mem = 1'b1;
             addr_in_mem = {addr[15:3], 3'b100};
             write_cntrl = 1'b1;
@@ -171,7 +171,7 @@ always @(*) begin
             nxt_state = ACCESS_WR_3;
         end
         ACCESS_WR_3: begin
-            enable_cntrl = en;
+            enable_cntrl = flop_en;
             read_mem = 1'b1;
             addr_in_mem = {addr[15:3], 3'b110};
             write_cntrl = 1'b1;
@@ -184,7 +184,7 @@ always @(*) begin
             nxt_state = ACCESS_WR_4;
         end
         ACCESS_WR_4: begin
-            enable_cntrl = en;
+            enable_cntrl = flop_en;
             write_cntrl = 1'b1;
             valid_in_cntrl = 1'b1;
             tag_cntrl = addr[15:11];
@@ -195,11 +195,11 @@ always @(*) begin
             nxt_state = ACCESS_WR_5;
         end
         ACCESS_WR_5: begin
-            flop_victim_cntrl = ~flop_victim_cntrl;
-            enable_cntrl = en;
+            flop_victim_cntrl = ~victim_cntrl;
+            enable_cntrl = flop_en;
             write_cntrl = 1'b1;
             valid_in_cntrl = 1'b1;
-            comp_cntrl = write;
+            comp_cntrl = flop_write;
             tag_cntrl = addr[15:11];
             idx_cntrl = addr[10:3];
             offset_cntrl = 3'b110;
