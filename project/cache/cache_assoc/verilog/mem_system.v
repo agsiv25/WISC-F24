@@ -27,15 +27,18 @@ module mem_system(/*AUTOARG*/
    // added signals 
    
    wire err_cache_1, err_cache_2, err_mem;
-   wire [15:0] data_out_cntrl, data_out_mem, data_in_mem, data_in_cntrl, data_out_cache_1, data_out_cache_2, addr_in_mem, data_temp, data_out_final;
-   wire [4:0] tag_out_1, tag_out_2, tag_cntrl, tag_out_final;
    wire hit_cache_1, hit_cache_2, cache_hit_final, dirty_cache_1, dirty_cache_2, valid_cache_1, valid_cache_2, done_state, flop_victim_cntrl, comp_rw, victim_cntrl;
    wire enable_cntrl_1, enable_cntrl_2, enable_cntrl, comp_cntrl, write_cntrl, valid_in_cntrl;
    wire write_mem, read_mem;
-   wire  stall_mem;
-   wire [2:0] offset_cntrl;
-   wire [3:0] busy_mem;
+   wire stall_mem;
+   
+   wire [15:0] data_out_cntrl, data_out_mem, data_in_mem, data_in_cntrl, data_out_cache_1, data_out_cache_2, addr_in_mem, data_temp, data_out_final;
    wire [7:0] idx_cntrl;
+   wire [4:0] tag_out_1, tag_out_2, tag_cntrl, tag_out_final;
+   wire [3:0] busy_mem;
+   wire [2:0] offset_cntrl;
+   
+   
 
    /* data_mem = 1, inst_mem = 0 *
     * needed for cache parameter */
@@ -133,7 +136,7 @@ module mem_system(/*AUTOARG*/
                      .Stall                    (Stall), 
                      .CacheHit                 (CacheHit), 
                      .end_state                (done_state),
-                     .victim_cntrl        (victim_cntrl),
+                     .victim_cntrl             (victim_cntrl),
                      .comp_rw                  (comp_rw));
    
    

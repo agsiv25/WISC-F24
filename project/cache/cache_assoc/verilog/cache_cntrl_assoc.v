@@ -47,15 +47,9 @@ dff dff_state[3:0](.clk(clk), .rst(rst), .q(state), .d(nxt_state));
 always @(*) begin
     nxt_state = IDLE;
     enable_cntrl = 1'b0;
-    idx_cntrl = 8'bxxxxxxxx;
-    offset_cntrl = 3'bxxx;
     comp_cntrl = 1'b0;
     write_cntrl = 1'b0;
-    tag_cntrl = 5'bxxxxx;
-    data_in_cntrl = 16'bxxxxxxxxxxxxxxx;
     valid_in_cntrl = 1'b0;
-    addr_in_mem = 16'bxxxxxxxxxxxxxxxx;
-    data_in_mem = 16'bxxxxxxxxxxxxxxxx;
     write_mem = 1'b0;
     read_mem = 1'b0;
     Done = 1'b0;
@@ -64,9 +58,13 @@ always @(*) begin
     end_state = 1'b0;
     en = 1'b0;
     en_flag = 1'b0;
-    victim_cntrl = flop_victim_cntrl;
     comp_rw = 1'b0;
-
+    victim_cntrl = flop_victim_cntrl;
+    tag_cntrl = 5'bxxxxx;
+    idx_cntrl = 8'bxxxxxxxx;
+    data_in_cntrl = 16'bxxxxxxxxxxxxxxx;
+    addr_in_mem = 16'bxxxxxxxxxxxxxxxx;
+    data_in_mem = 16'bxxxxxxxxxxxxxxxx;
     case(state)
         IDLE: begin
             Stall = 1'b0;
