@@ -129,12 +129,12 @@ module mem_system(/*AUTOARG*/
                      .Stall             (Stall),
                      .CacheHit          (CacheHit),
                      .data_out_cntrl    (data_out_cntrl),
-                     .end_state         (done_state)
-                     .flop_victim_cntrl (flop_victim_cntrl)
-                     .comp_rw           (comp_rw)
-                     .victim_cntrl      (victim_cntrl)
-                     .tag_out_final     (tag_out_final)
-                     .data_outfinal     (data_outfinal)
+                     .end_state         (done_state),
+                     .flop_victim_cntrl (flop_victim_cntrl),
+                     .comp_rw           (comp_rw),
+                     .victim_cntrl      (victim_cntrl),
+                     .tag_out_final     (tag_out_final),
+                     .data_outfinal     (data_outfinal),
                      .hit_cache_final   (hit_cache_final));
    
    
