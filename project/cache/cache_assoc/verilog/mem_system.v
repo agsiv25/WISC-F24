@@ -27,10 +27,10 @@ module mem_system(/*AUTOARG*/
    // added signals 
    
    wire err_cache_1, err_cache_2, err_mem;
-   wire [15:0] data_out_cntrl, data_out_mem, data_in_mem, data_in_cntrl, data_out_cache_1, data_out_cache_2, addr_in_mem, data_temp;
-   wire [4:0] tag_out_1, tag_out_2, tag_cntrl;
-   wire hit_cache_1, hit_cache_2, dirty_cache_1, dirty_cache_2, valid_cache_1, valid_cache_2, done_state;
-   wire enable_cntrl, comp_cntrl, write_cntrl_1, write_cntrl_2, valid_in_cntrl;
+   wire [15:0] data_out_cntrl, data_out_mem, data_in_mem, data_in_cntrl, data_out_cache_1, data_out_cache_2, addr_in_mem, data_temp, data_outfinal;
+   wire [4:0] tag_out_1, tag_out_2, tag_cntrl, tag_out_final;
+   wire hit_cache_1, hit_cache_2, hit_cache_final, dirty_cache_1, dirty_cache_2, valid_cache_1, valid_cache_2, done_state;
+   wire enable_cntrl_1, enable_cntrl_2, enable_cntrl, comp_cntrl, write_cntrl, valid_in_cntrl;
    wire write_mem, read_mem;
    wire  stall_mem;
    wire [2:0] offset_cntrl;
@@ -48,7 +48,7 @@ module mem_system(/*AUTOARG*/
                           .valid                (valid_cache_1),
                           .err                  (err_cache_1),
                           // Inputs
-                          .enable               (enable_cntrl),
+                          .enable               (enable_cntrl_1),
                           .clk                  (clk),
                           .rst                  (rst),
                           .createdump           (createdump),
@@ -57,7 +57,7 @@ module mem_system(/*AUTOARG*/
                           .offset               (offset_cntrl),
                           .data_in              (data_in_cntrl),
                           .comp                 (comp_cntrl),
-                          .write                (write_cntrl_1),
+                          .write                (write_cntrl),
                           .valid_in             (valid_in_cntrl));
    cache #(2 + memtype) c1(// Outputs
                           .tag_out              (tag_out_2),
@@ -67,7 +67,7 @@ module mem_system(/*AUTOARG*/
                           .valid                (valid_cache_2),
                           .err                  (err_cache_2),
                           // Inputs
-                          .enable               (enable_cntrl),
+                          .enable               (enable_cntrl_2),
                           .clk                  (clk),
                           .rst                  (rst),
                           .createdump           (createdump),
@@ -76,7 +76,7 @@ module mem_system(/*AUTOARG*/
                           .offset               (offset_cntrl),
                           .data_in              (data_in_cntrl),
                           .comp                 (comp_cntrl),
-                          .write                (write_cntrl_2),
+                          .write                (write_cntrl),
                           .valid_in             (valid_in_cntrl));
 
    four_bank_mem mem(// Outputs
@@ -117,8 +117,7 @@ module mem_system(/*AUTOARG*/
                      .idx_cntrl         (idx_cntrl),
                      .offset_cntrl      (offset_cntrl),
                      .comp_cntrl        (comp_cntrl),
-                     .write_cntrl_1     (write_cntrl_1),
-                     .write_cntrl_2     (write_cntrl_2),
+                     .write_cntrl       (write_cntrl),
                      .tag_cntrl         (tag_cntrl),
                      .data_in_cntrl     (data_in_cntrl),
                      .valid_in_cntrl    (valid_in_cntrl),
@@ -130,16 +129,25 @@ module mem_system(/*AUTOARG*/
                      .Stall             (Stall),
                      .CacheHit          (CacheHit),
                      .data_out_cntrl    (data_out_cntrl),
-                     .end_state         (done_state));
+                     .end_state         (done_state)
+                     .flop_victim_cntrl (flop_victim_cntrl)
+                     .comp_rw           (comp_rw)
+                     .victim_cntrl      (victim_cntrl)
+                     .tag_out_final     (tag_out_final)
+                     .data_outfinal     (data_outfinal)
+                     .hit_cache_final   (hit_cache_final));
    
-   // your code here
+   
    assign err = err_cache_1 | err_cache_2 | err_mem;
-   //assign err = 1'b0;
-
+   assign enable_cntrl_1 = comp_rw | enable_cntrl;
+   assign enable_cntrl_2 = comp_rw | ~enable_cntrl;
+   assign DataOut = done_state ? data_out_cntrl : data_temp;
+   assign cache_hit_final = valid_cache_1 & hit_cache_1 |valid_cache_2 & hit_cache_2;
+   assign tag_out_final = enable_cntrl ? tag_out_1 : tag_out_2;
+   assign data_outfinal = enable_cntrl ? data_out_cache_1 : data_out_cache_2;
    dff dff_data[15:0](.clk(clk), .rst(rst), .q(data_temp), .d(data_out_cntrl));
 
-   assign DataOut = done_state ? data_out_cntrl : data_temp;
-
+   dff dff_victim(.clk(clk), .rst(rst), .q(victim_cntrl), .d(flop_victim_cntrl));
    
 endmodule // mem_system
 `default_nettype wire
