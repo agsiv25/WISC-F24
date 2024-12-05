@@ -93,57 +93,48 @@ module mem_system(/*AUTOARG*/
                      .wr                (write_mem),
                      .rd                (read_mem));
    
-   cache_control control(// Outputs
-                     .cache_enable             (enable_cntrl),
-                     .cache_tag_in             (tag_cntrl),
-                     .cache_index              (idx_cntrl),
-                     .cache_offset             (offset_cntrl),
-                     .cache_data_in            (data_in_cntrl),
-                     .cache_comp               (comp_cntrl),
-                     .cache_write              (write_cntrl),
-                     .cache_valid_in           (valid_in_cntrl),
-
-                     .mem_addr                 (addr_in_mem),
-                     .mem_data_in              (data_in_mem),
-                     .mem_wr                   (write_mem),
-                     .mem_rd                   (read_mem),
-                     
-                     .control_DataOut          (data_out_cntrl), 
-                     .Done                     (Done), 
-                     .Stall                    (Stall), 
-                     .CacheHit                 (CacheHit), 
-                     .State                    (done_state),
-
-                     .ff_victimize_q_control   (victim_cntrl),
-                     .compare_rw_flag          (comp_rw),
-                                          
-                     
+   cache_control_assoc control(
                      // Inputs
                      .clk                      (clk),
                      .rst                      (rst),
                      .createdump               (createdump),
-
-                     .temp_DataOut             (data_temp),
-                     .Addr                     (Addr),
-                     .DataIn                   (DataIn),
-                     .Rd                       (Rd),
-                     .Wr                       (Wr),
-
-                     .cache_tag_out_final      (tag_out_final),
-                     .cache_data_out_final     (data_out_final),
-                     .cache_hit_final          (cache_hit_final),
-
-                     .cache_hit_0              (hit_cache_1),
-                     .cache_dirty_0            (dirty_cache_1),
-                     .cache_valid_0            (valid_cache_1),
-
-                     .cache_hit_1              (hit_cache_2),
-                     .cache_dirty_1            (dirty_cache_2),
-                     .cache_valid_1            (valid_cache_2),
-                  
-                     .mem_data_out             (data_out_mem),
+                     .data_temp                (data_temp),
+                     .addr                     (Addr),
+                     .data_in                  (DataIn),
+                     .rd                       (Rd),
+                     .wr                       (Wr),
+                     .tag_out_final            (tag_out_final),
+                     .data_out_final           (data_out_final),
+                     .hit_cache_final          (cache_hit_final),
+                     .hit_cache_1              (hit_cache_1),
+                     .dirty_cache_1            (dirty_cache_1),
+                     .valid_cache_1            (valid_cache_1),
+                     .hit_cache_2              (hit_cache_2),
+                     .dirty_cache_2            (dirty_cache_2),
+                     .valid_cache_2            (valid_cache_2),
+                     .data_out_mem             (data_out_mem),
+                     .victim_cntrl             (flop_victim_cntrl),
                      
-                     .ff_victimize_d_control   (flop_victim_cntrl));
+                     // Outputs
+                     .enable_cntrl             (enable_cntrl),
+                     .tag_cntrl                (tag_cntrl),
+                     .idx_cntrl                (idx_cntrl),
+                     .offset_cntrl             (offset_cntrl),
+                     .data_in_cntrl            (data_in_cntrl),
+                     .comp_cntrl               (comp_cntrl),
+                     .write_cntrl              (write_cntrl),
+                     .valid_in_cntrl           (valid_in_cntrl),
+                     .addr_in_mem              (addr_in_mem),
+                     .data_in_mem              (data_in_mem),
+                     .write_mem                (write_mem),
+                     .read_mem                 (read_mem),
+                     .data_out_cntrl           (data_out_cntrl), 
+                     .Done                     (Done), 
+                     .Stall                    (Stall), 
+                     .CacheHit                 (CacheHit), 
+                     .end_state                (done_state),
+                     .flop_victim_cntrl        (victim_cntrl),
+                     .comp_rw                  (comp_rw));
    
    
    assign err = err_cache_1 | err_cache_2 | err_mem;
