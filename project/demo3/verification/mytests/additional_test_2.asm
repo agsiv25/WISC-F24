@@ -4,6 +4,7 @@
 
 
 // Tests a simple hazard without NOPs inserted manually. 
+lbi r1, 0xFF
 slbi r1, 0x0
-addi r2, r1, 0x14
+addi r2, r1, 0x01
 halt
