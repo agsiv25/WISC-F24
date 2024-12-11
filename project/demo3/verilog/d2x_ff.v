@@ -5,7 +5,7 @@
    Description     : This is the flip flop between the decode and execute cycles.
 */
 `default_nettype none
-module d2x_ff (clk, rst, imm8D, imm11D, aluJmpD, SLBIselD, memWrtD, brchSigD, CinD, invAD, invBD, wbDataSelD, immSrcD, aluOpD, jalSelD, sOpSelD, readEnD, aluPCD, inAD, inBD, wrtDataD, SLBIselX, incPCX, immSrcX, imm8X, imm11X, brchSigX, CinX, inAX, inBX, invAX, invBX, aluOpX, aluJmpX, jalSelX, sOpSelX, aluPCX, memWrtX, wbDataSelX, readEnX, wrtDataX, incPCD, regWrtD, regWrtX, wrtRegD, wrtRegX, branchInstD, branchInstX, instructionD, instructionX, createDumpD, createDumpX, x2xACntrlD, x2xBCntrlD, x2xACntrlX, x2xBCntrlX, m2xACntrlD, m2xBCntrlD, m2xACntrlX, m2xBCntrlX);
+module d2x_ff (clk, rst, imm8D, imm11D, aluJmpD, SLBIselD, memWrtD, brchSigD, CinD, invAD, invBD, wbDataSelD, immSrcD, aluOpD, jalSelD, sOpSelD, readEnD, aluPCD, inAD, inBD, wrtDataD, SLBIselX, incPCX, immSrcX, imm8X, imm11X, brchSigX, CinX, inAX, inBX, invAX, invBX, aluOpX, aluJmpX, jalSelX, sOpSelX, aluPCX, memWrtX, wbDataSelX, readEnX, wrtDataX, incPCD, regWrtD, regWrtX, wrtRegD, wrtRegX, branchInstD, branchInstX, instructionD, instructionX, createDumpD, createDumpX, fwCntrlAD, fwCntrlBD, fwCntrlAX, fwCntrlBX);
 
 input wire clk;
 input wire rst;
@@ -41,17 +41,11 @@ input wire branchInstD;
 input wire [15:0] instructionD;
 input wire createDumpD;
 
-// EX to EX forwarding
-input wire x2xACntrlD;
-input wire x2xBCntrlD;
-output wire x2xACntrlX;
-output wire x2xBCntrlX;
-
-// MEM to EX forwarding
-input wire m2xACntrlD;
-input wire m2xBCntrlD;
-output wire m2xACntrlX;
-output wire m2xBCntrlX;
+// forwarding
+input wire [3:0] fwCntrlAD;
+input wire [3:0] fwCntrlBD;
+output wire [3:0] fwCntrlAX;
+output wire [3:0] fwCntrlAX;
 
 // to execute stage 
 output wire regWrtX;
@@ -120,11 +114,9 @@ dff instructionLatch [15:0] (.q(instructionX), .d(instructionD), .clk(clk), .rst
 
 dff createDumpLatch(.q(createDumpX), .d(createDumpD), .clk(clk), .rst(rst));
 
-dff x2xAForwardingLatch(.q(x2xACntrlX), .d(x2xACntrlD), .clk(clk), .rst(rst));
-dff x2xBForwardingLatch(.q(x2xBCntrlX), .d(x2xBCntrlD), .clk(clk), .rst(rst));
+dff AForwardingLatch [3:0] (.q(fwCntrlAX), .d(fwCntrlAD), .clk(clk), .rst(rst));
+dff BForwardingLatch [3:0] (.q(fwCntrlBX), .d(fwCntrlBD), .clk(clk), .rst(rst));
 
-dff m2xAForwardingLatch(.q(m2xACntrlX), .d(m2xACntrlD), .clk(clk), .rst(rst));
-dff m2xBForwardingLatch(.q(m2xBCntrlX), .d(m2xBCntrlD), .clk(clk), .rst(rst));
 
 endmodule
 `default_nettype wire

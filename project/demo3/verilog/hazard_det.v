@@ -5,7 +5,7 @@
    Description     : This is the module that detects data hazards and stalls the processor if one is detected.
 */
 `default_nettype none
-module hazard_det (rst, clk, fetch_inst, next_inst, pcNop, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstD, branchInstX, branchInstM, branchInstW, x2xACntrl, x2xBCntrl, m2xACntrl, m2xBCntrl);
+module hazard_det (rst, clk, fetch_inst, next_inst, pcNop, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstD, branchInstX, branchInstM, branchInstW, fwCntrlA, fwCntrlB);
 
 input wire rst;
 input wire clk;
@@ -14,13 +14,11 @@ input wire [15:0] fetch_inst;
 output reg [15:0] next_inst;
 output reg pcNop;
 
-// EX to EX forwarding
-output reg x2xACntrl;
-output reg x2xBCntrl;
-
-// MEM to EX forwarding
-output reg m2xACntrl;
-output reg m2xBCntrl;
+// forwarding
+input wire ALUWrtSrcD, ALUWrtSrcX;
+input wire imm8WrtSrcD, imm8WrtSrcX;
+output reg [3:0] fwCntrlA;
+output reg [3:0] fwCntrlB;
 
 input wire regWrtD;
 input wire regWrtX;
@@ -53,10 +51,12 @@ always @(*) begin
     rsHazard = 1'b0;
     rdHazard = 1'b0;
     rtHazard = 1'b0;
-    x2xACntrl = 1'b0;
-    x2xBCntrl = 1'b0;
-    m2xACntrl = 1'b0;
-    m2xBCntrl = 1'b0;
+    fwCntrlA = 4'b0;
+    fwCntrlB = 4'b0;
+
+    // forwarding control word passed in: 4'bXXXX. fwCntrlX[3] is forward at all? y/n. fwCntrlX[2] is 0 for EX to EX forwarding,
+    // otherwise 1 for MEM to EX forwarding. fwCntrlX[1:0] are used to determine forwarding data source. 2'b00 = ALU, 2'b01 = imm8, 
+    // add 2'b10 = memory. 
 
     casex(fetch_inst[15:11])
 
@@ -67,13 +67,17 @@ always @(*) begin
             rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
             rdHazard = (((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
  
-            // EX to EX forwarding possible 
-            x2xACntrl = ((fetch_inst[10:8] == wrtRegD) & regWrtD);
-            x2xBCntrl = ((fetch_inst[7:5] == wrtRegD) & regWrtD);
+            // forwarding possible?
+            fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX);
+            fwCntrlB[3] = ((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX);
 
-            // MEM to EX forwarding possible
-            m2xACntrl = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
-            m2xBCntrl = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
+            // EX to EX forwarding or MEM to EX forwarding possible?
+            fwCntrlA[2] = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
+            fwCntrlB[2] = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
+
+            // source of forwarding data? 
+            fwCntrlA[1:0] = ((ALUWrtSrcD & ~fwCntrlA[2]) | (ALUWrtSrcX & fwCntrlA[2])) ? 2'b00 : (((imm8WrtSrcD & ~fwCntrlA[2]) | (imm8WrtSrcX & fwCntrlA[2])) ? 2'b01 : 2'b10);
+            fwCntrlB[1:0] = ((ALUWrtSrcD & ~fwCntrlB[2]) | (ALUWrtSrcX & fwCntrlB[2])) ? 2'b00 : (((imm8WrtSrcD & ~fwCntrlB[2]) | (imm8WrtSrcX & fwCntrlB[2])) ? 2'b01 : 2'b10);
 
             pcNop = (rsHazard | rdHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
 

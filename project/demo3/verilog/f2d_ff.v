@@ -5,7 +5,7 @@
    Description     : This is the flip flop between the fetch and decode cycles.
 */
 `default_nettype none
-module f2d_ff (instructionF, incPCF, errF, clk, rst, instructionD, incPCD, instrValidD, instrValidF, x2xACntrlF, x2xBCntrlF, x2xACntrlD, x2xBCntrlD, m2xACntrlF, m2xBCntrlF, m2xACntrlD, m2xBCntrlD);
+module f2d_ff (instructionF, incPCF, errF, clk, rst, instructionD, incPCD, instrValidD, instrValidF, fwCntrlAF, fwCntrlBF, fwCntrlAD, fwCntrlBD);
 
 input wire [15:0] instructionF;
 input wire [15:0] incPCF;
@@ -14,17 +14,11 @@ input wire clk;
 input wire rst;
 input wire instrValidF;
 
-// EX to EX forwarding
-input wire x2xACntrlF;
-input wire x2xBCntrlF;
-output wire x2xACntrlD;
-output wire x2xBCntrlD;
-
-// MEM to EX forwarding
-input wire m2xACntrlF;
-input wire m2xBCntrlF;
-output wire m2xACntrlD;
-output wire m2xBCntrlD;
+// forwarding
+input wire [3:0] fwCntrlAF;
+input wire [3:0] fwCntrlBF;
+output wire [3:0] fwCntrlAD;
+output wire [3:0] fwCntrlAD;
 
 output wire [15:0] incPCD;
 output wire [15:0] instructionD;
@@ -40,8 +34,8 @@ dff instrValidLatch(.q(instrValidD), .d(instrValidF), .clk(clk), .rst(rst));
 dff x2xAForwardingLatch(.q(x2xACntrlD), .d(x2xACntrlF), .clk(clk), .rst(rst));
 dff x2xBForwardingLatch(.q(x2xBCntrlD), .d(x2xBCntrlF), .clk(clk), .rst(rst));
 
-dff m2xAForwardingLatch(.q(m2xACntrlD), .d(m2xACntrlF), .clk(clk), .rst(rst));
-dff m2xBForwardingLatch(.q(m2xBCntrlD), .d(m2xBCntrlF), .clk(clk), .rst(rst));
+dff AForwardingLatch [3:0] (.q(fwCntrlAD), .d(fwCntrlAF), .clk(clk), .rst(rst));
+dff BForwardingLatch [3:0] (.q(fwCntrlBD), .d(fwCntrlBF), .clk(clk), .rst(rst));
 
 endmodule
 `default_nettype wire
