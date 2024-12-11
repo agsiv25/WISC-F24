@@ -55,6 +55,8 @@ always @(*) begin
     rtHazard = 1'b0;
     x2xACntrl = 1'b0;
     x2xBCntrl = 1'b0;
+    m2xACntrl = 1'b0;
+    m2xBCntrl = 1'b0;
 
     casex(fetch_inst[15:11])
 
