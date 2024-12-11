@@ -15,10 +15,8 @@ input wire rst;
 input wire instrValidF;
 
 // forwarding
-input wire [3:0] fwCntrlAF;
-input wire [3:0] fwCntrlBF;
-output wire [3:0] fwCntrlAD;
-output wire [3:0] fwCntrlAD;
+input wire [3:0] fwCntrlAF, fwCntrlBF;
+output wire [3:0] fwCntrlAD, fwCntrlAD;
 
 output wire [15:0] incPCD;
 output wire [15:0] instructionD;
@@ -30,9 +28,6 @@ dff instructLatch[15:0](.q(instructionD[15:0]), .d(instructionF[15:0]), .clk(clk
 dff incPCLatch[15:0](.q(incPCD), .d(incPCF), .clk(clk), .rst(rst));
 
 dff instrValidLatch(.q(instrValidD), .d(instrValidF), .clk(clk), .rst(rst));
-
-dff x2xAForwardingLatch(.q(x2xACntrlD), .d(x2xACntrlF), .clk(clk), .rst(rst));
-dff x2xBForwardingLatch(.q(x2xBCntrlD), .d(x2xBCntrlF), .clk(clk), .rst(rst));
 
 dff AForwardingLatch [3:0] (.q(fwCntrlAD), .d(fwCntrlAF), .clk(clk), .rst(rst));
 dff BForwardingLatch [3:0] (.q(fwCntrlBD), .d(fwCntrlBF), .clk(clk), .rst(rst));
