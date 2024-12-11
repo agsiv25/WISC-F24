@@ -72,7 +72,7 @@ always @(*) begin
         // STU: 10011 RS + RD
         5'b1_0011: begin
             rsHazard = (((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
-            rdHazard = ((((fetch_inst[7:5] == wrtRegX) & regWrtX) | ((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
+            rdHazard = (((fetch_inst[7:5] == wrtRegX) & regWrtX) | ((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
  
             // EX to EX forwarding possible 
             x2xACntrl = ((fetch_inst[10:8] == wrtRegD) & regWrtD);

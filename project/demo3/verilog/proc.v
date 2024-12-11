@@ -123,7 +123,7 @@ module proc (/*AUTOARG*/
 
    fetch fetchSection(.newPC(newPCW), .createDump(createDumpM), .rst(rst), .clk(clk), .incPC(incPCF), .instruction(instructionF), .err(fetchErr), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .branchInstD(branchInstD), .branchInstX(branchInstX), .instrValid(instrValidF), .branchInstM(branchInstM), .branchInstW(branchInstW), .x2xACntrl(x2xACntrlF), .x2xBCntrl(x2xBCntrlF));
 
-   f2d_ff fetch2decode(.instructionF(instructionF), .incPCF(incPCF), .errF(fetchErr), .clk(clk), .rst(rst), .instructionD(instructionD), .incPCD(incPCD), .instrValidF(instrValidF), .instrValidD(instrValidD), .x2xACntrlF(x2xACntrlF), x2xBCntrlF(x2xBCntrlF), x2xACntrlD(x2xACntrlD), x2xBCntrlD(x2xBCntrlD));
+   f2d_ff fetch2decode(.instructionF(instructionF), .incPCF(incPCF), .errF(fetchErr), .clk(clk), .rst(rst), .instructionD(instructionD), .incPCD(incPCD), .instrValidF(instrValidF), .instrValidD(instrValidD), .x2xACntrlF(x2xACntrlF), .x2xBCntrlF(x2xBCntrlF), .x2xACntrlD(x2xACntrlD), .x2xBCntrlD(x2xBCntrlD));
    
    decode decodeSection(.instruction(instructionD), .wbData(wbData), .clk(clk), .rst(rst), .imm8(imm8D), .imm11(imm11D), .aluJmp(aluJmpD), .SLBIsel(SLBIselD), .createDump(createDumpD), .memWrt(memWrtD), .brchSig(brchSigD), .Cin(CinD), .invA(invAD), .invB(invBD), .wbDataSel(wbDataSelD), .immSrc(immSrcD), .aluOp(aluOpD), .inA(inAD), .inB(inBD), .wrtData(wrtDataD), .jalSel(jalSelD), .sOpSel(sOpSelD), .err(decodeErr), .readEn(readEnD), .aluPC(aluPCD), .regWrtOut(regWrtD), .regWrt(regWrtW), .wrtRegOut(wrtRegD), .wrtReg(wrtRegW), .instrValidD(instrValidD), .branchInst(branchInstD));
 
