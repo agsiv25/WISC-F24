@@ -54,7 +54,7 @@ always @(*) begin
     fwCntrlB = 4'b0;
 
     // forwarding control word passed in: 4'bXXXX. fwCntrlX[3] is forward at all? y/n. fwCntrlX[2] is 0 for EX to EX forwarding,
-    // otherwise 1 for MEM to EX forwarding. fwCntrlX[1:0] are used to determine forwarding data source. 2'b10 = ALU, 2'b11 = imm8, 
+    // otherwise 1 for MEM to EX forwarding. fwCntrlX[1:0] are used to determine forwarding data source. 2'b00 for SLBI, 2'b10 = ALU, 2'b11 = imm8, 
     // add 2'b01 = memory. 
 
     casex(fetch_inst[15:11])
@@ -77,8 +77,8 @@ always @(*) begin
             fwCntrlB[2] = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
 
             // source of forwarding data? 
-            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : 2'b01);
-            fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : 2'b01);
+            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
+            fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
 
             pcNop = (rsHazard | rdHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
 
@@ -98,8 +98,8 @@ always @(*) begin
             fwCntrlB[2] = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
 
             // source of forwarding data? 
-            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : 2'b01);
-            fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : 2'b01);
+            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
+            fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
 
             pcNop = (rsHazard | rdHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
 
@@ -119,8 +119,8 @@ always @(*) begin
             fwCntrlB[2] = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
 
             // source of forwarding data? 
-            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : 2'b01);
-            fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : 2'b01);
+            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
+            fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
 
             pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
 
@@ -140,8 +140,8 @@ always @(*) begin
             fwCntrlB[2] = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
 
             // source of forwarding data? 
-            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : 2'b01);
-            fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : 2'b01);
+            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
+            fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
 
             pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
 
@@ -161,8 +161,8 @@ always @(*) begin
             fwCntrlB[2] = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
 
             // source of forwarding data? 
-            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : 2'b01);
-            fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : 2'b01);
+            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
+            fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
 
             pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
 
@@ -238,7 +238,7 @@ always @(*) begin
             fwCntrlA[2] = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
 
             // source of forwarding data? 
-            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : 2'b01);
+            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
             
             pcNop = rsHazard | branchInstD | branchInstX | branchInstM | branchInstW;
 
@@ -256,7 +256,7 @@ always @(*) begin
             fwCntrlA[2] = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
 
             // source of forwarding data? 
-            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : 2'b01);
+            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
 
             pcNop = rsHazard | branchInstD | branchInstX | branchInstM | branchInstW;
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
@@ -280,7 +280,7 @@ always @(*) begin
             fwCntrlA[2] = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
 
             // source of forwarding data? 
-            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : 2'b01);
+            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
             
             pcNop = rsHazard | branchInstD | branchInstX | branchInstM | branchInstW;
 
