@@ -5,7 +5,7 @@
    Description     : This is the overall module for the execute stage of the processor.
 */
 `default_nettype none
-module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluFinal, newPC, sOpSel, aluOut, addPC, aluPC, fwCntrlB, fwCntrlA, wbDataSelX, x2xALUData, x2xImm8Data, m2xALUData, m2xImm8Data, m2xMemData, x2xAddPCData, m2xAddPCData);
+module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluFinal, newPC, sOpSel, aluOut, addPC, aluPC, fwCntrlB, fwCntrlA, wbDataSelX, x2xALUData, x2xImm8Data, m2xALUData, m2xImm8Data, m2xMemData, x2xAddPCData, m2xAddPCData, stuSel);
 
    input wire SLBIsel;
    input wire [15:0] incPC;
@@ -30,6 +30,9 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    input wire [1:0] wbDataSelX;
    input wire [15:0] x2xALUData, x2xImm8Data, x2xAddPCData;
    input wire [15:0] m2xALUData, m2xImm8Data, m2xMemData, m2xAddPCData;
+   input wire stuSel;
+   input wire [15:0] wrtDataXin;
+   output wire [15:0] wrtDataXout;
 
    output wire [15:0] aluFinal;
    output wire [15:0] newPC;
@@ -49,17 +52,22 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    
    // forwarding
    wire [15:0] forwardedInA;
-   wire [15:0] forwardedInB; 
+   wire [15:0] preSTForwardedInB; 
+   wire [15:0] forwardedInB;
 
    // forwarding control word passed in: 4'bXXXX. fwCntrlX[3] is forward at all? y/n. fwCntrlX[2] is 0 for EX to EX forwarding,
    // otherwise 1 for MEM to EX forwarding. fwCntrlX[1:0] are used to determine forwarding data source. 2'b00 = addPC, 2'b10 = ALU, 2'b11 = imm8, 
    // add 2'b01 = memory. 
 
    assign forwardedInA = fwCntrlA[3] ? (fwCntrlA[2] ? (~fwCntrlA[1] ? (fwCntrlA[0] ? m2xMemData : m2xAddPCData) : (fwCntrlA[0] ? m2xImm8Data : m2xALUData)) : (fwCntrlA[1] ? (fwCntrlA[0] ? x2xImm8Data : x2xALUData) : x2xAddPCData)) : inA;
-   assign forwardedInB = fwCntrlB[3] ? (fwCntrlB[2] ? (~fwCntrlB[1] ? (fwCntrlB[0] ? m2xMemData : m2xAddPCData) : (fwCntrlB[0] ? m2xImm8Data : m2xALUData)) : (fwCntrlB[1] ? (fwCntrlB[0] ? x2xImm8Data : x2xALUData) : x2xAddPCData)) : inB;
+   assign preSTForwardedInB = fwCntrlB[3] ? (fwCntrlB[2] ? (~fwCntrlB[1] ? (fwCntrlB[0] ? m2xMemData : m2xAddPCData) : (fwCntrlB[0] ? m2xImm8Data : m2xALUData)) : (fwCntrlB[1] ? (fwCntrlB[0] ? x2xImm8Data : x2xALUData) : x2xAddPCData)) : inB;
 
    // assign forwardedInA = (x2xACntrl) ? x2xForwardData : (m2xACntrl) ? m2xForwardData : inA;
    // assign forwardedInB = (x2xBCntrl) ? x2xForwardData : (m2xBCntrl) ? m2xForwardData : inB;
+
+   // for ST and STU. forwarding for memory store register value
+   assign wrtDataXout = (stuSel) ? forwardedInB : inB;
+   assign forwardedInB = (stuSel) ? inB : preSTForwardedInB;
 
    // ALU
    alu aluExec(.InA(forwardedInA), .InB(forwardedInB), .Cin(Cin), .Oper(aluOp), .invA(invA), .invB(invB), .sign(1'b0), .Out(aluOut), .Zero(zeroFlag), .Ofl(oflFlag), .Cout(carryOut), .signFlag(signFlag));
