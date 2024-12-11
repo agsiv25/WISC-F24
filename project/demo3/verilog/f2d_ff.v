@@ -16,7 +16,7 @@ input wire instrValidF;
 
 // forwarding
 input wire [3:0] fwCntrlAF, fwCntrlBF;
-output wire [3:0] fwCntrlAD, fwCntrlAD;
+output wire [3:0] fwCntrlAD, fwCntrlBD;
 
 output wire [15:0] incPCD;
 output wire [15:0] instructionD;

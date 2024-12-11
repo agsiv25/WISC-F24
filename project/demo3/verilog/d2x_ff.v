@@ -43,7 +43,7 @@ input wire createDumpD;
 
 // forwarding
 input wire [3:0] fwCntrlAD, fwCntrlBD;
-output wire [3:0] fwCntrlAX, fwCntrlAX;
+output wire [3:0] fwCntrlAX, fwCntrlBX;
 
 // to execute stage 
 output wire regWrtX;
