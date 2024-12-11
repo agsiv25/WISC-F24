@@ -94,8 +94,8 @@ always @(*) begin
             fwCntrlB[3] = ((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) & ~((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
 
             // EX to EX forwarding or MEM to EX forwarding possible?
-            fwCntrlA[2] = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
-            fwCntrlB[2] = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
+            fwCntrlA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
+            fwCntrlB[2] = ~((fetch_inst[7:5] == wrtRegD) & regWrtD);
 
             // source of forwarding data? 
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
@@ -115,8 +115,8 @@ always @(*) begin
             fwCntrlB[3] = ((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) & ~((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
 
             // EX to EX forwarding or MEM to EX forwarding possible?
-            fwCntrlA[2] = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
-            fwCntrlB[2] = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
+            fwCntrlA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
+            fwCntrlB[2] = ~((fetch_inst[7:5] == wrtRegD) & regWrtD);
 
             // source of forwarding data? 
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
@@ -136,8 +136,8 @@ always @(*) begin
             fwCntrlB[3] = ((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) & ~((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
 
             // EX to EX forwarding or MEM to EX forwarding possible?
-            fwCntrlA[2] = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
-            fwCntrlB[2] = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
+            fwCntrlA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
+            fwCntrlB[2] = ~((fetch_inst[7:5] == wrtRegD) & regWrtD);
 
             // source of forwarding data? 
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
@@ -157,8 +157,8 @@ always @(*) begin
             fwCntrlB[3] = ((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) & ~((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
 
             // EX to EX forwarding or MEM to EX forwarding possible?
-            fwCntrlA[2] = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
-            fwCntrlB[2] = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
+            fwCntrlA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
+            fwCntrlB[2] = ~((fetch_inst[7:5] == wrtRegD) & regWrtD);
 
             // source of forwarding data? 
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
@@ -235,7 +235,7 @@ always @(*) begin
             fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
 
             // EX to EX forwarding or MEM to EX forwarding possible?
-            fwCntrlA[2] = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
+            fwCntrlA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
 
             // source of forwarding data? 
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
@@ -253,7 +253,7 @@ always @(*) begin
             fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
 
             // EX to EX forwarding or MEM to EX forwarding possible?
-            fwCntrlA[2] = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
+            fwCntrlA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
 
             // source of forwarding data? 
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
@@ -277,7 +277,7 @@ always @(*) begin
             fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
 
             // EX to EX forwarding or MEM to EX forwarding possible?
-            fwCntrlA[2] = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
+            fwCntrlA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
 
             // source of forwarding data? 
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
