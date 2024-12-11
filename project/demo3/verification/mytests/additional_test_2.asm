@@ -4,7 +4,7 @@
 
 
 // Tests a simple hazard without NOPs inserted manually. 
-lbi r1, 0xFF
-slbi r1, 0x0
-addi r2, r1, 0x01
+lbi r1, 0xff    //expected value in r1 = -1
+lbi r2, 1       //expected value in r2 = 1
+sco r3, r1, r2  //expected value in r3 = 1
 halt
