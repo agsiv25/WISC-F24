@@ -47,7 +47,7 @@ output wire err;
 output wire branchInst;
 
 // forwarding
-output wire stuSel;
+output wire stuSel;      // for STU instruction, choose memory write data source
 
 wire zeroSel;            // choose zero or sign extended immediates 
 wire [15:0] imm5;
@@ -56,7 +56,6 @@ wire [1:0] regDestSel;   // sel signal to register write mux
 
 wire [15:0] regB;
 wire [1:0] BSrc;          // select signal for inB mux
-wire stuSel;              // for STU instruction, choose memory write data source
 wire regErr;
 wire cntrlErr;
 wire [15:0]inst;
