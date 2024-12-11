@@ -5,7 +5,7 @@
    Description     : This is the module for the overall fetch stage of the processor.
 */
 `default_nettype none
-module fetch (newPC, createDump, rst, clk, incPC, instruction, err, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstD, branchInstX, branchInstM, branchInstW, instrValid, x2xACntrl, x2xBCntrl);
+module fetch (newPC, createDump, rst, clk, incPC, instruction, err, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstD, branchInstX, branchInstM, branchInstW, instrValid, x2xACntrl, x2xBCntrl, m2xACntrl, m2xBCntrl);
 
 input wire [15:0]newPC;
 input wire createDump;
@@ -20,6 +20,10 @@ output wire instrValid;
 // EX to EX forwarding 
 output wire x2xACntrl;
 output wire x2xBCntrl;
+
+// MEM to EX forwarding
+output wire m2xACntrl;
+output wire m2xBCntrl;
 
 input wire regWrtD;
 input wire regWrtX;
@@ -61,7 +65,7 @@ assign err = pcRegErr | pcIncErr;
 
 memory2c instruction_memory(.data_out(instruction2), .data_in(16'b0), .addr(pcRegAddr), .enable(1'b1), .wr(1'b0), .createdump(createDump), .clk(clk), .rst(rst));
    
-hazard_det hazard(.rst(rst), .clk(clk), .fetch_inst(instruction2), .next_inst(instruction), .pcNop(pcNop), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .branchInstD(branchInstD), .branchInstX(branchInstX), .branchInstM(branchInstM), .branchInstW(branchInstW), .x2xACntrl(x2xACntrl), .x2xBCntrl(x2xBCntrl));
+hazard_det hazard(.rst(rst), .clk(clk), .fetch_inst(instruction2), .next_inst(instruction), .pcNop(pcNop), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .branchInstD(branchInstD), .branchInstX(branchInstX), .branchInstM(branchInstM), .branchInstW(branchInstW), .x2xACntrl(x2xACntrl), .x2xBCntrl(x2xBCntrl), .m2xACntrl(m2xACntrl), .m2xBCntrl(m2xBCntrl));
 
 endmodule
 `default_nettype wire

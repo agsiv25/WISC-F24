@@ -5,7 +5,7 @@
    Description     : This is the overall module for the execute stage of the processor.
 */
 `default_nettype none
-module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluFinal, newPC, sOpSel, aluOut, addPC, aluPC, x2xForwardData, x2xACntrl, x2xBCntrl);
+module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluFinal, newPC, sOpSel, aluOut, addPC, aluPC, x2xForwardData, x2xACntrl, x2xBCntrl, m2xForwardData, m2xACntrl, m2xBCntrl);
 
    input wire SLBIsel;
    input wire [15:0] incPC;
@@ -26,8 +26,11 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
 
    // EX to EX forwarding
    input wire [15:0] x2xForwardData;
+   input wire [15:0] m2xForwardData;
    input wire x2xACntrl;
    input wire x2xBCntrl;
+   input wire m2xACntrl;
+   input wire m2xBCntrl;
 
    output wire [15:0] aluFinal;
    output wire [15:0] newPC;
@@ -47,10 +50,10 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    
    // EX to EX forwarding
    wire [15:0] forwardedInA;
-   wire [15:0] forwardedInB;
+   wire [15:0] forwardedInB; 
 
-   assign forwardedInA = (x2xACntrl) ? x2xForwardData : inA;
-   assign forwardedInB = (x2xBCntrl) ? x2xForwardData : inB;
+   assign forwardedInA = (x2xACntrl) ? x2xForwardData : (m2xACntrl) ? m2xForwardData : inA;
+   assign forwardedInB = (x2xBCntrl) ? x2xForwardData : (m2xBCntrl) ? m2xForwardData : inB;
 
    // ALU
    alu aluExec(.InA(forwardedInA), .InB(forwardedInB), .Cin(Cin), .Oper(aluOp), .invA(invA), .invB(invB), .sign(1'b0), .Out(aluOut), .Zero(zeroFlag), .Ofl(oflFlag), .Cout(carryOut), .signFlag(signFlag));

@@ -5,7 +5,7 @@
    Description     : This is the module that detects data hazards and stalls the processor if one is detected.
 */
 `default_nettype none
-module hazard_det (rst, clk, fetch_inst, next_inst, pcNop, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstD, branchInstX, branchInstM, branchInstW, x2xACntrl, x2xBCntrl);
+module hazard_det (rst, clk, fetch_inst, next_inst, pcNop, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstD, branchInstX, branchInstM, branchInstW, x2xACntrl, x2xBCntrl, m2xACntrl, m2xBCntrl);
 
 input wire rst;
 input wire clk;
@@ -17,6 +17,10 @@ output reg pcNop;
 // EX to EX forwarding
 output reg x2xACntrl;
 output reg x2xBCntrl;
+
+// MEM to EX forwarding
+output reg m2xACntrl;
+output reg m2xBCntrl;
 
 input wire regWrtD;
 input wire regWrtX;
@@ -58,12 +62,16 @@ always @(*) begin
 
         // ST: 10000 RS + RD
         5'b1_0000: begin  
-            rsHazard = (((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
-            rdHazard = (((fetch_inst[7:5] == wrtRegX) & regWrtX) | ((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
+            rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
+            rdHazard = (((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
  
             // EX to EX forwarding possible 
             x2xACntrl = ((fetch_inst[10:8] == wrtRegD) & regWrtD);
             x2xBCntrl = ((fetch_inst[7:5] == wrtRegD) & regWrtD);
+
+            // MEM to EX forwarding possible
+            m2xACntrl = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
+            m2xBCntrl = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
 
             pcNop = (rsHazard | rdHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
 
@@ -71,12 +79,16 @@ always @(*) begin
         end
         // STU: 10011 RS + RD
         5'b1_0011: begin
-            rsHazard = (((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
-            rdHazard = (((fetch_inst[7:5] == wrtRegX) & regWrtX) | ((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
+            rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
+            rdHazard = (((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
  
             // EX to EX forwarding possible 
             x2xACntrl = ((fetch_inst[10:8] == wrtRegD) & regWrtD);
             x2xBCntrl = ((fetch_inst[7:5] == wrtRegD) & regWrtD);
+
+            // MEM to EX forwarding possible
+            m2xACntrl = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
+            m2xBCntrl = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
 
             pcNop = (rsHazard | rdHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
 
@@ -84,12 +96,16 @@ always @(*) begin
         end
         // arithmetic: 11011 RS + RT
         5'b1_1011: begin
-            rsHazard = (((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
-            rtHazard = (((fetch_inst[7:5] == wrtRegX) & regWrtX) | ((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
+            rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
+            rtHazard = (((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
  
             // EX to EX forwarding possible 
             x2xACntrl = ((fetch_inst[10:8] == wrtRegD) & regWrtD);
             x2xBCntrl = ((fetch_inst[7:5] == wrtRegD) & regWrtD);
+
+            // MEM to EX forwarding possible
+            m2xACntrl = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
+            m2xBCntrl = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
 
             pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
 
@@ -97,12 +113,16 @@ always @(*) begin
         end
         // bit operations: 11010 RS + RT
         5'b1_1010: begin
-            rsHazard = (((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
-            rtHazard = (((fetch_inst[7:5] == wrtRegX) & regWrtX) | ((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
+            rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
+            rtHazard = (((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
  
             // EX to EX forwarding possible 
             x2xACntrl = ((fetch_inst[10:8] == wrtRegD) & regWrtD);
             x2xBCntrl = ((fetch_inst[7:5] == wrtRegD) & regWrtD);
+
+            // MEM to EX forwarding possible
+            m2xACntrl = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
+            m2xBCntrl = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
 
             pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
 
@@ -110,12 +130,16 @@ always @(*) begin
         end
         // Set 1/0: 111xx RS + RT
         5'b1_11xx: begin
-            rsHazard = (((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
-            rtHazard = (((fetch_inst[7:5] == wrtRegX) & regWrtX) | ((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
+            rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
+            rtHazard = (((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
  
             // EX to EX forwarding possible 
             x2xACntrl = ((fetch_inst[10:8] == wrtRegD) & regWrtD);
             x2xBCntrl = ((fetch_inst[7:5] == wrtRegD) & regWrtD);
+
+            // MEM to EX forwarding possible
+            m2xACntrl = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
+            m2xBCntrl = ((fetch_inst[7:5] == wrtRegX) & regWrtX);
 
             pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
 
@@ -182,10 +206,13 @@ always @(*) begin
         // end
         // Branches: 011xx Rs + control 
         5'b0_11xx: begin
-            rsHazard = (((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
+            rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
             
             // EX to EX forwarding possible 
             x2xACntrl = ((fetch_inst[10:8] == wrtRegD) & regWrtD);
+
+            // MEM to EX forwarding possible
+            m2xACntrl = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
             
             pcNop = rsHazard | branchInstD | branchInstX | branchInstM | branchInstW;
 
@@ -194,10 +221,13 @@ always @(*) begin
 
         // JALR and JR commands: 00101 and 00111: control and rs hazard
         5'b0_01x1: begin
-            rsHazard = (((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
+            rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
 
             // EX to EX forwarding possible 
             x2xACntrl = ((fetch_inst[10:8] == wrtRegD) & regWrtD);
+
+            // MEM to EX forwarding possible
+            m2xACntrl = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
 
             pcNop = rsHazard | branchInstD | branchInstX | branchInstM | branchInstW;
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
@@ -212,7 +242,14 @@ always @(*) begin
 
         // Only reads from RS and no control hazards
         default: begin
-            rsHazard = (((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
+            rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
+            
+            // EX to EX forwarding possible 
+            x2xACntrl = ((fetch_inst[10:8] == wrtRegD) & regWrtD);
+
+            // MEM to EX forwarding possible
+            m2xACntrl = ((fetch_inst[10:8] == wrtRegX) & regWrtX);
+            
             pcNop = rsHazard | branchInstD | branchInstX | branchInstM | branchInstW;
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
