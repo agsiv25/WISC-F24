@@ -5,7 +5,7 @@
    Description     : This is the overall module for the execute stage of the processor.
 */
 `default_nettype none
-module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluFinal, newPC, sOpSel, aluOut, addPC, aluPC);
+module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluFinal, newPC, sOpSel, aluOut, addPC, aluPC, x2xForwardData, x2xACntrl, x2xBCntrl);
 
    input wire SLBIsel;
    input wire [15:0] incPC;
@@ -24,6 +24,11 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    input wire sOpSel;
    input wire aluPC;
 
+   // EX to EX forwarding
+   input wire [15:0] x2xForwardData;
+   input wire x2xACntrl;
+   input wire x2xBCntrl;
+
    output wire [15:0] aluFinal;
    output wire [15:0] newPC;
    output wire [15:0] addPC;
@@ -40,9 +45,15 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    wire [15:0] jmpPC;
    wire [15:0] possPC;
    
+   // EX to EX forwarding
+   wire [15:0] forwardedInA;
+   wire [15:0] forwardedInB;
+
+   assign forwardedInA = (x2xACntrl) ? x2xForwardData : inA;
+   assign forwardedInB = (x2xBCntrl) ? x2xForwardData : inB;
 
    // ALU
-   alu aluExec(.InA(inA), .InB(inB), .Cin(Cin), .Oper(aluOp), .invA(invA), .invB(invB), .sign(1'b0), .Out(aluOut), .Zero(zeroFlag), .Ofl(oflFlag), .Cout(carryOut), .signFlag(signFlag));
+   alu aluExec(.InA(forwardedInA), .InB(forwardedInB), .Cin(Cin), .Oper(aluOp), .invA(invA), .invB(invB), .sign(1'b0), .Out(aluOut), .Zero(zeroFlag), .Ofl(oflFlag), .Cout(carryOut), .signFlag(signFlag));
 
    // Branch conditional module
    branch_conditional branchCond(.brchSig(brchSig), .sf(signFlag), .zf(zeroFlag), .of(oflFlag), .cf(carryOut), .jmpSel(jmpSel));
