@@ -66,7 +66,7 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    // assign forwardedInB = (x2xBCntrl) ? x2xForwardData : (m2xBCntrl) ? m2xForwardData : inB;
 
    // for ST and STU. forwarding for memory store register value
-   assign wrtDataXout = (stuSel) ? preSTForwardedInB : wrtDataXin;
+   assign wrtDataXout = (stuSel) ? wrtDataXin : preSTForwardedInB;
    assign forwardedInB = (stuSel) ? inB : preSTForwardedInB;
 
    // ALU
