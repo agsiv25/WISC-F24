@@ -72,7 +72,7 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    //assign wrtDataXout = (stuSel) ? wrtDataXin : preSTForwardedInB;
    // for store 
    //assign wrtDataXout = (stuSel) ? preSTForwardedInB : wrtDataXin;
-   assign wrtDataXout = ~fwCntrlB[4] ? preSTForwardedInB : wrtDataXin;
+   assign wrtDataXout = fwCntrlB[4] ? (ldFWFlagX ? wrtDataXin : preSTForwardedInB) : (preSTForwardedInB : wrtDataXin);
 
    assign forwardedInB = (stuSel) ? inB : preSTForwardedInB;
 

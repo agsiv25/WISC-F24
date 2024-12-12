@@ -144,20 +144,24 @@ always @(*) begin
             // rtHazard = ((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0; 
  
             // forwarding possible?
-            fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
-            fwCntrlB[3] = ((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) & ~((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
+            fwTempA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
+            fwTempB[3] = ((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) & ~((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
 
             // EX to EX forwarding or MEM to EX forwarding possible?
-            fwCntrlA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
-            fwCntrlB[2] = ~((fetch_inst[7:5] == wrtRegD) & regWrtD);
+            fwTempA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
+            fwTempB[2] = ~((fetch_inst[7:5] == wrtRegD) & regWrtD);
 
             // source of forwarding data? 
-            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
-            fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
+            fwTempA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
+            fwTempB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
 
             pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
+
+            fwCntrlA = pcNop ? 5'b0 : fwTempA;
+            fwCntrlB = pcNop ? 5'b0 : fwTempB;
+
         end
         // bit operations: 11010 RS + RT
         5'b1_1010: begin
@@ -168,20 +172,24 @@ always @(*) begin
             // rtHazard = ((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0; 
  
             // forwarding possible?
-            fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
-            fwCntrlB[3] = ((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) & ~((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
+            fwTempA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
+            fwTempB[3] = ((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) & ~((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
 
             // EX to EX forwarding or MEM to EX forwarding possible?
-            fwCntrlA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
-            fwCntrlB[2] = ~((fetch_inst[7:5] == wrtRegD) & regWrtD);
+            fwTempA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
+            fwTempB[2] = ~((fetch_inst[7:5] == wrtRegD) & regWrtD);
 
             // source of forwarding data? 
-            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
-            fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
+            fwTempA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
+            fwTempB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
 
             pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
+
+            fwCntrlA = pcNop ? 5'b0 : fwTempA;
+            fwCntrlB = pcNop ? 5'b0 : fwTempB;
+
         end
         // Set 1/0: 111xx RS + RT
         5'b1_11xx: begin
@@ -192,20 +200,24 @@ always @(*) begin
             // rtHazard = ((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0; 
  
             // forwarding possible?
-            fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
-            fwCntrlB[3] = ((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) & ~((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
+            fwTempA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
+            fwTempB[3] = ((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) & ~((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
 
             // EX to EX forwarding or MEM to EX forwarding possible?
-            fwCntrlA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
-            fwCntrlB[2] = ~((fetch_inst[7:5] == wrtRegD) & regWrtD);
+            fwTempA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
+            fwTempB[2] = ~((fetch_inst[7:5] == wrtRegD) & regWrtD);
 
             // source of forwarding data? 
-            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
-            fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
+            fwTempA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
+            fwTempB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
 
             pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
+
+            fwCntrlA = pcNop ? 5'b0 : fwTempA;
+            fwCntrlB = pcNop ? 5'b0 : fwTempB;
+
         end
 
         // LBI: 11000
@@ -273,17 +285,19 @@ always @(*) begin
             // rsHazard = ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0;
             
             // forwarding possible?
-            fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
+            fwTempA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
 
             // EX to EX forwarding or MEM to EX forwarding possible?
-            fwCntrlA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
+            fwTempA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
 
             // source of forwarding data? 
-            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
+            fwTempA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
             
             pcNop = rsHazard | branchInstD | branchInstX | branchInstM | branchInstW;
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
+
+            fwCntrlA = pcNop ? 5'b0 : fwTempA;
         end
 
         // JALR and JR commands: 00101 and 00111: control and rs hazard
@@ -293,16 +307,19 @@ always @(*) begin
             // rsHazard = ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0;
 
             // forwarding possible?
-            fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
+            fwTempA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
 
             // EX to EX forwarding or MEM to EX forwarding possible?
-            fwCntrlA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
+            fwTempA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
 
             // source of forwarding data? 
-            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
-
+            fwTempA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
+            
             pcNop = rsHazard | branchInstD | branchInstX | branchInstM | branchInstW;
+
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
+
+            fwCntrlA = pcNop ? 5'b0 : fwTempA;
         end
 
         // J and JAL commands: 00100 and 00110: pure control hazard
@@ -316,20 +333,23 @@ always @(*) begin
         default: begin
             rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM & ~((fetch_inst[10:8] == wrtRegX) & regWrtX)) | ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0;
  
-            // rsHazard = ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0;
-            
+            // fwCntrlB[5] = (fetch_inst[15:11] == 5'b10001);
+
             // forwarding possible?
-            fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
+            fwTempA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
 
             // EX to EX forwarding or MEM to EX forwarding possible?
-            fwCntrlA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
+            fwTempA[2] = ~((fetch_inst[10:8] == wrtRegD) & regWrtD);
 
             // source of forwarding data? 
-            fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
+            fwTempA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
             
             pcNop = rsHazard | branchInstD | branchInstX | branchInstM | branchInstW;
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
+
+            fwCntrlA = pcNop ? 5'b0 : fwTempA;
+
         end
     endcase
 end
