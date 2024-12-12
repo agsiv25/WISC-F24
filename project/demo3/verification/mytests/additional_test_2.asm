@@ -4,9 +4,9 @@
 
 
 // Tests a simple hazard without NOPs inserted manually. 
-lbi  r4, 0     //mem location tests first mem location
+lbi  r4, 50     //mem location
 lbi  r2, 8      //value to store
 lbi  r3, 0      //clear r3
-st   r2, r1, 0  //store at mem location
-ld   r3, r1, 0  //load from mem location
+st   r2, r1, 10  //store at mem location +10
+ld   r3, r1, 10  //load from mem location +10
 halt
