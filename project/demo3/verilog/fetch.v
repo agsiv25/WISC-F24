@@ -18,7 +18,7 @@ output wire err;
 output wire instrValid;
 
 // forwarding 
-output wire [3:0] fwCntrlA, fwCntrlB;
+output wire [4:0] fwCntrlA, fwCntrlB;
 input wire [1:0] wbDataSelD, wbDataSelX;
 
 input wire regWrtD;
