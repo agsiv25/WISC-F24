@@ -16,8 +16,8 @@ output reg pcNop;
 
 // forwarding
 input wire [1:0] wbDataSelD, wbDataSelX;
-output reg [4:0] fwCntrlA;
-output reg [4:0] fwCntrlB;
+output reg [5:0] fwCntrlA;
+output reg [5:0] fwCntrlB;
 
 input wire regWrtD;
 input wire regWrtX;
@@ -50,8 +50,8 @@ always @(*) begin
     rsHazard = 1'b0;
     rdHazard = 1'b0;
     rtHazard = 1'b0;
-    fwCntrlA = 5'b0;
-    fwCntrlB = 5'b0;
+    fwCntrlA = 6'b0;
+    fwCntrlB = 6'b0;
 
     // forwarding control word passed in: 5'bXXXXX. fwCntrlX[4] is fwStuSel. fwCntrlX[3] is forward at all? y/n. fwCntrlX[2] is 0 for EX to EX forwarding,
     // otherwise 1 for MEM to EX forwarding. fwCntrlX[1:0] are used to determine forwarding data source. 2'b00 for SLBI, 2'b10 = ALU, 2'b11 = imm8, 
@@ -305,7 +305,8 @@ always @(*) begin
         default: begin
             rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM & ~((fetch_inst[10:8] == wrtRegX) & regWrtX)) | ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0;
  
-            // fwCntrlB[5] = (fetch_inst[15:11] == 5'b10001);
+            // ld flag set
+            fwCntrlB[5] = (fetch_inst[15:11] == 5'b10001);
 
             // forwarding possible?
             fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);

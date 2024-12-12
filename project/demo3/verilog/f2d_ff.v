@@ -15,8 +15,8 @@ input wire rst;
 input wire instrValidF;
 
 // forwarding
-input wire [4:0] fwCntrlAF, fwCntrlBF;
-output wire [4:0] fwCntrlAD, fwCntrlBD;
+input wire [5:0] fwCntrlAF, fwCntrlBF;
+output wire [5:0] fwCntrlAD, fwCntrlBD;
 
 output wire [15:0] incPCD;
 output wire [15:0] instructionD;
@@ -29,8 +29,8 @@ dff incPCLatch[15:0](.q(incPCD), .d(incPCF), .clk(clk), .rst(rst));
 
 dff instrValidLatch(.q(instrValidD), .d(instrValidF), .clk(clk), .rst(rst));
 
-dff AForwardingLatch [4:0] (.q(fwCntrlAD), .d(fwCntrlAF), .clk(clk), .rst(rst));
-dff BForwardingLatch [4:0] (.q(fwCntrlBD), .d(fwCntrlBF), .clk(clk), .rst(rst));
+dff AForwardingLatch [5:0] (.q(fwCntrlAD), .d(fwCntrlAF), .clk(clk), .rst(rst));
+dff BForwardingLatch [5:0] (.q(fwCntrlBD), .d(fwCntrlBF), .clk(clk), .rst(rst));
 
 endmodule
 `default_nettype wire

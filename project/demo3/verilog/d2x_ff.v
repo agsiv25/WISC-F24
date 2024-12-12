@@ -42,8 +42,8 @@ input wire [15:0] instructionD;
 input wire createDumpD;
 
 // forwarding
-input wire [4:0] fwCntrlAD, fwCntrlBD;
-output wire [4:0] fwCntrlAX, fwCntrlBX;
+input wire [5:0] fwCntrlAD, fwCntrlBD;
+output wire [5:0] fwCntrlAX, fwCntrlBX;
 input wire stuSelD;
 output wire stuSelX;
 
@@ -114,8 +114,8 @@ dff instructionLatch [15:0] (.q(instructionX), .d(instructionD), .clk(clk), .rst
 
 dff createDumpLatch(.q(createDumpX), .d(createDumpD), .clk(clk), .rst(rst));
 
-dff AForwardingLatch [4:0] (.q(fwCntrlAX), .d(fwCntrlAD), .clk(clk), .rst(rst));
-dff BForwardingLatch [4:0] (.q(fwCntrlBX), .d(fwCntrlBD), .clk(clk), .rst(rst));
+dff AForwardingLatch [5:0] (.q(fwCntrlAX), .d(fwCntrlAD), .clk(clk), .rst(rst));
+dff BForwardingLatch [5:0] (.q(fwCntrlBX), .d(fwCntrlBD), .clk(clk), .rst(rst));
 
 dff stuSelLatch(.q(stuSelX), .d(stuSelD), .clk(clk), .rst(rst));
 

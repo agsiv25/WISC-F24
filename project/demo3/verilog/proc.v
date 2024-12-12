@@ -115,12 +115,12 @@ module proc (/*AUTOARG*/
    wire instrValidD;
 
    // forwarding
-   wire [4:0] fwCntrlAF;
-   wire [4:0] fwCntrlBF;
-   wire [4:0] fwCntrlAD;
-   wire [4:0] fwCntrlBD;
-   wire [4:0] fwCntrlAX;
-   wire [4:0] fwCntrlBX;
+   wire [5:0] fwCntrlAF;
+   wire [5:0] fwCntrlBF;
+   wire [5:0] fwCntrlAD;
+   wire [5:0] fwCntrlBD;
+   wire [5:0] fwCntrlAX;
+   wire [5:0] fwCntrlBX;
    wire stuSelD;
    wire stuSelX;
 

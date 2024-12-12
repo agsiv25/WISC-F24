@@ -25,8 +25,8 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    input wire aluPC;
 
    // forwarding
-   input wire [4:0] fwCntrlA;
-   input wire [4:0] fwCntrlB;
+   input wire [5:0] fwCntrlA;
+   input wire [5:0] fwCntrlB;
    input wire [1:0] wbDataSelX;
    input wire [15:0] x2xALUData, x2xImm8Data, x2xAddPCData;
    input wire [15:0] m2xALUData, m2xImm8Data, m2xMemData, m2xAddPCData;
