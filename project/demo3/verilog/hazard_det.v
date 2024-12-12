@@ -16,8 +16,8 @@ output reg pcNop;
 
 // forwarding
 input wire [1:0] wbDataSelD, wbDataSelX;
-output reg [5:0] fwCntrlA;
-output reg [5:0] fwCntrlB;
+output reg [4:0] fwCntrlA;
+output reg [4:0] fwCntrlB;
 
 input wire regWrtD;
 input wire regWrtX;
@@ -50,12 +50,12 @@ always @(*) begin
     rsHazard = 1'b0;
     rdHazard = 1'b0;
     rtHazard = 1'b0;
-    fwCntrlA = 6'b0;
-    fwCntrlB = 6'b0;
+    fwCntrlA = 5'b0;
+    fwCntrlB = 5'b0;
 
-    // forwarding control word passed in: 5'bXXXXX. fwCntrlX[4] is fwStuSel. fwCntrlX[3] is forward at all? y/n. fwCntrlX[2] is 0 for EX to EX forwarding,
-    // otherwise 1 for MEM to EX forwarding. fwCntrlX[1:0] are used to determine forwarding data source. 2'b00 for SLBI, 2'b10 = ALU, 2'b11 = imm8, 
-    // add 2'b01 = memory. 
+    // forwarding control word passed in: 5'bXXXXX. fwCntrl[4] is pipelined stuSel signal. fwCntrlX[3] is forward at all? y/n. 
+    // fwCntrlX[2] is 0 for EX to EX forwarding, otherwise 1 for MEM to EX forwarding. fwCntrlX[1:0] are used to determine 
+    // forwarding data source. 2'b00 = addPC, 2'b10 = ALU, 2'b11 = imm8, add 2'b01 = memory. 
 
     casex(fetch_inst[15:11])
 
@@ -65,7 +65,6 @@ always @(*) begin
         5'b1_0000: begin  
 
             // is ST instruction, so set stuSel bit
-            fwCntrlA[4] = 1'b1;
             fwCntrlB[4] = 1'b1;
 
             // write hazard in WB stage, also memory load in previous instruction into register being read from. 
@@ -95,16 +94,12 @@ always @(*) begin
         // STU: 10011 RS + RD
         5'b1_0011: begin
             // is ST instruction, so set stuSel bit
-            fwCntrlA[4] = 1'b1;
             fwCntrlB[4] = 1'b1;
 
             // write hazard in WB stage, also memory load in previous instruction into register being read from. 
             // Cannot x2x data forward, must wait until m2x is possible. 
             rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM & ~((fetch_inst[10:8] == wrtRegX) & regWrtX)) | ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0;
             rdHazard = (((fetch_inst[7:5] == wrtRegM) & regWrtM & ~((fetch_inst[7:5] == wrtRegX) & regWrtX)) | ((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0; 
- 
-            // rsHazard = ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0;
-            // rdHazard = ((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0; 
 
             // forwarding possible?
             fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
@@ -128,9 +123,6 @@ always @(*) begin
             rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM & ~((fetch_inst[10:8] == wrtRegX) & regWrtX)) | ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0;
             rtHazard = (((fetch_inst[7:5] == wrtRegM) & regWrtM & ~((fetch_inst[7:5] == wrtRegX) & regWrtX)) | ((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0; 
  
-            // rsHazard = ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0;
-            // rtHazard = ((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0; 
- 
             // forwarding possible?
             fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
             fwCntrlB[3] = ((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) & ~((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
@@ -152,9 +144,6 @@ always @(*) begin
             rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM & ~((fetch_inst[10:8] == wrtRegX) & regWrtX)) | ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0;
             rtHazard = (((fetch_inst[7:5] == wrtRegM) & regWrtM & ~((fetch_inst[7:5] == wrtRegX) & regWrtX)) | ((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0; 
  
-            // rsHazard = ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0;
-            // rtHazard = ((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0; 
- 
             // forwarding possible?
             fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
             fwCntrlB[3] = ((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) & ~((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
@@ -175,9 +164,6 @@ always @(*) begin
         5'b1_11xx: begin
             rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM & ~((fetch_inst[10:8] == wrtRegX) & regWrtX)) | ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0;
             rtHazard = (((fetch_inst[7:5] == wrtRegM) & regWrtM & ~((fetch_inst[7:5] == wrtRegX) & regWrtX)) | ((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0; 
- 
-            // rsHazard = ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0;
-            // rtHazard = ((fetch_inst[7:5] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0; 
  
             // forwarding possible?
             fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
@@ -257,9 +243,7 @@ always @(*) begin
         // Branches: 011xx Rs + control 
         5'b0_11xx: begin
             rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM & ~((fetch_inst[10:8] == wrtRegX) & regWrtX)) | ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0;
- 
-            // rsHazard = ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0;
-            
+             
             // forwarding possible?
             fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
 
@@ -278,8 +262,6 @@ always @(*) begin
         5'b0_01x1: begin
             rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM & ~((fetch_inst[10:8] == wrtRegX) & regWrtX)) | ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0;
  
-            // rsHazard = ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01) ? 1'b1 : 1'b0;
-
             // forwarding possible?
             fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
 
@@ -304,9 +286,6 @@ always @(*) begin
         // Only reads from RS and no control hazards
         default: begin
             rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM & ~((fetch_inst[10:8] == wrtRegX) & regWrtX)) | ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0;
- 
-            // ld flag set
-            fwCntrlB[5] = (fetch_inst[15:11] == 5'b10001);
 
             // forwarding possible?
             fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);

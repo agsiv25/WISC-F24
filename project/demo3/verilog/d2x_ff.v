@@ -5,7 +5,7 @@
    Description     : This is the flip flop between the decode and execute cycles.
 */
 `default_nettype none
-module d2x_ff (clk, rst, imm8D, imm11D, aluJmpD, SLBIselD, memWrtD, brchSigD, CinD, invAD, invBD, wbDataSelD, immSrcD, aluOpD, jalSelD, sOpSelD, readEnD, aluPCD, inAD, inBD, wrtDataD, SLBIselX, incPCX, immSrcX, imm8X, imm11X, brchSigX, CinX, inAX, inBX, invAX, invBX, aluOpX, aluJmpX, jalSelX, sOpSelX, aluPCX, memWrtX, wbDataSelX, readEnX, wrtDataX, incPCD, regWrtD, regWrtX, wrtRegD, wrtRegX, branchInstD, branchInstX, instructionD, instructionX, createDumpD, createDumpX, fwCntrlAD, fwCntrlBD, fwCntrlAX, fwCntrlBX, stuSelD, stuSelX);
+module d2x_ff (clk, rst, imm8D, imm11D, aluJmpD, SLBIselD, memWrtD, brchSigD, CinD, invAD, invBD, wbDataSelD, immSrcD, aluOpD, jalSelD, sOpSelD, readEnD, aluPCD, inAD, inBD, wrtDataD, SLBIselX, incPCX, immSrcX, imm8X, imm11X, brchSigX, CinX, inAX, inBX, invAX, invBX, aluOpX, aluJmpX, jalSelX, sOpSelX, aluPCX, memWrtX, wbDataSelX, readEnX, wrtDataX, incPCD, regWrtD, regWrtX, wrtRegD, wrtRegX, branchInstD, branchInstX, instructionD, instructionX, createDumpD, createDumpX, fwCntrlAD, fwCntrlBD, fwCntrlAX, fwCntrlBX);
 
 input wire clk;
 input wire rst;
@@ -42,10 +42,8 @@ input wire [15:0] instructionD;
 input wire createDumpD;
 
 // forwarding
-input wire [5:0] fwCntrlAD, fwCntrlBD;
-output wire [5:0] fwCntrlAX, fwCntrlBX;
-input wire stuSelD;
-output wire stuSelX;
+input wire [4:0] fwCntrlAD, fwCntrlBD;
+output wire [4:0] fwCntrlAX, fwCntrlBX;
 
 // to execute stage 
 output wire regWrtX;
@@ -114,10 +112,8 @@ dff instructionLatch [15:0] (.q(instructionX), .d(instructionD), .clk(clk), .rst
 
 dff createDumpLatch(.q(createDumpX), .d(createDumpD), .clk(clk), .rst(rst));
 
-dff AForwardingLatch [5:0] (.q(fwCntrlAX), .d(fwCntrlAD), .clk(clk), .rst(rst));
-dff BForwardingLatch [5:0] (.q(fwCntrlBX), .d(fwCntrlBD), .clk(clk), .rst(rst));
-
-dff stuSelLatch(.q(stuSelX), .d(stuSelD), .clk(clk), .rst(rst));
+dff AForwardingLatch [4:0] (.q(fwCntrlAX), .d(fwCntrlAD), .clk(clk), .rst(rst));
+dff BForwardingLatch [4:0] (.q(fwCntrlBX), .d(fwCntrlBD), .clk(clk), .rst(rst));
 
 
 endmodule
