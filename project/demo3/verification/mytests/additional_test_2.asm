@@ -4,7 +4,7 @@
 
 
 // Tests a simple hazard without NOPs inserted manually. 
-//lbi r0, 0
+lbi r0, 0
 slbi r0, 0x0B   // r0 contains address of ".Here"
 lbi r1, 15
 st r1, r0, 0      // .Here should have the value 15
