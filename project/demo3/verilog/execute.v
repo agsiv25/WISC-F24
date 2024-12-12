@@ -5,7 +5,7 @@
    Description     : This is the overall module for the execute stage of the processor.
 */
 `default_nettype none
-module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluFinal, newPC, sOpSel, aluOut, addPC, aluPC, fwCntrlB, fwCntrlA, wbDataSelX, x2xALUData, x2xImm8Data, m2xALUData, m2xImm8Data, m2xMemData, x2xAddPCData, m2xAddPCData, stuSel, wrtDataXin, wrtDataXout, ldFWFlagX);
+module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluFinal, newPC, sOpSel, aluOut, addPC, aluPC, fwCntrlB, fwCntrlA, wbDataSelX, x2xALUData, x2xImm8Data, m2xALUData, m2xImm8Data, m2xMemData, x2xAddPCData, m2xAddPCData, stuSel, wrtDataXin, wrtDataXout);
 
    input wire SLBIsel;
    input wire [15:0] incPC;
@@ -33,7 +33,6 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    input wire stuSel;
    input wire [15:0] wrtDataXin;
    output wire [15:0] wrtDataXout;
-   input wire ldFWFlagX;
 
    output wire [15:0] aluFinal;
    output wire [15:0] newPC;
