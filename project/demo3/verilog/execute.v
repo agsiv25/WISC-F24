@@ -33,7 +33,7 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    input wire stuSel;
    input wire [15:0] wrtDataXin;
    output wire [15:0] wrtDataXout;
-   input memWrtX;
+   input wire memWrtX;
 
    output wire [15:0] aluFinal;
    output wire [15:0] newPC;
