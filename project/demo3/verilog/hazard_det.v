@@ -80,8 +80,8 @@ always @(*) begin
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
             fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
 
-            pcNop = (rsHazard | rdHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
-
+            // pcNop = (rsHazard | rdHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
+            pcNop = 1'b0;
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
         // STU: 10011 RS + RD
