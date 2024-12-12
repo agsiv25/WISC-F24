@@ -146,10 +146,6 @@ always @(*) begin
             pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
-
-            fwCntrlA = pcNop ? 5'b0 : fwTempA;
-            fwCntrlB = pcNop ? 5'b0 : fwTempB;
-
         end
         // bit operations: 11010 RS + RT
         5'b1_1010: begin
