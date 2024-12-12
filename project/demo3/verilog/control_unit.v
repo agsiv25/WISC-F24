@@ -5,7 +5,7 @@
    Description     : This is the module that decodes the instruction and sends various control signals.
 */
 `default_nettype none
-module control_unit (instruction, aluJmp, memWrt, brchSig, Cin, invA, invB, regWrt, wbDataSel, stuSel, immSrc, SLBIsel, createDump, BSrc, zeroSel, regDestSel, jalSel, sOpSel, err, aluPC);
+module control_unit (instruction, aluJmp, memWrt, brchSig, Cin, invA, invB, regWrt, wbDataSel, stuSel, immSrc, SLBIsel, createDump, BSrc, zeroSel, regDestSel, jalSel, sOpSel, err, aluPC, ldFWFlag);
 
 input wire [15:0] instruction;
 
@@ -28,6 +28,7 @@ output reg jalSel;              // select signal for jal and slbiu conflict
 output reg sOpSel;
 output reg err;
 output reg aluPC;
+output reg ldFWFlag;
 // IMPLEMENT HERE 
 always @(*) begin
    aluJmp = 1'b0;
@@ -49,6 +50,7 @@ always @(*) begin
    sOpSel = 1'b0;
    err = 1'b0;
    aluPC = 1'b0;
+   ldFWFlag = 1'b0;
    case(instruction[15:11])
       5'b0_0000: begin // HALT
          createDump = 1'b1;
@@ -130,6 +132,7 @@ always @(*) begin
          BSrc = 2'b01; //select imm5 as inB
          zeroSel = 1'b0; //select sign extended imm5
          regDestSel = 2'b01; //select instr bits [7:5] as write back
+         ldFWFlag = 1'b1;
       end
       5'b1_0011: begin //STU
          memWrt = 1'b1; //enable memory write
