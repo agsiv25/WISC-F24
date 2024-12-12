@@ -5,7 +5,7 @@
    Description     : This is the overall module for the execute stage of the processor.
 */
 `default_nettype none
-module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluFinal, newPC, sOpSel, aluOut, addPC, aluPC, fwCntrlB, fwCntrlA, wbDataSelX, x2xALUData, x2xImm8Data, m2xALUData, m2xImm8Data, m2xMemData, x2xAddPCData, m2xAddPCData, stuSel, wrtDataXin, wrtDataXout);
+module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, invA, invB, aluOp, aluJmp, jalSel, aluFinal, newPC, sOpSel, aluOut, addPC, aluPC, fwCntrlB, fwCntrlA, wbDataSelX, x2xALUData, x2xImm8Data, m2xALUData, m2xImm8Data, m2xMemData, x2xAddPCData, m2xAddPCData, stuSel, wrtDataXin, wrtDataXout, memWrtX);
 
    input wire SLBIsel;
    input wire [15:0] incPC;
@@ -33,6 +33,7 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    input wire stuSel;
    input wire [15:0] wrtDataXin;
    output wire [15:0] wrtDataXout;
+   input memWrtX;
 
    output wire [15:0] aluFinal;
    output wire [15:0] newPC;
@@ -66,8 +67,12 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    // assign forwardedInB = (x2xBCntrl) ? x2xForwardData : (m2xBCntrl) ? m2xForwardData : inB;
 
    // for ST and STU. forwarding for memory store register value
+
+   // for load 
    //assign wrtDataXout = (stuSel) ? wrtDataXin : preSTForwardedInB;
-   assign wrtDataXout = (stuSel) ? preSTForwardedInB : wrtDataXin;
+   // for store 
+   //assign wrtDataXout = (stuSel) ? preSTForwardedInB : wrtDataXin;
+   assign wrtDataXout = memWrtX ? ((stuSel) ? preSTForwardedInB : wrtDataXin) : ((stuSel) ? wrtDataXin : preSTForwardedInB);
 
    assign forwardedInB = (stuSel) ? inB : preSTForwardedInB;
 
