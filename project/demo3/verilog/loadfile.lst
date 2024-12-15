@@ -1,0 +1,9 @@
+          // Write your assembly program for Problem 1 (a) #3 here.
+          
+0000 c100 lbi r1, 0
+0002 c3ff lbi r3, 0xff
+0004 c200 lbi r2, 0
+0006 8340 st r2, r3, 0 // this is unaligned because it accesses address -1, so it will fail starting in Phase 2.1
+0008 8b20 ld r1, r3, 0
+000a e14c seq r3, r1, r2
+000c 0000 halt

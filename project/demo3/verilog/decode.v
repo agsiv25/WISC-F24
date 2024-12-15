@@ -5,7 +5,7 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (instruction, wbData, clk, rst, imm8, imm11, aluJmp, SLBIsel, createDump, memWrt, brchSig, Cin, invA, invB, wbDataSel, immSrc, aluOp, jalSel, sOpSel, inA, inB, wrtData, err, readEn, aluPC, regWrtOut, regWrt, wrtRegOut, wrtReg, instrValidD, branchInst, stuSel);
+module decode (instruction, wbData, clk, rst, imm8, imm11, aluJmp, SLBIsel, createDump, memWrt, brchSig, Cin, invA, invB, wbDataSel, immSrc, aluOp, jalSel, sOpSel, inA, inB, wrtData, err, readEn, aluPC, regWrtOut, regWrt, wrtRegOut, wrtReg, instrValidD, branchInst, stuSel, alignErrI, alignErrM, memAccess);
 
 input wire [15:0] instruction;
 input wire [15:0] wbData;
@@ -14,6 +14,8 @@ input wire rst;
 input wire regWrt;           // register file write enable
 input  wire [2:0] wrtReg;       // register to write to in register file
 input wire instrValidD;
+input wire alignErrI;
+input wire alignErrM;
 
 // immediate outputs
 output wire [15:0] imm8;
@@ -45,6 +47,7 @@ output wire [15:0] inB;
 output wire [15:0] wrtData;
 output wire err;
 output wire branchInst;
+output wire memAccess;
 
 // forwarding
 output wire stuSel;      // for STU instruction, choose memory write data source
@@ -59,6 +62,10 @@ wire [1:0] BSrc;          // select signal for inB mux
 wire regErr;
 wire cntrlErr;
 wire [15:0]inst;
+wire alignErr;
+
+//align
+wire [15:0]instrAlign;
 
 // 4:1 mux for register write select
 assign wrtRegOut = (regDestSel == 2'b00) ? instruction[10:8] : (regDestSel == 2'b01) ? instruction[7:5] : (regDestSel == 2'b10) ? instruction[4:2] : 3'b111;
@@ -85,9 +92,10 @@ assign inB = (BSrc == 2'b00) ? regB : (BSrc == 2'b01) ? imm5 : (BSrc == 2'b10) ?
 
 assign inst = (instrValidD) ? instruction : 16'b0000100000000000;
 assign branchInst = (inst[15:13] == 5'b011 | inst[15:13] == 5'b001) ? 1'b1 : 1'b0;
-
+assign alignErr = (alignErrI | alignErrM) ? 1'b1 : 1'b0;
+assign instrAlign = (alignErr) ? 16'b0 : inst;
 // instruction decoder
-control_unit instruction_decoder(.instruction(inst), .aluJmp(aluJmp), .memWrt(memWrt), .brchSig(brchSig), .Cin(Cin), .invA(invA), .invB(invB), .regWrt(regWrtOut), .wbDataSel(wbDataSel), .stuSel(stuSel), .immSrc(immSrc), .SLBIsel(SLBIsel), .createDump(createDump), .BSrc(BSrc), .zeroSel(zeroSel), .regDestSel(regDestSel), .jalSel(jalSel), .sOpSel(sOpSel), .err(cntrlErr), .aluPC(aluPC));
+control_unit instruction_decoder(.instruction(instrAlign), .aluJmp(aluJmp), .memWrt(memWrt), .brchSig(brchSig), .Cin(Cin), .invA(invA), .invB(invB), .regWrt(regWrtOut), .wbDataSel(wbDataSel), .stuSel(stuSel), .immSrc(immSrc), .SLBIsel(SLBIsel), .createDump(createDump), .BSrc(BSrc), .zeroSel(zeroSel), .regDestSel(regDestSel), .jalSel(jalSel), .sOpSel(sOpSel), .err(cntrlErr), .aluPC(aluPC), .memAccess(memAccess));
 
 assign err = regErr | cntrlErr;
 

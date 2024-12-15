@@ -5,7 +5,7 @@
    Description     : This is the module for the overall fetch stage of the processor.
 */
 `default_nettype none
-module fetch (newPC, createDump, rst, clk, incPC, instruction, err, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstD, branchInstX, branchInstM, branchInstW, instrValid, fwCntrlA, fwCntrlB, wbDataSelD, wbDataSelX);
+module fetch (newPC, createDump, rst, clk, incPC, instruction, err, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstD, branchInstX, branchInstM, branchInstW, instrValid, fwCntrlA, fwCntrlB, wbDataSelD, wbDataSelX, alignErrI, alignErr_ff);
 
 input wire [15:0]newPC;
 input wire createDump;
@@ -40,6 +40,10 @@ wire [15:0]pcRegAddr;
 wire pcIncErr;
 wire pcRegErr;
 
+//align
+output wire alignErrI;
+input wire alignErr_ff;
+
 // wires for hazard detection
 wire [15:0] instruction2;
 wire pcNop;
@@ -57,7 +61,7 @@ reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(
 // assign error signal to be an OR between the PC adder and the PC register
 assign err = pcRegErr | pcIncErr;
 
-memory2c instruction_memory(.data_out(instruction2), .data_in(16'b0), .addr(pcRegAddr), .enable(1'b1), .wr(1'b0), .createdump(createDump), .clk(clk), .rst(rst));
+memory2c_align instruction_memory(.data_out(instruction2), .data_in(16'b0), .addr(pcRegAddr), .enable(1'b1), .wr(1'b0), .createdump(createDump | alignErr_ff), .clk(clk), .rst(rst), .err(alignErrI));
    
 hazard_det hazard(.rst(rst), .clk(clk), .fetch_inst(instruction2), .next_inst(instruction), .pcNop(pcNop), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .branchInstD(branchInstD), .branchInstX(branchInstX), .branchInstM(branchInstM), .branchInstW(branchInstW), .fwCntrlA(fwCntrlA), .fwCntrlB(fwCntrlB), .wbDataSelD(wbDataSelD), .wbDataSelX(wbDataSelX));
 
