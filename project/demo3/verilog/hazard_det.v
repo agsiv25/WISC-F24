@@ -5,7 +5,7 @@
    Description     : This is the module that detects data hazards and stalls the processor if one is detected.
 */
 `default_nettype none
-module hazard_det (rst, clk, fetch_inst, next_inst, pcNop, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstD, branchInstX, branchInstM, branchInstW, fwCntrlA, fwCntrlB, wbDataSelD, wbDataSelX);
+module hazard_det (rst, clk, fetch_inst, next_inst, pcNop, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, fwCntrlA, fwCntrlB, wbDataSelD, wbDataSelX);
 
 input wire rst;
 input wire clk;
@@ -28,11 +28,6 @@ input wire [2:0] wrtRegD;
 input wire [2:0] wrtRegX;
 input wire [2:0] wrtRegM;
 input wire [2:0] wrtRegW;
-
-input wire branchInstD;
-input wire branchInstX;
-input wire branchInstM;
-input wire branchInstW;
 
 parameter NOP = {5'b00001, 11'b0} ;
 
