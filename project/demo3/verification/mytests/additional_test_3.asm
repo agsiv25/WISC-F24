@@ -4,8 +4,8 @@
 
 
 // Tests BEQZ functionality with branch prediction. 
-lbi  r0, 2      // set to 0 so branch is taken
-bnez r0, 0x06
+lbi  r0, -2      // set to 0 so branch is taken
+bltz r0, 0x06
 lbi  r1, 0x0A
 lbi  r2, 0x0B
 halt
