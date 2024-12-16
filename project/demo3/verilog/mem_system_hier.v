@@ -7,7 +7,7 @@ module mem_system_hier(/*AUTOARG*/
                        // Outputs
                        DataOut, Done, Stall, CacheHit, err,
                        // Inputs
-                       Addr, DataIn, Rd, Wr, createdump
+                       Addr, DataIn, Rd, Wr, createdump, clk, rst
                        );
    
    input wire  [15:0] Addr;
@@ -15,6 +15,8 @@ module mem_system_hier(/*AUTOARG*/
    input wire         Rd;
    input wire         Wr;
    input wire         createdump;
+   input wire         clk;
+    input wire         rst;
    
    output wire [15:0] DataOut;
    output wire        Done;
@@ -27,16 +29,7 @@ module mem_system_hier(/*AUTOARG*/
    parameter mem_type = 0;
 
 
-   /*AUTOWIRE*/
-   // Beginning of automatic wires (for undeclared instantiated-module outputs)
-   wire                 err;                    // From m0 of mem_system.v
-   wire                 clk, rst;
-   // End of automatics
-
-   clkrst clkgen(.clk(clk),
-                 .rst(rst),
-                 .err(err) );
-   // For now force to be data memory all the time
+   
    // Does not matter until you hook this up into your final processor
    
    mem_system #(mem_type) m0(/*AUTOINST*/
