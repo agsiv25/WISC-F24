@@ -123,7 +123,7 @@ module proc (/*AUTOARG*/
    // branch prediction
    wire branch_mispredictionSRC;     // set high when a branch is taken (incorrect prediction)
 
-   fetch fetchSection(.newPC(newPCX), .createDump(createDumpM), .rst(rst), .clk(clk), .incPC(incPCF), .instruction(instructionF), .err(fetchErr), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .branchInstD(branchInstD), .branchInstX(branchInstX), .instrValid(instrValidF), .branchInstM(branchInstM), .branchInstW(branchInstW), .fwCntrlA(fwCntrlAF), .fwCntrlB(fwCntrlBF), .wbDataSelD(wbDataSelD), .wbDataSelX(wbDataSelX));
+   fetch fetchSection(.newPC(newPCX), .createDump(createDumpM), .rst(rst), .clk(clk), .incPC(incPCF), .instruction(instructionF), .err(fetchErr), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .branchInstX(branchInstX), .instrValid(instrValidF), .fwCntrlA(fwCntrlAF), .fwCntrlB(fwCntrlBF), .wbDataSelD(wbDataSelD), .wbDataSelX(wbDataSelX));
 
    f2d_ff fetch2decode(.instructionF(instructionF), .incPCF(incPCF), .errF(fetchErr), .clk(clk), .rst(rst), .instructionD(instructionD), .incPCD(incPCD), .instrValidF(instrValidF), .instrValidD(instrValidD), .fwCntrlAF(fwCntrlAF), .fwCntrlBF(fwCntrlBF), .fwCntrlAD(fwCntrlAD), .fwCntrlBD(fwCntrlBD));
    
