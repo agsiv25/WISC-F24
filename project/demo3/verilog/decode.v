@@ -5,7 +5,7 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (instruction, wbData, clk, rst, imm8, imm11, aluJmp, SLBIsel, createDump, memWrt, brchSig, Cin, invA, invB, wbDataSel, immSrc, aluOp, jalSel, sOpSel, inA, inB, wrtData, err, readEn, aluPC, regWrtOut, regWrt, wrtRegOut, wrtReg, instrValidD, branchInst, stuSel);
+module decode (instruction, wbData, clk, rst, imm8, imm11, aluJmp, SLBIsel, createDump, memWrt, brchSig, Cin, invA, invB, wbDataSel, immSrc, aluOp, jalSel, sOpSel, inA, inB, wrtData, err, readEn, aluPC, regWrtOut, regWrt, wrtRegOut, wrtReg, instrValidD, branchInst);
 
 input wire [15:0] instruction;
 input wire [15:0] wbData;
@@ -45,9 +45,6 @@ output wire [15:0] inB;
 output wire [15:0] wrtData;
 output wire err;
 output wire branchInst;
-
-// forwarding
-output wire stuSel;      // for STU instruction, choose memory write data source
 
 wire zeroSel;            // choose zero or sign extended immediates 
 wire [15:0] imm5;
