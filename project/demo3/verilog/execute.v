@@ -42,7 +42,7 @@ module execute (SLBIsel, incPC, immSrc, imm8, imm11, brchSig, Cin, inA, inB, inv
    wire oflFlag;
    wire carryOut;
    wire signFlag;
-   wire jmpSel;
+   wire jmpSel;               // todo: USE FOR BRANCH PREDICTION: IS SET TO HIGH WHENEVER A BRANCH IS TO BE TAKEN 
    wire [15:0] pcOrSLBI;
    wire [15:0] imm8Or11;
    wire [15:0] compPC;

@@ -87,7 +87,7 @@ always @(*) begin
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
             fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
 
-            pcNop = (rsHazard | rdHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
+            pcNop = (rsHazard | rdHazard); 
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
@@ -113,7 +113,7 @@ always @(*) begin
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
             fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
 
-            pcNop = (rsHazard | rdHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
+            pcNop = (rsHazard | rdHazard); 
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
 
@@ -135,7 +135,7 @@ always @(*) begin
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
             fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
 
-            pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
+            pcNop = (rsHazard | rtHazard); 
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
@@ -156,7 +156,7 @@ always @(*) begin
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
             fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
 
-            pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
+            pcNop = (rsHazard | rtHazard);
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
@@ -177,25 +177,22 @@ always @(*) begin
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
             fwCntrlB[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlB[2]) | (wbDataSelX == 2'b10 & fwCntrlB[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlB[2]) | (wbDataSelX == 2'b11 & fwCntrlB[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlB[2]) | (wbDataSelX == 2'b00 & fwCntrlB[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
 
-            pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
+            pcNop = (rsHazard | rtHazard);
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
 
         // LBI: 11000
         5'b1_1000: begin
-            pcNop = (branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
-            next_inst = (pcNop | rst) ? NOP : fetch_inst;
+            next_inst = (rst) ? NOP : fetch_inst;
         end
         // halt stall
         5'b0_0000: begin
-            pcNop = (branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
-            next_inst = (pcNop | rst) ? NOP : fetch_inst;
+            next_inst = (rst) ? NOP : fetch_inst;
         end
         // NOP 000xx Not reading from anything. 
         5'b0_0001: begin
-            pcNop = (branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
-            next_inst = (pcNop | rst) ? NOP : fetch_inst;
+            next_inst = (rst) ? NOP : fetch_inst;
         end
 
         // NOP / siic / RTI: 000xx Not reading from anything. 
@@ -210,36 +207,6 @@ always @(*) begin
 
         // control hazards
 
-        // // J displacement: 00100 pure control 
-        // 5'b0_0100: begin
-        //     branchInstF = 1'b1;
-        //     pcNop = branchInstF;
-        //     next_inst = fetch_inst;
-        // end
-        // // JR Rs, imm: 00101 Rs + control 
-        // 5'b0_0101: begin
-        //     branchInstF = 1'b1;
-
-        //     rsHazard = (((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM) | ((fetch_inst[10:8] == wrtRegW) & regWrtW)) ? 1'b1 : 1'b0; 
-        //     pcNop = rsHazard | branchInstD | branchInstX | branchInstF;
-
-        //     next_inst = (pcNop | rst) ? NOP : fetch_inst;
-        // end
-        // // JAL displacement: 00110 pure control
-        // 5'b0_0110: begin
-        //     branchInstF = 1'b1;    
-        //     pcNop = branchInstF;        
-        //     next_inst = fetch_inst;
-        // end
-        // // JALR Rs, imm: 00111 Rs + control 
-        // 5'b0_0111: begin
-        //     branchInstF = 1'b1;
-
-        //     rsHazard = (((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM) | ((fetch_inst[10:8] == wrtRegW) & regWrtW)) ? 1'b1 : 1'b0; 
-        //     pcNop = rsHazard | branchInstD | branchInstX | branchInstF;
-
-        //     next_inst = (pcNop | rst) ? NOP : fetch_inst;
-        // end
         // Branches: 011xx Rs + control 
         5'b0_11xx: begin
             rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM & ~((fetch_inst[10:8] == wrtRegX) & regWrtX)) | ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0;
@@ -253,9 +220,7 @@ always @(*) begin
             // source of forwarding data? 
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
             
-            pcNop = rsHazard | branchInstD | branchInstX | branchInstM | branchInstW;
-
-            next_inst = (pcNop | rst) ? NOP : fetch_inst;
+            next_inst = (rsHazard | rst) ? NOP : fetch_inst;
         end
 
         // JALR and JR commands: 00101 and 00111: control and rs hazard
@@ -271,16 +236,12 @@ always @(*) begin
             // source of forwarding data? 
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
             
-            pcNop = rsHazard | branchInstD | branchInstX | branchInstM | branchInstW;
-
-            next_inst = (pcNop | rst) ? NOP : fetch_inst;
+            next_inst = (rsHazard | rst) ? NOP : fetch_inst;
         end
 
         // J and JAL commands: 00100 and 00110: pure control hazard
         5'b0_01x0: begin
-
-            pcNop = branchInstD | branchInstX | branchInstM | branchInstW;
-            next_inst = (pcNop | rst) ? NOP : fetch_inst;
+            next_inst = (rst) ? NOP : fetch_inst;
         end
 
         // Only reads from RS and no control hazards
@@ -296,9 +257,7 @@ always @(*) begin
             // source of forwarding data? 
             fwCntrlA[1:0] = ((wbDataSelD == 2'b10 & ~fwCntrlA[2]) | (wbDataSelX == 2'b10 & fwCntrlA[2])) ? 2'b10 : (((wbDataSelD == 2'b11 & ~fwCntrlA[2]) | (wbDataSelX == 2'b11 & fwCntrlA[2])) ? 2'b11 : (((wbDataSelD == 2'b00 & ~fwCntrlA[2]) | (wbDataSelX == 2'b00 & fwCntrlA[2])) ? 2'b00 : 2'b01)); // might need to use SLBISel instead of wbDataSel?
             
-            pcNop = rsHazard | branchInstD | branchInstX | branchInstM | branchInstW;
-
-            next_inst = (pcNop | rst) ? NOP : fetch_inst;
+            next_inst = (rsHazard | rst) ? NOP : fetch_inst;
         end
     endcase
 end
