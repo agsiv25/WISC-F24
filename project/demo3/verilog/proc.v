@@ -123,6 +123,8 @@ module proc (/*AUTOARG*/
    wire alignErr_ff;
 
    //stall
+   wire Stall_i;
+   wire Stall_m;
    wire Stall;
 
    // forwarding
@@ -133,8 +135,10 @@ module proc (/*AUTOARG*/
    wire [4:0] fwCntrlAX;
    wire [4:0] fwCntrlBX;
 
+   assign Stall = Stall_i | Stall_m;
 
-   fetch fetchSection(.newPC(newPCW), .createDump(createDumpM), .rst(rst), .clk(clk), .incPC(incPCF), .instruction(instructionF), .err(fetchErr), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .branchInstD(branchInstD), .branchInstX(branchInstX), .instrValid(instrValidF), .branchInstM(branchInstM), .branchInstW(branchInstW), .fwCntrlA(fwCntrlAF), .fwCntrlB(fwCntrlBF), .wbDataSelD(wbDataSelD), .wbDataSelX(wbDataSelX), .alignErrI(alignErrI), .alignErr_ff(alignErr_ff), .Stall(Stall));
+
+   fetch fetchSection(.newPC(newPCW), .createDump(createDumpM), .rst(rst), .clk(clk), .incPC(incPCF), .instruction(instructionF), .err(fetchErr), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .branchInstD(branchInstD), .branchInstX(branchInstX), .instrValid(instrValidF), .branchInstM(branchInstM), .branchInstW(branchInstW), .fwCntrlA(fwCntrlAF), .fwCntrlB(fwCntrlBF), .wbDataSelD(wbDataSelD), .wbDataSelX(wbDataSelX), .alignErrI(alignErrI), .alignErr_ff(alignErr_ff), .Stall_i(Stall_i), .Stall(Stall));
 
    f2d_ff fetch2decode(.instructionF(instructionF), .incPCF(incPCF), .errF(fetchErr), .clk(clk), .rst(rst), .instructionD(instructionD), .incPCD(incPCD), .instrValidF(instrValidF), .instrValidD(instrValidD), .fwCntrlAF(fwCntrlAF), .fwCntrlBF(fwCntrlBF), .fwCntrlAD(fwCntrlAD), .fwCntrlBD(fwCntrlBD), .Stall(Stall));
    
@@ -144,9 +148,9 @@ module proc (/*AUTOARG*/
 
    execute executeSection(.SLBIsel(SLBIselX), .incPC(incPCX), .immSrc(immSrcX), .imm8(imm8X), .imm11(imm11X), .brchSig(brchSigX), .Cin(CinX), .inA(inAX), .inB(inBX), .invA(invAX), .invB(invBX), .aluOp(aluOpX), .aluJmp(aluJmpX), .jalSel(jalSelX), .aluFinal(aluFinalX), .newPC(newPCX), .sOpSel(sOpSelX), .aluOut(aluOutX), .addPC(addPCX), .aluPC(aluPCX), .fwCntrlA(fwCntrlAX), .fwCntrlB(fwCntrlBX), .wbDataSelX(wbDataSelX), .x2xALUData(aluFinalM), .x2xImm8Data(imm8M), .m2xALUData(aluFinalW), .m2xImm8Data(imm8W), .m2xMemData(memOutW), .x2xAddPCData(addPCM), .m2xAddPCData(addPCW), .wrtDataXin(wrtDataXin), .wrtDataXout(wrtDataXout));
 
-   x2m_ff exec2mem(.createDumpX(createDumpX), .createDumpM(createDumpM), .instructionX(instructionX), .instructionM(instructionM), .clk(clk), .rst(rst), .aluFinalX(aluFinalX), .aluFinalM(aluFinalM), .newPCX(newPCX), .newPCM(newPCM), .addPCX(addPCX), .addPCM(addPCM), .aluOutX(aluOutX), .aluOutM(aluOutM), .wrtDataX(wrtDataXout), .wrtDataM(wrtDataM), .memWrtX(memWrtX), .memWrtM(memWrtM), .readEnX(readEnX), .readEnM(readEnM), .wbDataSelX(wbDataSelX), .wbDataSelM(wbDataSelM), .imm8X(imm8X), .imm8M(imm8M), .regWrtX(regWrtX), .regWrtM(regWrtM), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .branchInstX(branchInstX), .branchInstM(branchInstM), .memAccessX(memAccessX), .memAccessM(memAccessM), .Stall(Stall));
+   x2m_ff exec2mem(.createDumpX(createDumpX), .createDumpM(createDumpM), .instructionX(instructionX), .instructionM(instructionM), .clk(clk), .rst(rst), .aluFinalX(aluFinalX), .aluFinalM(aluFinalM), .newPCX(newPCX), .newPCM(newPCM), .addPCX(addPCX), .addPCM(addPCM), .aluOutX(aluOutX), .aluOutM(aluOutM), .wrtDataX(wrtDataXout), .wrtDataM(wrtDataM), .memWrtX(memWrtX), .memWrtM(memWrtM), .readEnX(readEnX), .readEnM(readEnM), .wbDataSelX(wbDataSelX), .wbDataSelM(wbDataSelM), .imm8X(imm8X), .imm8M(imm8M), .regWrtX(regWrtX), .regWrtM(regWrtM), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .branchInstX(branchInstX), .branchInstM(branchInstM), .memAccessX(memAccessX), .memAccessM(memAccessM), .Stall(Stall_m));
 
-   memory memorySection(.dataAddr(aluOutM), .wrtData(wrtDataM), .memWrt(memWrtM), .createDump(createDumpM), .clk(clk), .rst(rst), .memOut(memOutM), .readEn(readEnM), .alignErr(alignErrM), .memAccessM(memAccessM), .alignErr_ff(alignErr_ff));
+   memory memorySection(.dataAddr(aluOutM), .wrtData(wrtDataM), .memWrt(memWrtM), .createDump(createDumpM), .clk(clk), .rst(rst), .memOut(memOutM), .readEn(readEnM), .alignErr(alignErrM), .memAccessM(memAccessM), .alignErr_ff(alignErr_ff), .Stall());
 
    m2w_ff mem2wb(.newPCM(newPCM), .newPCW(newPCW), .instructionM(instructionM), .instructionW(instructionW), .clk(clk), .rst(rst), .memOutM(memOutM), .memOutW(memOutW), .wbDataSelM(wbDataSelM), .wbDataSelW(wbDataSelW), .addPCM(addPCM), .addPCW(addPCW), .aluFinalM(aluFinalM), .aluFinalW(aluFinalW), .imm8M(imm8M), .imm8W(imm8W), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .branchInstM(branchInstM), .branchInstW(branchInstW), .Stall(Stall));
 

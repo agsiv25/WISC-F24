@@ -5,7 +5,7 @@
    Description     : This is the module for the overall fetch stage of the processor.
 */
 `default_nettype none
-module fetch (newPC, createDump, rst, clk, incPC, instruction, err, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstD, branchInstX, branchInstM, branchInstW, instrValid, fwCntrlA, fwCntrlB, wbDataSelD, wbDataSelX, alignErrI, alignErr_ff, Stall);
+module fetch (newPC, createDump, rst, clk, incPC, instruction, err, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstD, branchInstX, branchInstM, branchInstW, instrValid, fwCntrlA, fwCntrlB, wbDataSelD, wbDataSelX, alignErrI, alignErr_ff, Stall, Stall_i);
 
 input wire [15:0]newPC;
 input wire createDump;
@@ -47,7 +47,8 @@ input wire alignErr_ff;
 //stall mem
 wire CacheHit;
 wire Done;
-output wire Stall; //TODO: implement stall signal
+input wire Stall;
+output wire Stall_i;
 
 // wires for hazard detection
 wire [15:0] instruction2;
@@ -68,8 +69,8 @@ assign err = pcRegErr | pcIncErr;
 
 //assign Stall = 1'b0; //TODO: implement stall signal
 //memory2c_align instruction_memory(.data_out(instruction2), .data_in(16'b0), .addr(pcRegAddr), .enable(1'b1), .wr(1'b0), .createdump(createDump | alignErr_ff), .clk(clk), .rst(rst), .err(alignErrI));
-stallmem instruction_memory(.DataOut(instruction2), .DataIn(16'b0), .Addr(pcRegAddr), .Done(Done), .Wr(1'b0), .Rd(1'b1), .createdump(createDump | alignErr_ff), .clk(clk), .rst(rst), .err(alignErrI), .Stall(Stall), .CacheHit(CacheHit));
-//mem_system_hier instruction_memory(.DataOut(instruction2), .DataIn(16'b0), .Addr(pcRegAddr), .Done(Done), .Wr(1'b0), .Rd(1'b1), .createdump(createDump | alignErr_ff), .clk(clk), .rst(rst), .err(alignErrI), .Stall(Stall), .CacheHit(CacheHit));
+stallmem instruction_memory(.DataOut(instruction2), .DataIn(16'b0), .Addr(pcRegAddr), .Done(Done), .Wr(1'b0), .Rd(1'b1), .createdump(createDump | alignErr_ff), .clk(clk), .rst(rst), .err(alignErrI), .Stall(Stall_i), .CacheHit(CacheHit));
+//mem_system_hier instruction_memory(.DataOut(instruction2), .DataIn(16'b0), .Addr(pcRegAddr), .Done(Done), .Wr(1'b0), .Rd(1'b1), .createdump(createDump | alignErr_ff), .clk(clk), .rst(rst), .err(alignErrI), .Stall(Stall_i), .CacheHit(CacheHit));
 
 hazard_det hazard(.rst(rst), .clk(clk), .fetch_inst(instruction2), .next_inst(instruction), .pcNop(pcNop), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .branchInstD(branchInstD), .branchInstX(branchInstX), .branchInstM(branchInstM), .branchInstW(branchInstW), .fwCntrlA(fwCntrlA), .fwCntrlB(fwCntrlB), .wbDataSelD(wbDataSelD), .wbDataSelX(wbDataSelX));
 
