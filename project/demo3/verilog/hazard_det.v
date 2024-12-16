@@ -47,6 +47,7 @@ always @(*) begin
     rtHazard = 1'b0;
     fwCntrlA = 5'b0;
     fwCntrlB = 5'b0;
+    pcNop = 1'b0;
 
     // forwarding control word passed in: 5'bXXXXX. fwCntrl[4] is pipelined stuSel signal. fwCntrlX[3] is forward at all? y/n. 
     // fwCntrlX[2] is 0 for EX to EX forwarding, otherwise 1 for MEM to EX forwarding. fwCntrlX[1:0] are used to determine 
