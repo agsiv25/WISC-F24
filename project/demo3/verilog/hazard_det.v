@@ -39,13 +39,10 @@ reg rsHazard;  // rsHazard = (((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetc
 reg rdHazard;  // rdHazard = (((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) | ((fetch_inst[7:5] == wrtRegM) & regWrtM) | ((fetch_inst[7:5] == wrtRegW) & regWrtW)) ? 1'b1 : 1'b0; 
 reg rtHazard;  // 
 
-reg controlHazard;
-
 // Data hazards
 always @(*) begin
 
     next_inst = 16'b0000100000000000;
-    controlHazard = 1'b0;
     rsHazard = 1'b0;
     rdHazard = 1'b0;
     rtHazard = 1'b0;
@@ -246,7 +243,7 @@ always @(*) begin
 
         // Only reads from RS and no control hazards
         default: begin
-            rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM & ~((fetch_inst[10:8] == wrtRegX) & regWrtX)) | ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0;
+            rsHazard = (((fetch_inst[10:8] == wrtRegM) & regWrtM & ~(((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegD) & regWrtD))) | ((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01)) ? 1'b1 : 1'b0;
 
             // forwarding possible?
             fwCntrlA[3] = ((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) & ~((fetch_inst[10:8] == wrtRegD & regWrtD) & wbDataSelD == 2'b01);
