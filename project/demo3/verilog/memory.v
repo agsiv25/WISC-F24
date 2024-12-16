@@ -26,7 +26,6 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, 
    output wire Stall;
 
    wire Done;
-   wire Stall;
    wire CacheHit;
 
    assign alignErr_ff = 0;
