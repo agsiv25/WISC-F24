@@ -5,7 +5,7 @@
    Description     : This is the module that detects data hazards and stalls the processor if one is detected.
 */
 `default_nettype none
-module hazard_det (rst, clk, fetch_inst, next_inst, pcNop, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstD, branchInstX, branchInstM, branchInstW);
+module hazard_det (rst, clk, fetch_inst, next_inst, pcNop, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, branchInstD, branchInstX);
 
 input wire rst;
 input wire clk;
@@ -26,8 +26,6 @@ input wire [2:0] wrtRegW;
 
 input wire branchInstD;
 input wire branchInstX;
-input wire branchInstM;
-input wire branchInstW;
 
 parameter NOP = {5'b00001, 11'b0} ;
 
@@ -55,7 +53,7 @@ always @(*) begin
             rsHazard = (((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
             rdHazard = (((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) | ((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
  
-            pcNop = (rsHazard | rdHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
+            pcNop = (rsHazard | rdHazard | branchInstD | branchInstX) ? 1'b1 : 1'b0; 
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
@@ -64,7 +62,7 @@ always @(*) begin
             rsHazard = (((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
             rdHazard = (((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) | ((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
  
-            pcNop = (rsHazard | rdHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
+            pcNop = (rsHazard | rdHazard | branchInstD | branchInstX) ? 1'b1 : 1'b0; 
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
@@ -73,7 +71,7 @@ always @(*) begin
             rsHazard = (((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
             rtHazard = (((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) | ((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
  
-            pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0; 
+            pcNop = (rsHazard | rtHazard | branchInstD | branchInstX) ? 1'b1 : 1'b0; 
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
@@ -82,7 +80,7 @@ always @(*) begin
             rsHazard = (((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
             rtHazard = (((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) | ((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
  
-            pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
+            pcNop = (rsHazard | rtHazard | branchInstD | branchInstX) ? 1'b1 : 1'b0;
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
@@ -91,24 +89,24 @@ always @(*) begin
             rsHazard = (((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0;
             rtHazard = (((fetch_inst[7:5] == wrtRegD) & regWrtD) | ((fetch_inst[7:5] == wrtRegX) & regWrtX) | ((fetch_inst[7:5] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
  
-            pcNop = (rsHazard | rtHazard | branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
+            pcNop = (rsHazard | rtHazard | branchInstD | branchInstX) ? 1'b1 : 1'b0;
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
 
         // LBI: 11000
         5'b1_1000: begin
-            pcNop = (branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
+            pcNop = (branchInstD | branchInstX) ? 1'b1 : 1'b0;
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
         // halt stall
         5'b0_0000: begin
-            pcNop = (branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
+            pcNop = (branchInstD | branchInstX) ? 1'b1 : 1'b0;
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
         // NOP 000xx Not reading from anything. 
         5'b0_0001: begin
-            pcNop = (branchInstD | branchInstX | branchInstM | branchInstW) ? 1'b1 : 1'b0;
+            pcNop = (branchInstD | branchInstX) ? 1'b1 : 1'b0;
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
 
@@ -157,7 +155,7 @@ always @(*) begin
         // Branches: 011xx Rs + control 
         5'b0_11xx: begin
             rsHazard = (((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
-            pcNop = rsHazard | branchInstD | branchInstX | branchInstM | branchInstW;
+            pcNop = rsHazard | branchInstD | branchInstX;
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
@@ -166,14 +164,14 @@ always @(*) begin
         5'b0_01xx: begin
             rsHazard = (((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
 
-            pcNop = rsHazard | branchInstD | branchInstX | branchInstM | branchInstW;
+            pcNop = rsHazard | branchInstD | branchInstX;
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
 
         // Only reads from RS and no control hazards
         default: begin
             rsHazard = (((fetch_inst[10:8] == wrtRegD) & regWrtD) | ((fetch_inst[10:8] == wrtRegX) & regWrtX) | ((fetch_inst[10:8] == wrtRegM) & regWrtM)) ? 1'b1 : 1'b0; 
-            pcNop = rsHazard | branchInstD | branchInstX | branchInstM | branchInstW;
+            pcNop = rsHazard | branchInstD | branchInstX;
 
             next_inst = (pcNop | rst) ? NOP : fetch_inst;
         end
