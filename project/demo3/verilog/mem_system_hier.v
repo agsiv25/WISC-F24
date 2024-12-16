@@ -5,7 +5,7 @@
 `default_nettype none
 module mem_system_hier(/*AUTOARG*/
                        // Outputs
-                       DataOut, Done, Stall, CacheHit, 
+                       DataOut, Done, Stall, CacheHit, err,
                        // Inputs
                        Addr, DataIn, Rd, Wr, createdump
                        );
@@ -20,6 +20,7 @@ module mem_system_hier(/*AUTOARG*/
    output wire        Done;
    output wire        Stall;
    output wire        CacheHit;
+   output wire       err;
 
    /* data_mem = 1, inst_mem = 0 *
     * needed for cache parameter */
@@ -38,7 +39,7 @@ module mem_system_hier(/*AUTOARG*/
    // For now force to be data memory all the time
    // Does not matter until you hook this up into your final processor
    
-   mem_system #(1) m0(/*AUTOINST*/
+   mem_system #(mem_type) m0(/*AUTOINST*/
                       // Outputs
                       .DataOut          (DataOut[15:0]),
                       .Done             (Done),
