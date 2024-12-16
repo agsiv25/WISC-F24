@@ -16,13 +16,13 @@ module mem_system_hier(/*AUTOARG*/
    input wire         Wr;
    input wire         createdump;
    input wire         clk;
-    input wire         rst;
+   input wire         rst;
    
    output wire [15:0] DataOut;
    output wire        Done;
    output wire        Stall;
    output wire        CacheHit;
-   output wire       err;
+   output wire         err;
 
    /* data_mem = 1, inst_mem = 0 *
     * needed for cache parameter */
