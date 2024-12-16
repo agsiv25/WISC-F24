@@ -5,7 +5,7 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (instruction, wbData, clk, rst, imm8, imm11, aluJmp, SLBIsel, createDump, memWrt, brchSig, Cin, invA, invB, wbDataSel, immSrc, aluOp, jalSel, sOpSel, inA, inB, wrtData, err, readEn, aluPC, regWrtOut, regWrt, wrtRegOut, wrtReg, instrValidD, branchInst);
+module decode (instruction, wbData, clk, rst, imm8, imm11, aluJmp, SLBIsel, createDump, memWrt, brchSig, Cin, invA, invB, wbDataSel, immSrc, aluOp, jalSel, sOpSel, inA, inB, wrtData, err, readEn, aluPC, regWrtOut, regWrt, wrtRegOut, wrtReg, instrValidD, jumpInst);
 
 input wire [15:0] instruction;
 input wire [15:0] wbData;
@@ -44,7 +44,7 @@ output wire [15:0] inB;
 
 output wire [15:0] wrtData;
 output wire err;
-output wire branchInst;
+output wire jumpInst;
 
 wire zeroSel;            // choose zero or sign extended immediates 
 wire [15:0] imm5;
@@ -81,7 +81,7 @@ regFile register_file(.read1Data(inA), .read2Data(regB), .err(regErr), .clk(clk)
 assign inB = (BSrc == 2'b00) ? regB : (BSrc == 2'b01) ? imm5 : (BSrc == 2'b10) ? imm11 : 16'b0;
 
 assign inst = (instrValidD) ? instruction : 16'b0000100000000000;
-assign branchInst = (inst[15:13] == 5'b011 | inst[15:13] == 5'b001) ? 1'b1 : 1'b0;
+assign jumpInst = (inst[15:13] == 5'b001) ? 1'b1 : 1'b0;
 
 // instruction decoder
 control_unit instruction_decoder(.instruction(inst), .aluJmp(aluJmp), .memWrt(memWrt), .brchSig(brchSig), .Cin(Cin), .invA(invA), .invB(invB), .regWrt(regWrtOut), .wbDataSel(wbDataSel), .stuSel(stuSel), .immSrc(immSrc), .SLBIsel(SLBIsel), .createDump(createDump), .BSrc(BSrc), .zeroSel(zeroSel), .regDestSel(regDestSel), .jalSel(jalSel), .sOpSel(sOpSel), .err(cntrlErr), .aluPC(aluPC));
