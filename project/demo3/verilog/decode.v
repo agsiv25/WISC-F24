@@ -49,6 +49,7 @@ output wire branchInst;
 wire zeroSel;            // choose zero or sign extended immediates 
 wire [15:0] imm5;
 wire [1:0] regDestSel;   // sel signal to register write mux 
+wire stuSel;
 
 wire [15:0] regB;
 wire [1:0] BSrc;          // select signal for inB mux
