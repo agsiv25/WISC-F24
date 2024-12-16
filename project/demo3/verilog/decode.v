@@ -5,7 +5,7 @@
    Description     : This is the module for the overall decode stage of the processor.
 */
 `default_nettype none
-module decode (instruction, wbData, clk, rst, imm8, imm11, aluJmp, SLBIsel, createDump, memWrt, brchSig, Cin, invA, invB, wbDataSel, immSrc, aluOp, jalSel, sOpSel, inA, inB, wrtData, err, readEn, aluPC, regWrtOut, regWrt, wrtRegOut, wrtReg, instrValidD, branchInst, stuSel, alignErrI, alignErrM, memAccess);
+module decode (instruction, wbData, clk, rst, imm8, imm11, aluJmp, SLBIsel, createDump, memWrt, brchSig, Cin, invA, invB, wbDataSel, immSrc, aluOp, jalSel, sOpSel, inA, inB, wrtData, err, readEn, aluPC, regWrtOut, regWrt, wrtRegOut, wrtReg, instrValidD, branchInst, stuSel, alignErrI, alignErrM, memAccess, Stall);
 
 input wire [15:0] instruction;
 input wire [15:0] wbData;
@@ -67,6 +67,9 @@ wire alignErr;
 //align
 wire [15:0]instrAlign;
 
+//stall
+input wire Stall;
+
 // 4:1 mux for register write select
 assign wrtRegOut = (regDestSel == 2'b00) ? instruction[10:8] : (regDestSel == 2'b01) ? instruction[7:5] : (regDestSel == 2'b10) ? instruction[4:2] : 3'b111;
 //assign wrtReg = instruction[4:2];
@@ -85,7 +88,7 @@ alu_op_decode ALU_OP(.instruction(instruction[15:0]), .aluOp(aluOp));
 assign wrtData = (stuSel) ? regB : inB;
 
 // Register file without bypass
-regFile register_file(.read1Data(inA), .read2Data(regB), .err(regErr), .clk(clk), .rst(rst), .read1RegSel(instruction[10:8]), .read2RegSel(instruction[7:5]), .writeRegSel(wrtReg), .writeData(wbData), .writeEn(regWrt));
+regFile register_file(.read1Data(inA), .read2Data(regB), .err(regErr), .clk(clk), .rst(rst), .read1RegSel(instruction[10:8]), .read2RegSel(instruction[7:5]), .writeRegSel(wrtReg), .writeData(wbData), .writeEn(regWrt & ~Stall));
 
 // 4:1 mux for ALU B input 
 assign inB = (BSrc == 2'b00) ? regB : (BSrc == 2'b01) ? imm5 : (BSrc == 2'b10) ? imm11 : 16'b0;

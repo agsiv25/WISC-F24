@@ -5,7 +5,7 @@
    Description     : This is the flip flop between the execute and memory cycles.
 */
 `default_nettype none
-module  x2m_ff(clk, rst, aluFinalX, newPCX, addPCX, aluOutX, wrtDataX, memWrtX, readEnX, wbDataSelX, wrtDataM, memWrtM, aluFinalM, newPCM, addPCM, aluOutM, readEnM, wbDataSelM, imm8X, imm8M, regWrtX, regWrtM, wrtRegX, wrtRegM, instructionX, instructionM, createDumpX, createDumpM, branchInstX, branchInstM, memAccessX, memAccessM);
+module  x2m_ff(clk, rst, aluFinalX, newPCX, addPCX, aluOutX, wrtDataX, memWrtX, readEnX, wbDataSelX, wrtDataM, memWrtM, aluFinalM, newPCM, addPCM, aluOutM, readEnM, wbDataSelM, imm8X, imm8M, regWrtX, regWrtM, wrtRegX, wrtRegM, instructionX, instructionM, createDumpX, createDumpM, branchInstX, branchInstM, memAccessX, memAccessM, Stall);
 
 input wire clk;
 input wire rst;
@@ -44,21 +44,55 @@ output wire branchInstM;
 input wire memAccessX;
 output wire memAccessM;
 
-dff aluFinalLatch [15:0] (.q(aluFinalM), .d(aluFinalX), .clk(clk), .rst(rst));
-dff newPCLatch [15:0] (.q(newPCM), .d(newPCX), .clk(clk), .rst(rst));
-dff addPCLatch [15:0] (.q(addPCM), .d(addPCX), .clk(clk), .rst(rst));
-dff aluOutLatch [15:0] (.q(aluOutM), .d(aluOutX), .clk(clk), .rst(rst));
-dff wrtDataLatch [15:0] (.q(wrtDataM), .d(wrtDataX), .clk(clk), .rst(rst));
-dff memWrtLatch(.q(memWrtM), .d(memWrtX), .clk(clk), .rst(rst));
-dff readEnLatch(.q(readEnM), .d(readEnX), .clk(clk), .rst(rst));
-dff wbDataSelLatch [1:0] (.q(wbDataSelM), .d(wbDataSelX), .clk(clk), .rst(rst));
-dff imm8Latch [15:0] (.q(imm8M), .d(imm8X), .clk(clk), .rst(rst));
-dff regWrtLatch (.q(regWrtM), .d(regWrtX), .clk(clk), .rst(rst));
-dff wrtRegLatch [2:0] (.q(wrtRegM), .d(wrtRegX), .clk(clk), .rst(rst));
-dff instructionLatch [15:0] (.q(instructionM), .d(instructionX), .clk(clk), .rst(rst));
-dff createDumpLatch (.q(createDumpM), .d(createDumpX), .clk(clk), .rst(rst));
-dff branchInstLatch (.q(branchInstM), .d(branchInstX), .clk(clk), .rst(rst));
-dff memAccessLatch (.q(memAccessM), .d(memAccessX), .clk(clk), .rst(rst));
+// stall signal
+input wire Stall;
+wire [15:0]aluFinalQ;
+wire [15:0]newPCQ;
+wire [15:0]addPCQ;
+wire [15:0]aluOutQ;
+wire [15:0]wrtDataQ;
+wire memWrtQ;
+wire readEnQ;
+wire [1:0]wbDataSelQ;
+wire [15:0]imm8Q;
+wire regWrtQ;
+wire [2:0]wrtRegQ;
+wire [15:0]instructionQ;
+wire createDumpQ;
+wire branchInstQ;
+wire memAccessQ;
+
+
+assign aluFinalQ = (Stall) ? aluFinalM : aluFinalX;
+dff aluFinalLatch [15:0] (.q(aluFinalM), .d(aluFinalQ), .clk(clk), .rst(rst));
+assign newPCQ = (Stall) ? newPCM : newPCX;
+dff newPCLatch [15:0] (.q(newPCM), .d(newPCQ), .clk(clk), .rst(rst));
+assign addPCQ = (Stall) ? addPCM : addPCX;
+dff addPCLatch [15:0] (.q(addPCM), .d(addPCQ), .clk(clk), .rst(rst));
+assign aluOutQ = (Stall) ? aluOutM : aluOutX;
+dff aluOutLatch [15:0] (.q(aluOutM), .d(aluOutQ), .clk(clk), .rst(rst));
+assign wrtDataQ = (Stall) ? wrtDataM : wrtDataX;
+dff wrtDataLatch [15:0] (.q(wrtDataM), .d(wrtDataQ), .clk(clk), .rst(rst));
+assign memWrtQ = (Stall) ? memWrtM : memWrtX;
+dff memWrtLatch(.q(memWrtM), .d(memWrtQ), .clk(clk), .rst(rst));
+assign readEnQ = (Stall) ? readEnM : readEnX;
+dff readEnLatch(.q(readEnM), .d(readEnQ), .clk(clk), .rst(rst));
+assign wbDataSelQ = (Stall) ? wbDataSelM : wbDataSelX;
+dff wbDataSelLatch [1:0] (.q(wbDataSelM), .d(wbDataSelQ), .clk(clk), .rst(rst));
+assign imm8Q = (Stall) ? imm8M : imm8X;
+dff imm8Latch [15:0] (.q(imm8M), .d(imm8Q), .clk(clk), .rst(rst));
+assign regWrtQ = (Stall) ? regWrtM : regWrtX;
+dff regWrtLatch (.q(regWrtM), .d(regWrtQ), .clk(clk), .rst(rst));
+assign wrtRegQ = (Stall) ? wrtRegM : wrtRegX;
+dff wrtRegLatch [2:0] (.q(wrtRegM), .d(wrtRegQ), .clk(clk), .rst(rst));
+assign instructionQ = (Stall) ? instructionM : instructionX;
+dff instructionLatch [15:0] (.q(instructionM), .d(instructionQ), .clk(clk), .rst(rst));
+assign createDumpQ = (Stall) ? createDumpM : createDumpX;
+dff createDumpLatch (.q(createDumpM), .d(createDumpQ), .clk(clk), .rst(rst));
+assign branchInstQ = (Stall) ? branchInstM : branchInstX;
+dff branchInstLatch (.q(branchInstM), .d(branchInstQ), .clk(clk), .rst(rst));
+assign memAccessQ = (Stall) ? memAccessM : memAccessX;
+dff memAccessLatch (.q(memAccessM), .d(memAccessQ), .clk(clk), .rst(rst));
    
 endmodule
 `default_nettype wire

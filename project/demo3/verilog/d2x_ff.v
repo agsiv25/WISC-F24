@@ -5,7 +5,7 @@
    Description     : This is the flip flop between the decode and execute cycles.
 */
 `default_nettype none
-module d2x_ff (clk, rst, imm8D, imm11D, aluJmpD, SLBIselD, memWrtD, brchSigD, CinD, invAD, invBD, wbDataSelD, immSrcD, aluOpD, jalSelD, sOpSelD, readEnD, aluPCD, inAD, inBD, wrtDataD, SLBIselX, incPCX, immSrcX, imm8X, imm11X, brchSigX, CinX, inAX, inBX, invAX, invBX, aluOpX, aluJmpX, jalSelX, sOpSelX, aluPCX, memWrtX, wbDataSelX, readEnX, wrtDataX, incPCD, regWrtD, regWrtX, wrtRegD, wrtRegX, branchInstD, branchInstX, instructionD, instructionX, createDumpD, createDumpX, fwCntrlAD, fwCntrlBD, fwCntrlAX, fwCntrlBX, memAccessD, memAccessX);
+module d2x_ff (clk, rst, imm8D, imm11D, aluJmpD, SLBIselD, memWrtD, brchSigD, CinD, invAD, invBD, wbDataSelD, immSrcD, aluOpD, jalSelD, sOpSelD, readEnD, aluPCD, inAD, inBD, wrtDataD, SLBIselX, incPCX, immSrcX, imm8X, imm11X, brchSigX, CinX, inAX, inBX, invAX, invBX, aluOpX, aluJmpX, jalSelX, sOpSelX, aluPCX, memWrtX, wbDataSelX, readEnX, wrtDataX, incPCD, regWrtD, regWrtX, wrtRegD, wrtRegX, branchInstD, branchInstX, instructionD, instructionX, createDumpD, createDumpX, fwCntrlAD, fwCntrlBD, fwCntrlAX, fwCntrlBX, memAccessD, memAccessX, Stall);
 
 input wire clk;
 input wire rst;
@@ -49,6 +49,38 @@ output wire [4:0] fwCntrlAX, fwCntrlBX;
 input wire memAccessD;
 output wire memAccessX;
 
+// stall signal
+input wire Stall;
+wire [15:0] imm8Q;
+wire [15:0] imm11Q;
+wire aluJmpQ;
+wire SLBIselQ;
+wire memWrtQ;
+wire [2:0] brchSigQ;
+wire CinQ;
+wire invAQ;
+wire invBQ;
+wire immSrcQ;
+wire [3:0] aluOpQ;
+wire jalSelQ;
+wire sOpSelQ;
+wire aluPCQ;
+wire [1:0] wbDataSelQ;
+wire readEnQ;
+wire [15:0] inAQ;
+wire [15:0] inBQ;
+wire wrtDataQ;
+wire [15:0] incPCQ;
+wire regWrtQ;
+wire [2:0] wrtRegQ;
+wire branchInstQ;
+wire [15:0] instructionQ;
+wire createDumpQ;
+wire memAccessQ;
+wire [4:0] AForwardingQ;
+wire [4:0] BForwardingQ;
+
+
 // to execute stage 
 output wire regWrtX;
 output wire SLBIselX;
@@ -80,45 +112,62 @@ output wire [15:0] instructionX;
 output wire createDumpX;
 
 // latches
-dff imm8Latch [15:0] (.q(imm8X), .d(imm8D), .clk(clk), .rst(rst));
-dff imm11Latch [15:0] (.q(imm11X), .d(imm11D), .clk(clk), .rst(rst));
-
-dff aluJmpLatch(.q(aluJmpX), .d(aluJmpD), .clk(clk), .rst(rst));
-dff SLBIselLatch(.q(SLBIselX), .d(SLBIselD), .clk(clk), .rst(rst));
-dff brchSigLatch [2:0] (.q(brchSigX), .d(brchSigD), .clk(clk), .rst(rst));
-dff CinLatch(.q(CinX), .d(CinD), .clk(clk), .rst(rst));
-dff invALatch(.q(invAX), .d(invAD), .clk(clk), .rst(rst));
-dff invBLatch(.q(invBX), .d(invBD), .clk(clk), .rst(rst));
-dff immSrcLatch(.q(immSrcX), .d(immSrcD), .clk(clk), .rst(rst));
-dff aluOpLatch [3:0] (.q(aluOpX), .d(aluOpD), .clk(clk), .rst(rst));
-dff jalSelLatch(.q(jalSelX), .d(jalSelD), .clk(clk), .rst(rst));
-dff sOpSelLatch(.q(sOpSelX), .d(sOpSelD), .clk(clk), .rst(rst));
-dff aluPCLatch(.q(aluPCX), .d(aluPCD), .clk(clk), .rst(rst));
-
-dff memWrtLatch(.q(memWrtX), .d(memWrtD), .clk(clk), .rst(rst));
-dff wbDataSelLatch [1:0] (.q(wbDataSelX), .d(wbDataSelD), .clk(clk), .rst(rst));
-dff readEnLatch(.q(readEnX), .d(readEnD), .clk(clk), .rst(rst));
-
-dff inALatch [15:0] (.q(inAX), .d(inAD), .clk(clk), .rst(rst));
-dff inBLatch [15:0] (.q(inBX), .d(inBD), .clk(clk), .rst(rst));
-
-dff wrtDataLatch [15:0] (.q(wrtDataX), .d(wrtDataD), .clk(clk), .rst(rst));
-
-dff incPCLatch [15:0] (.q(incPCX), .d(incPCD), .clk(clk), .rst(rst));
-
-dff regWrtLatch(.q(regWrtX), .d(regWrtD), .clk(clk), .rst(rst));
-
-dff wrtRegLatch [2:0] (.q(wrtRegX), .d(wrtRegD), .clk(clk), .rst(rst));
-
-dff branchInstLatch(.q(branchInstX), .d(branchInstD), .clk(clk), .rst(rst));
-
-dff instructionLatch [15:0] (.q(instructionX), .d(instructionD), .clk(clk), .rst(rst));
-
-dff createDumpLatch(.q(createDumpX), .d(createDumpD), .clk(clk), .rst(rst));
-
-dff AForwardingLatch [4:0] (.q(fwCntrlAX), .d(fwCntrlAD), .clk(clk), .rst(rst));
-dff BForwardingLatch [4:0] (.q(fwCntrlBX), .d(fwCntrlBD), .clk(clk), .rst(rst));
-dff memAccessLatch(.q(memAccessX), .d(memAccessD), .clk(clk), .rst(rst));
+assign imm8Q = (Stall) ? imm8X : imm8D;
+dff imm8Latch [15:0] (.q(imm8X), .d(imm8Q), .clk(clk), .rst(rst));
+assign imm11Q = (Stall) ? imm11X : imm11D;
+dff imm11Latch [15:0] (.q(imm11X), .d(imm11Q), .clk(clk), .rst(rst));
+assign aluJmpQ = (Stall) ? aluJmpX : aluJmpD;
+dff aluJmpLatch(.q(aluJmpX), .d(aluJmpQ), .clk(clk), .rst(rst));
+assign SLBIselQ = (Stall) ? SLBIselX : SLBIselD;
+dff SLBIselLatch(.q(SLBIselX), .d(SLBIselQ), .clk(clk), .rst(rst));
+assign memWrtQ = (Stall) ? memWrtX : memWrtD;
+dff brchSigLatch [2:0] (.q(brchSigX), .d(brchSigQ), .clk(clk), .rst(rst));
+assign CinQ = (Stall) ? CinX : CinD;
+dff CinLatch(.q(CinX), .d(CinQ), .clk(clk), .rst(rst));
+assign invAQ = (Stall) ? invAX : invAD;
+dff invALatch(.q(invAX), .d(invAQ), .clk(clk), .rst(rst));
+assign invBQ = (Stall) ? invBX : invBD;
+dff invBLatch(.q(invBX), .d(invBQ), .clk(clk), .rst(rst));
+assign immSrcQ = (Stall) ? immSrcX : immSrcD;
+dff immSrcLatch(.q(immSrcX), .d(immSrcQ), .clk(clk), .rst(rst));
+assign aluOpQ = (Stall) ? aluOpX : aluOpD;
+dff aluOpLatch [3:0] (.q(aluOpX), .d(aluOpQ), .clk(clk), .rst(rst));
+assign jalSelQ = (Stall) ? jalSelX : jalSelD;
+dff jalSelLatch(.q(jalSelX), .d(jalSelQ), .clk(clk), .rst(rst));
+assign sOpSelQ = (Stall) ? sOpSelX : sOpSelD;
+dff sOpSelLatch(.q(sOpSelX), .d(sOpSelQ), .clk(clk), .rst(rst));
+assign aluPCQ = (Stall) ? aluPCX : aluPCD;
+dff aluPCLatch(.q(aluPCX), .d(aluPCQ), .clk(clk), .rst(rst));
+assign memWrtQ = (Stall) ? memWrtX : memWrtD;
+dff memWrtLatch(.q(memWrtX), .d(memWrtQ), .clk(clk), .rst(rst));
+assign wbDataSelQ = (Stall) ? wbDataSelX : wbDataSelD;
+dff wbDataSelLatch [1:0] (.q(wbDataSelX), .d(wbDataSelQ), .clk(clk), .rst(rst));
+assign readEnQ = (Stall) ? readEnX : readEnD;
+dff readEnLatch(.q(readEnX), .d(readEnQ), .clk(clk), .rst(rst));
+assign inAQ = (Stall) ? inAX : inAD;
+dff inALatch [15:0] (.q(inAX), .d(inAQ), .clk(clk), .rst(rst));
+assign inBQ = (Stall) ? inBX : inBD;
+dff inBLatch [15:0] (.q(inBX), .d(inBQ), .clk(clk), .rst(rst));
+assign wrtDataQ = (Stall) ? wrtDataX : wrtDataD;
+dff wrtDataLatch [15:0] (.q(wrtDataX), .d(wrtDataQ), .clk(clk), .rst(rst));
+assign incPCQ = (Stall) ? incPCX : incPCD;
+dff incPCLatch [15:0] (.q(incPCX), .d(incPCQ), .clk(clk), .rst(rst));
+assign regWrtQ = (Stall) ? regWrtX : regWrtD;
+dff regWrtLatch(.q(regWrtX), .d(regWrtQ), .clk(clk), .rst(rst));
+assign wrtRegQ = (Stall) ? wrtRegX : wrtRegD;
+dff wrtRegLatch [2:0] (.q(wrtRegX), .d(wrtRegQ), .clk(clk), .rst(rst));
+assign branchInstQ = (Stall) ? branchInstX : branchInstD;
+dff branchInstLatch(.q(branchInstX), .d(branchInstQ), .clk(clk), .rst(rst));
+assign instructionQ = (Stall) ? instructionX : instructionD;
+dff instructionLatch [15:0] (.q(instructionX), .d(instructionQ), .clk(clk), .rst(rst));
+assign createDumpQ = (Stall) ? createDumpX : createDumpD;
+dff createDumpLatch(.q(createDumpX), .d(createDumpQ), .clk(clk), .rst(rst));
+assign AForwardingQ = (Stall) ? fwCntrlAX : fwCntrlAD;
+dff AForwardingLatch [4:0] (.q(fwCntrlAX), .d(AForwardingQ), .clk(clk), .rst(rst));
+assign BForwardingQ = (Stall) ? fwCntrlBX : fwCntrlBD;
+dff BForwardingLatch [4:0] (.q(fwCntrlBX), .d(BForwardingQ), .clk(clk), .rst(rst));
+assign memAccessQ = (Stall) ? memAccessX : memAccessD;
+dff memAccessLatch(.q(memAccessX), .d(memAccessQ), .clk(clk), .rst(rst));
 
 
 endmodule
