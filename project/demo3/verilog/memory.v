@@ -35,7 +35,7 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, 
    //memory2c_align data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(~createDump & memAccessM & ~alignErr_ff), .wr(memWrt), .createdump(createDump | alignErr_ff), .clk(clk), .rst(rst), .err(alignErr));
    stallmem data_memory(.DataOut(memOut), .DataIn(wrtData), .Addr(dataAddr), .Done(Done), .Wr(~createDump & memAccessM & memWrt), .Rd(~memWrt), .createdump(createDump | alignErr_ff), .clk(clk), .rst(rst), .err(alignErr), .Stall(Stall), .CacheHit(CacheHit));
 
-   dff alignErr_ff_dff(.q(alignErr_ff), .d(alignErr), .clk(clk), .rst(rst));
+   //dff alignErr_ff_dff(.q(alignErr_ff), .d(alignErr), .clk(clk), .rst(rst));
    
 endmodule
 `default_nettype wire
