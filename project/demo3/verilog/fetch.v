@@ -69,8 +69,8 @@ assign err = pcRegErr | pcIncErr;
 
 //assign Stall = 1'b0; //TODO: implement stall signal
 //memory2c_align instruction_memory(.data_out(instruction2), .data_in(16'b0), .addr(pcRegAddr), .enable(1'b1), .wr(1'b0), .createdump(createDump | alignErr_ff), .clk(clk), .rst(rst), .err(alignErrI));
-//stallmem instruction_memory(.DataOut(instruction2), .DataIn(16'b0), .Addr(pcRegAddr), .Done(Done), .Wr(1'b0), .Rd(1'b1), .createdump(createDump | alignErr_ff), .clk(clk), .rst(rst), .err(alignErrI), .Stall(Stall_i), .CacheHit(CacheHit));
-mem_system_hier instruction_memory(.DataOut(instruction2), .DataIn(16'b0), .Addr(pcRegAddr), .Done(Done), .Wr(1'b0), .Rd(1'b1), .createdump(createDump | alignErr_ff), .clk(clk), .rst(rst), .err(alignErrI), .Stall(Stall_i), .CacheHit(CacheHit));
+stallmem instruction_memory(.DataOut(instruction2), .DataIn(16'b0), .Addr(pcRegAddr), .Done(Done), .Wr(1'b0), .Rd(1'b1), .createdump(createDump | alignErr_ff), .clk(clk), .rst(rst), .err(alignErrI), .Stall(Stall_i), .CacheHit(CacheHit));
+//mem_system_hier instruction_memory(.DataOut(instruction2), .DataIn(16'b0), .Addr(pcRegAddr), .Done(Done), .Wr(1'b0), .Rd(1'b1), .createdump(createDump | alignErr_ff), .clk(clk), .rst(rst), .err(alignErrI), .Stall(Stall_i), .CacheHit(CacheHit));
 
 hazard_det hazard(.rst(rst), .clk(clk), .fetch_inst(instruction2), .next_inst(instruction), .pcNop(pcNop), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .branchInstD(branchInstD), .branchInstX(branchInstX), .branchInstM(branchInstM), .branchInstW(branchInstW), .fwCntrlA(fwCntrlA), .fwCntrlB(fwCntrlB), .wbDataSelD(wbDataSelD), .wbDataSelX(wbDataSelX));
 
