@@ -25,7 +25,7 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, 
    input wire istallM;
    wire enable;
 
-   assign enable = ~createDump & ((~istall & ~istallM) | (istall & ~istallM));
+   assign enable = ~createDump & ~(istall & istallM & readEn);
 
 
 memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(enable), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
