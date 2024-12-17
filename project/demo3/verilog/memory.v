@@ -24,7 +24,7 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, 
    input wire istall;
 
 
-   memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(~createDump & istall), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
+   memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(~createDump & ~istall), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
    
 endmodule
 `default_nettype wire
