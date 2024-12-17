@@ -1,9 +1,16 @@
 // j_0.asm
 
-lbi r1,255
-j 4
-lbi r2,20
+lbi r0, U.GoGoGo
+slbi r0, L.GoGoGo
+jalr r0, 0
+.RetAddr:
 halt
-lbi r2,30
-j -8
+halt
+halt
+halt
+
+.GoGoGo:
+st r7, r2, -2      // .Data1-2 = .RetAddr (0x00a4)
+halt
+halt
 halt
