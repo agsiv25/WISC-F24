@@ -120,7 +120,7 @@ assign aluJmpQ = (Stall) ? aluJmpX : aluJmpD;
 dff aluJmpLatch(.q(aluJmpX), .d(aluJmpQ), .clk(clk), .rst(rst));
 assign SLBIselQ = (Stall) ? SLBIselX : SLBIselD;
 dff SLBIselLatch(.q(SLBIselX), .d(SLBIselQ), .clk(clk), .rst(rst));
-assign memWrtQ = (Stall) ? memWrtX : memWrtD;
+assign brchSigQ = (Stall) ? brchSigX : brchSigD;
 dff brchSigLatch [2:0] (.q(brchSigX), .d(brchSigQ), .clk(clk), .rst(rst));
 assign CinQ = (Stall) ? CinX : CinD;
 dff CinLatch(.q(CinX), .d(CinQ), .clk(clk), .rst(rst));
