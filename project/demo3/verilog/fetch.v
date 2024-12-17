@@ -50,7 +50,7 @@ wire stall;
 wire done;
 wire cacheHit;
 wire icacheErr;
-reg unaligned = 1'b0;
+wire unaligned;
 
 wire [15:0]pcIfBranch;
 
@@ -85,7 +85,7 @@ mem_system #(0) m0(/*AUTOINST*/
                       .clk              (clk),
                       .rst              (rst));
 
-unaligned = (icacheErr === 1'b1);
+assign unaligned = (icacheErr === 1'b1);
 
 // on branch misprediction, insert NOP to invalidate instruction   
 assign branchSafeInst = (unaligned) ? 16'h0000 : (branch_misprediction | stall) ? 16'h0800 : instruction2;
