@@ -5,7 +5,7 @@
    Description     : This is the flip flop between the memory and write back cycles.
 */
 `default_nettype none
-module  m2w_ff(clk, rst, memOutM, wbDataSelM, addPCM, aluFinalM, imm8M, wbDataSelW, addPCW, memOutW, aluFinalW, imm8W, regWrtW, regWrtM, wrtRegM, wrtRegW, instructionM, instructionW, istall);
+module  m2w_ff(clk, rst, memOutM, wbDataSelM, addPCM, aluFinalM, imm8M, wbDataSelW, addPCW, memOutW, aluFinalW, imm8W, regWrtW, regWrtM, wrtRegM, wrtRegW, instructionM, instructionW, istall, dstall);
 
 input wire clk;
 input wire rst;
@@ -28,10 +28,11 @@ output wire regWrtW;
 output wire [2:0] wrtRegW;
 output wire [15:0] instructionW;
 
-// icache
+// cache
 input wire istall;
+input wire dstall;
 wire cacheClk;
-assign cacheClk = (istall) ? 1'b0 : clk;
+assign cacheClk = (istall | dstall) ? 1'b0 : clk;
 
 dff wbDataSelLatch[1:0](.q(wbDataSelW), .d(wbDataSelM), .clk(cacheClk), .rst(rst));
 dff addPCLatch[15:0](.q(addPCW), .d(addPCM), .clk(cacheClk), .rst(rst));
