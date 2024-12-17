@@ -85,7 +85,7 @@ mem_system #(0) m0(/*AUTOINST*/
 
 
 // on branch misprediction, insert NOP to invalidate instruction   
-assign branchSafeInst = (branch_misprediction) ? 16'h0800 : instruction2;
+assign branchSafeInst = (icacheErr) ? 16'h0000 : (branch_misprediction | stall) ? 16'h0800 : instruction2;
 
 hazard_det hazard(.rst(rst), .clk(clk), .fetch_inst(branchSafeInst), .next_inst(instruction), .pcNop(pcNop), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .fwCntrlA(fwCntrlA), .fwCntrlB(fwCntrlB), .wbDataSelD(wbDataSelD), .wbDataSelX(wbDataSelX), .jumpInstD(jumpInstD), .jumpInstX(jumpInstX));
 
