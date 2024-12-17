@@ -41,9 +41,9 @@ input wire branch_mispredictionX;
 output wire branch_mispredictionM;
 input wire istall;
 output wire istallM;
+input wire dstall;
 wire cacheClk;
 assign cacheClk = (istall | dstall) ? 1'b0 : clk;
-input wire dstall;
 
 dff aluFinalLatch [15:0] (.q(aluFinalM), .d(aluFinalX), .clk(cacheClk), .rst(rst));
 dff addPCLatch [15:0] (.q(addPCM), .d(addPCX), .clk(cacheClk), .rst(rst));
