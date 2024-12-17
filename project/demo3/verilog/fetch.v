@@ -59,9 +59,7 @@ cla_16b pc_inc(.sum(incPC), .c_out(), .ofl(pcIncErr), .a(pcRegAddr), .b(16'h2), 
 
 assign pcIfBranch = (jumpInstX | branch_misprediction) ? newPC : incPC;
 
-
-wire writeEn = ~createDump & ~(pcNop & ~(jumpInstX | branch_misprediction | stall | ~(icacheErr === 1'b0)));
-
+wire writeEn = ~createDump & ~pcNop & ~(jumpInstX | branch_misprediction | stall) & (icacheErr === 1'b0);
 reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(pcIfBranch), .writeEn(writeEn));
 
 // assign error signal to be an OR between the PC adder and the PC register
