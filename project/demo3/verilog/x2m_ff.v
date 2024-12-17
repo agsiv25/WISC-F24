@@ -5,7 +5,7 @@
    Description     : This is the flip flop between the execute and memory cycles.
 */
 `default_nettype none
-module  x2m_ff(clk, rst, aluFinalX, addPCX, aluOutX, wrtDataX, memWrtX, readEnX, wbDataSelX, wrtDataM, memWrtM, aluFinalM, addPCM, aluOutM, readEnM, wbDataSelM, imm8X, imm8M, regWrtX, regWrtM, wrtRegX, wrtRegM, instructionX, instructionM, createDumpX, createDumpM);
+module  x2m_ff(clk, rst, aluFinalX, addPCX, aluOutX, wrtDataX, memWrtX, readEnX, wbDataSelX, wrtDataM, memWrtM, aluFinalM, addPCM, aluOutM, readEnM, wbDataSelM, imm8X, imm8M, regWrtX, regWrtM, wrtRegX, wrtRegM, instructionX, instructionM, createDumpX, createDumpM, branch_mispredictionX, branch_mispredictionM);
 
 input wire clk;
 input wire rst;
@@ -36,6 +36,10 @@ output wire [2:0] wrtRegM;
 output wire [15:0] instructionM;
 output wire createDumpM;
 
+// icache
+input wire branch_mispredictionX;
+output wire branch_mispredictionM;
+
 dff aluFinalLatch [15:0] (.q(aluFinalM), .d(aluFinalX), .clk(clk), .rst(rst));
 dff addPCLatch [15:0] (.q(addPCM), .d(addPCX), .clk(clk), .rst(rst));
 dff aluOutLatch [15:0] (.q(aluOutM), .d(aluOutX), .clk(clk), .rst(rst));
@@ -48,6 +52,8 @@ dff regWrtLatch (.q(regWrtM), .d(regWrtX), .clk(clk), .rst(rst));
 dff wrtRegLatch [2:0] (.q(wrtRegM), .d(wrtRegX), .clk(clk), .rst(rst));
 dff instructionLatch [15:0] (.q(instructionM), .d(instructionX), .clk(clk), .rst(rst));
 dff createDumpLatch (.q(createDumpM), .d(createDumpX), .clk(clk), .rst(rst));
+
+dff branchMispredictionLatch (.q(branch_mispredictionM), .d(branch_mispredictionX), .clk(clk), .rst(rst));
    
 endmodule
 `default_nettype wire

@@ -5,7 +5,7 @@
    Description     : This is the module for the overall fetch stage of the processor.
 */
 `default_nettype none
-module fetch (newPC, createDump, rst, clk, incPC, instruction, err, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, jumpInstD, jumpInstX, instrValid, fwCntrlA, fwCntrlB, wbDataSelD, wbDataSelX, branch_misprediction);
+module fetch (newPC, createDump, rst, clk, incPC, instruction, err, regWrtD, regWrtX, regWrtM, regWrtW, wrtRegD, wrtRegX, wrtRegM, wrtRegW, jumpInstD, jumpInstX, instrValid, fwCntrlA, fwCntrlB, wbDataSelD, wbDataSelX, branch_mispredictionX, branch_mispredictionM);
 
 input wire [15:0]newPC;
 input wire createDump;
@@ -34,7 +34,8 @@ input wire [2:0] wrtRegW;
 // control signals
 input wire jumpInstD;
 input wire jumpInstX;
-input wire branch_misprediction;
+input wire branch_mispredictionX;
+input wire branch_mispredictionM;
 
 wire [15:0]pcRegAddr; 
 wire pcIncErr;
@@ -58,13 +59,13 @@ assign instrValid = 1'b1;
 
 cla_16b pc_inc(.sum(incPC), .c_out(), .ofl(pcIncErr), .a(pcRegAddr), .b(16'h2), .c_in(1'b0), .sign(1'b0));
 
-assign pcIfBranch = (jumpInstX | branch_misprediction) ? newPC : incPC;
+assign pcIfBranch = (jumpInstX | branch_mispredictionX) ? newPC : incPC;
 
-wire writeEn = (~createDump & ~pcNop & (~stall | (stall & cacheHit)) & (icacheErr === 1'b0)) | jumpInstX | branch_misprediction;
+wire writeEn = (~createDump & ~pcNop & (~stall | (stall & cacheHit)) & (icacheErr === 1'b0)) | jumpInstX | branch_mispredictionX;
 reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(pcIfBranch), .writeEn(writeEn));
 
 // assign error signal to be an OR between the PC adder and the PC register
-assign err = pcRegErr | pcIncErr | icacheErr;
+assign err = pcRegErr | pcIncErr | unaligned;
 
 // memory2c instruction_memory(.data_out(instruction2), .data_in(16'b0), .addr(pcRegAddr), .enable(1'b1), .wr(1'b0), .createdump(createDump), .clk(clk), .rst(rst));
    
@@ -88,7 +89,7 @@ mem_system #(0) m0(/*AUTOINST*/
 assign unaligned = (icacheErr === 1'b1);
 
 // on branch misprediction, insert NOP to invalidate instruction   
-assign branchSafeInst = (unaligned) ? 16'h0000 : (branch_misprediction | (stall & ~cacheHit) | icacheErr === 1'bx) ? 16'h0800 : instruction2;
+assign branchSafeInst = (unaligned) ? 16'h0000 : (branch_mispredictionX | branch_mispredictionM | (stall & ~cacheHit) | icacheErr === 1'bx) ? 16'h0800 : instruction2;
 // assign branchSafeInst = (branch_misprediction | stall | ~(icacheErr === 1'b0)) ? 16'h0800 : instruction2;
 
 hazard_det hazard(.rst(rst), .clk(clk), .fetch_inst(branchSafeInst), .next_inst(instruction), .pcNop(pcNop), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .fwCntrlA(fwCntrlA), .fwCntrlB(fwCntrlB), .wbDataSelD(wbDataSelD), .wbDataSelX(wbDataSelX), .jumpInstD(jumpInstD), .jumpInstX(jumpInstX));
