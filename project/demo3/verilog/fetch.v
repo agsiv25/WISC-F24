@@ -76,7 +76,7 @@ mem_system #(0) m0(/*AUTOINST*/
                       // Outputs
                       .DataOut          (instruction2),
                       .Done             (done),
-                      .Stall            (istall_local),
+                      .Stall            (istall),
                       .CacheHit         (cacheHit),
                       .err              (icacheErr),
                       // Inputs
