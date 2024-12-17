@@ -28,6 +28,7 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, 
    wire enable;
    wire done;
    wire dstall_local;
+   wire cacheHit;
 
    assign enable = ~createDump & ~(istall & istallM & readEn);
    assign dstall = (dstall_local | dcacheErr);
