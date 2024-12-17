@@ -22,11 +22,9 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, 
 
    // icache
    input wire istall;
-   wire cacheClk;
-   assign cacheClk = (istall) ? 1'b0 : clk;
 
 
-   memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(~createDump), .wr(memWrt), .createdump(createDump), .clk(cacheClk), .rst(rst));
+   memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(~createDump & ~istall), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
    
 endmodule
 `default_nettype wire
