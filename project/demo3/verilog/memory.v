@@ -23,8 +23,9 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, 
    // icache
    input wire istall;
    input wire istallM;
+   wire enable;
 
-   assign wire enable = ~createDump & ((~istall & ~istallM) | (istall & ~istallM));
+   assign enable = ~createDump & ((~istall & ~istallM) | (istall & ~istallM));
 
 
 memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(enable), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
