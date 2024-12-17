@@ -5,7 +5,7 @@
    Description     : This is the flip flop between the memory and write back cycles.
 */
 `default_nettype none
-module  m2w_ff(clk, rst, memOutM, wbDataSelM, addPCM, aluFinalM, imm8M, wbDataSelW, addPCW, memOutW, aluFinalW, imm8W, regWrtW, regWrtM, wrtRegM, wrtRegW, instructionM, instructionW);
+module  m2w_ff(clk, rst, memOutM, wbDataSelM, addPCM, aluFinalM, imm8M, wbDataSelW, addPCW, memOutW, aluFinalW, imm8W, regWrtW, regWrtM, wrtRegM, wrtRegW, instructionM, instructionW, istall);
 
 input wire clk;
 input wire rst;
@@ -28,14 +28,19 @@ output wire regWrtW;
 output wire [2:0] wrtRegW;
 output wire [15:0] instructionW;
 
-dff wbDataSelLatch[1:0](.q(wbDataSelW), .d(wbDataSelM), .clk(clk), .rst(rst));
-dff addPCLatch[15:0](.q(addPCW), .d(addPCM), .clk(clk), .rst(rst));
-dff memOutLatch[15:0](.q(memOutW), .d(memOutM), .clk(clk), .rst(rst));
-dff aluFinalLatch[15:0](.q(aluFinalW), .d(aluFinalM), .clk(clk), .rst(rst));
-dff imm8Latch[15:0](.q(imm8W), .d(imm8M), .clk(clk), .rst(rst));
-dff regWrtLatch(.q(regWrtW), .d(regWrtM), .clk(clk), .rst(rst));
-dff wrtRegLatch[2:0](.q(wrtRegW), .d(wrtRegM), .clk(clk), .rst(rst));
-dff instructionLatch[15:0](.q(instructionW), .d(instructionM), .clk(clk), .rst(rst));
+// icache
+input wire istall;
+wire cacheClk;
+assign cacheClk = (istall) ? 1'b0 : clk;
+
+dff wbDataSelLatch[1:0](.q(wbDataSelW), .d(wbDataSelM), .clk(cacheClk), .rst(rst));
+dff addPCLatch[15:0](.q(addPCW), .d(addPCM), .clk(cacheClk), .rst(rst));
+dff memOutLatch[15:0](.q(memOutW), .d(memOutM), .clk(cacheClk), .rst(rst));
+dff aluFinalLatch[15:0](.q(aluFinalW), .d(aluFinalM), .clk(cacheClk), .rst(rst));
+dff imm8Latch[15:0](.q(imm8W), .d(imm8M), .clk(cacheClk), .rst(rst));
+dff regWrtLatch(.q(regWrtW), .d(regWrtM), .clk(cacheClk), .rst(rst));
+dff wrtRegLatch[2:0](.q(wrtRegW), .d(wrtRegM), .clk(cacheClk), .rst(rst));
+dff instructionLatch[15:0](.q(instructionW), .d(instructionM), .clk(cacheClk), .rst(rst));
    
 endmodule
 `default_nettype wire
