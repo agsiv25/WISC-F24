@@ -140,7 +140,7 @@ module proc (/*AUTOARG*/
 
    x2m_ff exec2mem(.createDumpX(createDumpX), .createDumpM(createDumpM), .instructionX(instructionX), .instructionM(instructionM), .clk(clk), .rst(rst), .aluFinalX(aluFinalX), .aluFinalM(aluFinalM), .addPCX(addPCX), .addPCM(addPCM), .aluOutX(aluOutX), .aluOutM(aluOutM), .wrtDataX(wrtDataXout), .wrtDataM(wrtDataM), .memWrtX(memWrtX), .memWrtM(memWrtM), .readEnX(readEnX), .readEnM(readEnM), .wbDataSelX(wbDataSelX), .wbDataSelM(wbDataSelM), .imm8X(imm8X), .imm8M(imm8M), .regWrtX(regWrtX), .regWrtM(regWrtM), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .branch_mispredictionX(branch_mispredictionSRC), .branch_mispredictionM(branch_mispredictionM), .istall(istallF), .istallM(istallM));
 
-   memory memorySection(.dataAddr(aluOutM), .wrtData(wrtDataM), .memWrt(memWrtM), .createDump(createDumpM), .clk(clk), .rst(rst), .memOut(memOutM), .readEn(readEnM), .istall(istallM));
+   memory memorySection(.dataAddr(aluOutM), .wrtData(wrtDataM), .memWrt(memWrtM), .createDump(createDumpM), .clk(clk), .rst(rst), .memOut(memOutM), .readEn(readEnM), .istall(istallF));
 
    m2w_ff mem2wb(.instructionM(instructionM), .instructionW(instructionW), .clk(clk), .rst(rst), .memOutM(memOutM), .memOutW(memOutW), .wbDataSelM(wbDataSelM), .wbDataSelW(wbDataSelW), .addPCM(addPCM), .addPCW(addPCW), .aluFinalM(aluFinalM), .aluFinalW(aluFinalW), .imm8M(imm8M), .imm8W(imm8W), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .istall(istallF));
 
