@@ -62,7 +62,7 @@ cla_16b pc_inc(.sum(incPC), .c_out(), .ofl(pcIncErr), .a(pcRegAddr), .b(16'h2), 
 assign pcIfBranch = (jumpInstX | branch_mispredictionX) ? newPC : incPC;
 
 // wire writeEn = (~createDump & ~pcNop & (~stall | (stall & cacheHit)) & (icacheErr === 1'b0) & ~branch_mispredictionM) | jumpInstX | branch_mispredictionX;
-wire writeEn = (~createDump & ~pcNop & (icacheErr === 1'b0)) | jumpInstX | branch_mispredictionX;
+wire writeEn = (~createDump & ~pcNop & ~istall (icacheErr === 1'b0)) | jumpInstX | branch_mispredictionX;
 
 reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(pcIfBranch), .writeEn(writeEn));
 
@@ -92,7 +92,7 @@ assign unaligned = (icacheErr === 1'b1);
 
 // on branch misprediction, insert NOP to invalidate instruction   
 // assign branchSafeInst = (unaligned) ? 16'h0000 : (branch_mispredictionX | branch_mispredictionM | (stall & ~cacheHit) | icacheErr === 1'bx) ? 16'h0800 : instruction2;
-assign branchSafeInst = (unaligned) ? 16'h0000 : (branch_mispredictionX | icacheErr === 1'bx) ? 16'h0800 : instruction2;
+assign branchSafeInst = (unaligned) ? 16'h0000 : (branch_mispredictionX | istall | icacheErr === 1'bx) ? 16'h0800 : instruction2;
 
 hazard_det hazard(.rst(rst), .clk(clk), .fetch_inst(branchSafeInst), .next_inst(instruction), .pcNop(pcNop), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .fwCntrlA(fwCntrlA), .fwCntrlB(fwCntrlB), .wbDataSelD(wbDataSelD), .wbDataSelX(wbDataSelX), .jumpInstD(jumpInstD), .jumpInstX(jumpInstX));
 
