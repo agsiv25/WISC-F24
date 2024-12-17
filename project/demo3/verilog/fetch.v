@@ -45,6 +45,12 @@ wire [15:0] instruction2;
 wire [15:0] branchSafeInst;
 wire pcNop;
 
+// wire for i-cache
+wire stall;
+wire done;
+wire cacheHit;
+wire icacheErr;
+
 wire [15:0]pcIfBranch;
 
 assign instrValid = 1'b1;
@@ -56,10 +62,28 @@ assign pcIfBranch = (jumpInstX | branch_misprediction) ? newPC : incPC;
 reg16 PC(.readData(pcRegAddr), .err(pcRegErr), .clk(clk), .rst(rst), .writeData(pcIfBranch), .writeEn(~createDump & ~(pcNop & ~(jumpInstX | branch_misprediction))));
 
 // assign error signal to be an OR between the PC adder and the PC register
-assign err = pcRegErr | pcIncErr;
+assign err = pcRegErr | pcIncErr | icacheErr;
 
-memory2c instruction_memory(.data_out(instruction2), .data_in(16'b0), .addr(pcRegAddr), .enable(1'b1), .wr(1'b0), .createdump(createDump), .clk(clk), .rst(rst));
+// memory2c instruction_memory(.data_out(instruction2), .data_in(16'b0), .addr(pcRegAddr), .enable(1'b1), .wr(1'b0), .createdump(createDump), .clk(clk), .rst(rst));
    
+// I-CACHE (mem_type param set to 0):
+mem_system #(0) m0(/*AUTOINST*/
+                      // Outputs
+                      .DataOut          (instruction2),
+                      .Done             (done),
+                      .Stall            (stall),
+                      .CacheHit         (cacheHit),
+                      .err              (icacheErr),
+                      // Inputs
+                      .Addr             (pcRegAddr),
+                      .DataIn           (16'b0),
+                      .Rd               (1'b1),
+                      .Wr               (1'b0),
+                      .createdump       (createDump),
+                      .clk              (clk),
+                      .rst              (rst));
+
+
 // on branch misprediction, insert NOP to invalidate instruction   
 assign branchSafeInst = (branch_misprediction) ? 16'h0800 : instruction2;
 
