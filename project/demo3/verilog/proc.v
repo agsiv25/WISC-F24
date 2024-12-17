@@ -25,7 +25,6 @@ module proc (/*AUTOARG*/
    
    /* your code here -- should include instantiations of fetch, decode, execute, mem and wb modules */
 
-   wire [15:0] newPCX;
    wire [15:0] instructionF;
    wire [15:0] instructionD;
    wire [15:0] instructionX;
@@ -122,6 +121,7 @@ module proc (/*AUTOARG*/
    wire branch_mispredictionSRC;     // set high when a branch is taken (incorrect prediction)
    wire branchInstD;
    wire branchInstX;
+   wire [15:0] newPCX;
 
    fetch fetchSection(.newPC(newPCX), .createDump(createDumpM), .rst(rst), .clk(clk), .incPC(incPCF), .instruction(instructionF), .err(fetchErr), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .jumpInstD(jumpInstD), .jumpInstX(jumpInstX), .instrValid(instrValidF), .fwCntrlA(fwCntrlAF), .fwCntrlB(fwCntrlBF), .wbDataSelD(wbDataSelD), .wbDataSelX(wbDataSelX), .branch_misprediction(branch_mispredictionSRC));
 
