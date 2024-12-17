@@ -51,9 +51,9 @@ output wire branchInstX;
 
 // cache
 input wire istall;
+input wire dstall;
 wire cacheClk;
 assign cacheClk = (istall | dstall) ? 1'b0 : clk;
-input wire dstall;
 
 // to execute stage 
 output wire regWrtX;

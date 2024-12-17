@@ -20,9 +20,9 @@ output wire [4:0] fwCntrlAD, fwCntrlBD;
 
 // cache
 input wire istall;
+input wire dstall;
 wire cacheClk;
 assign cacheClk = (istall | dstall) ? 1'b0 : clk;
-input wire dstall;
 
 output wire [15:0] incPCD;
 output wire [15:0] instructionD;
