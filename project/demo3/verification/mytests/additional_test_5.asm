@@ -1,6 +1,9 @@
-// addi_3.asm
+// j_0.asm
 
-lbi r1, 0x80
-slbi r1, 0x0
-addi r2, r1, 0xff
+lbi r1,255
+j 4
+lbi r2,20
+halt
+lbi r2,30
+j -8
 halt
