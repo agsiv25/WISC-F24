@@ -150,7 +150,7 @@ module proc (/*AUTOARG*/
 
    x2m_ff exec2mem(.createDumpX(createDumpX), .createDumpM(createDumpM), .instructionX(instructionX), .instructionM(instructionM), .clk(clk), .rst(rst), .aluFinalX(aluFinalX), .aluFinalM(aluFinalM), .newPCX(newPCX), .newPCM(newPCM), .addPCX(addPCX), .addPCM(addPCM), .aluOutX(aluOutX), .aluOutM(aluOutM), .wrtDataX(wrtDataXout), .wrtDataM(wrtDataM), .memWrtX(memWrtX), .memWrtM(memWrtM), .readEnX(readEnX), .readEnM(readEnM), .wbDataSelX(wbDataSelX), .wbDataSelM(wbDataSelM), .imm8X(imm8X), .imm8M(imm8M), .regWrtX(regWrtX), .regWrtM(regWrtM), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .branchInstX(branchInstX), .branchInstM(branchInstM), .memAccessX(memAccessX), .memAccessM(memAccessM), .Stall(Stall_m));
 
-   memory memorySection(.dataAddr(aluOutM), .wrtData(wrtDataM), .memWrt(memWrtM), .createDump(createDumpM), .clk(clk), .rst(rst), .memOut(memOutM), .readEn(readEnM), .alignErr(alignErrM), .memAccessM(memAccessM), .alignErr_ff(alignErr_ff), .Stall());
+   memory memorySection(.dataAddr(aluOutM), .wrtData(wrtDataM), .memWrt(memWrtM), .createDump(createDumpM), .clk(clk), .rst(rst), .memOut(memOutM), .readEn(readEnM), .alignErr(alignErrM), .memAccessM(memAccessM), .alignErr_ff(alignErr_ff), .Stall(Stall_m));
 
    m2w_ff mem2wb(.newPCM(newPCM), .newPCW(newPCW), .instructionM(instructionM), .instructionW(instructionW), .clk(clk), .rst(rst), .memOutM(memOutM), .memOutW(memOutW), .wbDataSelM(wbDataSelM), .wbDataSelW(wbDataSelW), .addPCM(addPCM), .addPCW(addPCW), .aluFinalM(aluFinalM), .aluFinalW(aluFinalW), .imm8M(imm8M), .imm8W(imm8W), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .branchInstM(branchInstM), .branchInstW(branchInstW), .Stall(Stall));
 
