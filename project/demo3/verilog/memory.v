@@ -6,7 +6,7 @@
                      processor.
 */
 `default_nettype none
-module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, istall, istallM);
+module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, istall, istallM, dstall, dcacheErr);
 
    // TODO: Your code here
 
@@ -20,15 +20,36 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, 
 
    output wire [15:0]memOut;
 
-   // icache
+   // cache
    input wire istall;
    input wire istallM;
+   output wire dstall;
+   output wire dcacheErr;
    wire enable;
+   wire done;
+   wire dstall_local;
 
    assign enable = ~createDump & ~(istall & istallM & readEn);
+   assign dstall = (dstall_local | dcacheErr)
 
-
-memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(enable), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
+// memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(enable), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
    
+// D-CACHE (mem_type param set to 1):
+mem_system #(1) m0(/*AUTOINST*/
+                      // Outputs
+                      .DataOut          (memOut),
+                      .Done             (done),
+                      .Stall            (dstall_local),
+                      .CacheHit         (cacheHit),
+                      .err              (dcacheErr),
+                      // Inputs
+                      .Addr             (dataAddr),
+                      .DataIn           (wrtData),
+                      .Rd               (enable & ~memWrt),
+                      .Wr               (enable & memWrt),
+                      .createdump       (createDump | dcacheErr),
+                      .clk              (clk),
+                      .rst              (rst));
+
 endmodule
 `default_nettype wire

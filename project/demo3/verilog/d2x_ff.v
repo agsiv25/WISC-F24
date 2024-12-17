@@ -5,7 +5,7 @@
    Description     : This is the flip flop between the decode and execute cycles.
 */
 `default_nettype none
-module d2x_ff (clk, rst, imm8D, imm11D, aluJmpD, SLBIselD, memWrtD, brchSigD, CinD, invAD, invBD, wbDataSelD, immSrcD, aluOpD, jalSelD, sOpSelD, readEnD, aluPCD, inAD, inBD, wrtDataD, SLBIselX, incPCX, immSrcX, imm8X, imm11X, brchSigX, CinX, inAX, inBX, invAX, invBX, aluOpX, aluJmpX, jalSelX, sOpSelX, aluPCX, memWrtX, wbDataSelX, readEnX, wrtDataX, incPCD, regWrtD, regWrtX, wrtRegD, wrtRegX, jumpInstD, jumpInstX, instructionD, instructionX, createDumpD, createDumpX, fwCntrlAD, fwCntrlBD, fwCntrlAX, fwCntrlBX, branchInstD, branchInstX, istall);
+module d2x_ff (clk, rst, imm8D, imm11D, aluJmpD, SLBIselD, memWrtD, brchSigD, CinD, invAD, invBD, wbDataSelD, immSrcD, aluOpD, jalSelD, sOpSelD, readEnD, aluPCD, inAD, inBD, wrtDataD, SLBIselX, incPCX, immSrcX, imm8X, imm11X, brchSigX, CinX, inAX, inBX, invAX, invBX, aluOpX, aluJmpX, jalSelX, sOpSelX, aluPCX, memWrtX, wbDataSelX, readEnX, wrtDataX, incPCD, regWrtD, regWrtX, wrtRegD, wrtRegX, jumpInstD, jumpInstX, instructionD, instructionX, createDumpD, createDumpX, fwCntrlAD, fwCntrlBD, fwCntrlAX, fwCntrlBX, branchInstD, branchInstX, istall, dstall);
 
 input wire clk;
 input wire rst;
@@ -49,10 +49,11 @@ output wire [4:0] fwCntrlAX, fwCntrlBX;
 input wire branchInstD;
 output wire branchInstX;
 
-// icache
+// cache
 input wire istall;
 wire cacheClk;
-assign cacheClk = (istall) ? 1'b0 : clk;
+assign cacheClk = (istall | dstall) ? 1'b0 : clk;
+input wire dstall;
 
 // to execute stage 
 output wire regWrtX;
