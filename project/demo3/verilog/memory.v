@@ -6,7 +6,7 @@
                      processor.
 */
 `default_nettype none
-module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, istall);
+module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, istall, istallM);
 
    // TODO: Your code here
 
@@ -22,6 +22,7 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, 
 
    // icache
    input wire istall;
+   input wire istallM;
 
 
    memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(~createDump), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
