@@ -5,7 +5,7 @@
    Description     : This is the flip flop between the execute and memory cycles.
 */
 `default_nettype none
-module  x2m_ff(clk, rst, aluFinalX, addPCX, aluOutX, wrtDataX, memWrtX, readEnX, wbDataSelX, wrtDataM, memWrtM, aluFinalM, addPCM, aluOutM, readEnM, wbDataSelM, imm8X, imm8M, regWrtX, regWrtM, wrtRegX, wrtRegM, instructionX, instructionM, createDumpX, createDumpM, branch_mispredictionX, branch_mispredictionM, istall);
+module  x2m_ff(clk, rst, aluFinalX, addPCX, aluOutX, wrtDataX, memWrtX, readEnX, wbDataSelX, wrtDataM, memWrtM, aluFinalM, addPCM, aluOutM, readEnM, wbDataSelM, imm8X, imm8M, regWrtX, regWrtM, wrtRegX, wrtRegM, instructionX, instructionM, createDumpX, createDumpM, branch_mispredictionX, branch_mispredictionM, istall, istallM);
 
 input wire clk;
 input wire rst;
@@ -40,6 +40,7 @@ output wire createDumpM;
 input wire branch_mispredictionX;
 output wire branch_mispredictionM;
 input wire istall;
+output wire istallM;
 wire cacheClk;
 assign cacheClk = (istall) ? 1'b0 : clk;
 
@@ -57,6 +58,8 @@ dff instructionLatch [15:0] (.q(instructionM), .d(instructionX), .clk(cacheClk),
 dff createDumpLatch (.q(createDumpM), .d(createDumpX), .clk(cacheClk), .rst(rst));
 
 dff branchMispredictionLatch (.q(branch_mispredictionM), .d(branch_mispredictionX), .clk(cacheClk), .rst(rst));
+
+dff istallMemoryLatch (.q(istallM), .d(istall), .clk(clk), .rst(rst));
    
 endmodule
 `default_nettype wire

@@ -126,6 +126,7 @@ module proc (/*AUTOARG*/
 
    // icache 
    wire istallF;
+   wire istallM;
 
    fetch fetchSection(.newPC(newPCX), .createDump(createDumpM), .rst(rst), .clk(clk), .incPC(incPCF), .instruction(instructionF), .err(fetchErr), .regWrtD(regWrtD), .regWrtX(regWrtX), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegD(wrtRegD), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .jumpInstD(jumpInstD), .jumpInstX(jumpInstX), .instrValid(instrValidF), .fwCntrlA(fwCntrlAF), .fwCntrlB(fwCntrlBF), .wbDataSelD(wbDataSelD), .wbDataSelX(wbDataSelX), .branch_mispredictionX(branch_mispredictionSRC), .branch_mispredictionM(branch_mispredictionM), .istall(istallF));
 
@@ -137,9 +138,9 @@ module proc (/*AUTOARG*/
 
    execute executeSection(.SLBIsel(SLBIselX), .incPC(incPCX), .immSrc(immSrcX), .imm8(imm8X), .imm11(imm11X), .brchSig(brchSigX), .Cin(CinX), .inA(inAX), .inB(inBX), .invA(invAX), .invB(invBX), .aluOp(aluOpX), .aluJmp(aluJmpX), .jalSel(jalSelX), .aluFinal(aluFinalX), .newPC(newPCX), .sOpSel(sOpSelX), .aluOut(aluOutX), .addPC(addPCX), .aluPC(aluPCX), .fwCntrlA(fwCntrlAX), .fwCntrlB(fwCntrlBX), .wbDataSelX(wbDataSelX), .x2xALUData(aluFinalM), .x2xImm8Data(imm8M), .m2xALUData(aluFinalW), .m2xImm8Data(imm8W), .m2xMemData(memOutW), .x2xAddPCData(addPCM), .m2xAddPCData(addPCW), .wrtDataXin(wrtDataXin), .wrtDataXout(wrtDataXout), .branch_misprediction(branch_mispredictionSRC), .branchInst(branchInstX));
 
-   x2m_ff exec2mem(.createDumpX(createDumpX), .createDumpM(createDumpM), .instructionX(instructionX), .instructionM(instructionM), .clk(clk), .rst(rst), .aluFinalX(aluFinalX), .aluFinalM(aluFinalM), .addPCX(addPCX), .addPCM(addPCM), .aluOutX(aluOutX), .aluOutM(aluOutM), .wrtDataX(wrtDataXout), .wrtDataM(wrtDataM), .memWrtX(memWrtX), .memWrtM(memWrtM), .readEnX(readEnX), .readEnM(readEnM), .wbDataSelX(wbDataSelX), .wbDataSelM(wbDataSelM), .imm8X(imm8X), .imm8M(imm8M), .regWrtX(regWrtX), .regWrtM(regWrtM), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .branch_mispredictionX(branch_mispredictionSRC), .branch_mispredictionM(branch_mispredictionM), .istall(istallF));
+   x2m_ff exec2mem(.createDumpX(createDumpX), .createDumpM(createDumpM), .instructionX(instructionX), .instructionM(instructionM), .clk(clk), .rst(rst), .aluFinalX(aluFinalX), .aluFinalM(aluFinalM), .addPCX(addPCX), .addPCM(addPCM), .aluOutX(aluOutX), .aluOutM(aluOutM), .wrtDataX(wrtDataXout), .wrtDataM(wrtDataM), .memWrtX(memWrtX), .memWrtM(memWrtM), .readEnX(readEnX), .readEnM(readEnM), .wbDataSelX(wbDataSelX), .wbDataSelM(wbDataSelM), .imm8X(imm8X), .imm8M(imm8M), .regWrtX(regWrtX), .regWrtM(regWrtM), .wrtRegX(wrtRegX), .wrtRegM(wrtRegM), .branch_mispredictionX(branch_mispredictionSRC), .branch_mispredictionM(branch_mispredictionM), .istall(istallF), istallM(istallM));
 
-   memory memorySection(.dataAddr(aluOutM), .wrtData(wrtDataM), .memWrt(memWrtM), .createDump(createDumpM), .clk(clk), .rst(rst), .memOut(memOutM), .readEn(readEnM), .istall(istallF));
+   memory memorySection(.dataAddr(aluOutM), .wrtData(wrtDataM), .memWrt(memWrtM), .createDump(createDumpM), .clk(clk), .rst(rst), .memOut(memOutM), .readEn(readEnM), .istall(istallM));
 
    m2w_ff mem2wb(.instructionM(instructionM), .instructionW(instructionW), .clk(clk), .rst(rst), .memOutM(memOutM), .memOutW(memOutW), .wbDataSelM(wbDataSelM), .wbDataSelW(wbDataSelW), .addPCM(addPCM), .addPCW(addPCW), .aluFinalM(aluFinalM), .aluFinalW(aluFinalW), .imm8M(imm8M), .imm8W(imm8W), .regWrtM(regWrtM), .regWrtW(regWrtW), .wrtRegM(wrtRegM), .wrtRegW(wrtRegW), .istall(istallF));
 
