@@ -36,7 +36,7 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, 
    assign isStalled = istall & istallM;
    assign enable = ~createDump & ~isStalled;
    assign dstall = (dstall_local | dcacheErr);
-   assign memReadEn = enable & ~memWrt & readEn;
+   assign memReadEn = enable & ~memWrt;
    assign memWriteEn = enable & memWrt;
 
 // memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(enable), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
