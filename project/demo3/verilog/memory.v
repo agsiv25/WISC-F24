@@ -58,7 +58,7 @@ mem_system #(1) m0(/*AUTOINST*/
                       .Rd               (memReadEn),
                       .Wr               (memWriteEn),           // no-write allocate cache
                       .createdump       (createDump | dcacheErr),
-                      .clk              (clk),
+                      .clk              (cacheClk),
                       .rst              (rst));
 
 endmodule
