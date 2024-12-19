@@ -32,9 +32,6 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, 
    wire memWriteEn;
    wire memReadEn;
    wire isStalled;
-   wire cacheClk;
-
-   assign cacheClk = (isStalled) ? 1'b0 : clk;
 
    assign isStalled = istall & istallM;
    assign enable = ~createDump & ~isStalled;
