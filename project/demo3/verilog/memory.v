@@ -31,12 +31,10 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, 
    wire cacheHit;
    wire memWriteEn;
    wire memReadEn;
-   wire isStalled;
 
-   assign isStalled = istall & istallM;
-   assign enable = ~createDump & ~isStalled;
+   assign enable = ~createDump & ~(istall & istallM & readEn);
    assign dstall = (dstall_local | dcacheErr);
-   assign memReadEn = enable & ~memWrt & readEn;
+   assign memReadEn = enable & ~memWrt;
    assign memWriteEn = enable & memWrt;
 
 // memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(enable), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
@@ -53,7 +51,7 @@ mem_system #(1) m0(/*AUTOINST*/
                       .Addr             (dataAddr),
                       .DataIn           (wrtData),
                       .Rd               (memReadEn),
-                      .Wr               (memWriteEn),           // no-write allocate cache
+                      .Wr               (memWriteEn),
                       .createdump       (createDump | dcacheErr),
                       .clk              (clk),
                       .rst              (rst));
