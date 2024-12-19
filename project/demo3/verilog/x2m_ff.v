@@ -5,7 +5,7 @@
    Description     : This is the flip flop between the execute and memory cycles.
 */
 `default_nettype none
-module  x2m_ff(clk, rst, aluFinalX, addPCX, aluOutX, wrtDataX, memWrtX, readEnX, wbDataSelX, wrtDataM, memWrtM, aluFinalM, addPCM, aluOutM, readEnM, wbDataSelM, imm8X, imm8M, regWrtX, regWrtM, wrtRegX, wrtRegM, instructionX, instructionM, createDumpX, createDumpM, branch_mispredictionX, branch_mispredictionM, istall, istallM, dstall);
+module  x2m_ff(clk, rst, aluFinalX, addPCX, aluOutX, wrtDataX, memWrtX, readEnX, wbDataSelX, wrtDataM, memWrtM, aluFinalM, addPCM, aluOutM, readEnM, wbDataSelM, imm8X, imm8M, regWrtX, regWrtM, wrtRegX, wrtRegM, instructionX, instructionM, createDumpX, createDumpM, branch_mispredictionX, branch_mispredictionM, istall, istallM);
 
 input wire clk;
 input wire rst;
@@ -36,14 +36,13 @@ output wire [2:0] wrtRegM;
 output wire [15:0] instructionM;
 output wire createDumpM;
 
-// cache
+// icache
 input wire branch_mispredictionX;
 output wire branch_mispredictionM;
 input wire istall;
 output wire istallM;
 wire cacheClk;
-assign cacheClk = (istall | dstall) ? 1'b0 : clk;
-input wire dstall;
+assign cacheClk = (istall) ? 1'b0 : clk;
 
 dff aluFinalLatch [15:0] (.q(aluFinalM), .d(aluFinalX), .clk(cacheClk), .rst(rst));
 dff addPCLatch [15:0] (.q(addPCM), .d(addPCX), .clk(cacheClk), .rst(rst));
