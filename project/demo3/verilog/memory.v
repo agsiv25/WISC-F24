@@ -30,12 +30,12 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, 
    wire dstall_local;
 
    assign enable = ~createDump & ~(istall & istallM & readEn);
-   assign dstall = (dstall_local | dcacheErr);
+   assign dstall = (dstall_local | dcacheErr)
 
 // memory2c data_mem(.data_out(memOut), .data_in(wrtData), .addr(dataAddr), .enable(enable), .wr(memWrt), .createdump(createDump), .clk(clk), .rst(rst));
    
 // D-CACHE (mem_type param set to 1):
-mem_system #(1) m0(/*AUTOINST*/
+mem_system #(1'b1) m0(/*AUTOINST*/
                       // Outputs
                       .DataOut          (memOut),
                       .Done             (done),
