@@ -1,10 +1,10 @@
 ﻿,perf,complex_demofinal,rand_final,rand_ldst,rand_idcache, rand_icache,rand_dcache, complex_demo1,complex_demo2,rand_complex,rand_ctrl,inst_tests
-Stalling instruction memory alone,,Unsuccessful ,Unsuccessful ,partial success 2/48,Unsuccessful ,partial success 1/8,Unsuccessful ,partial success 1/4,Unsuccessful ,Unsuccessful ,Unsuccessful ,Partial success 111/214
-Stalling data memory alone,,Unsuccessful ,Unsuccessful ,partial success 2/49,Unsuccessful ,partial success 1/9,Unsuccessful ,partial success 1/5,Unsuccessful ,Unsuccessful ,Unsuccessful ,Partial success 111/215
-Stalling inst+data memory,,Unsuccessful ,Unsuccessful ,partial success 2/50,Unsuccessful ,partial success 1/10,Unsuccessful ,partial success 1/6,Unsuccessful ,Unsuccessful ,Unsuccessful ,Partial success 111/216
-Direct-mapped instruction memory alone,,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful 
-Direct-mapped data memory alone,,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful 
-Direct-mapped inst+data memory,,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful 
-2-way instruction memory alone,,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful 
-2-way data memory alone,,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful 
-2-way inst+data memory,,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful 
+Stalling instruction memory alone,partial success 6/7,partial success 7/17,partial success 31/40,partial success 4/48,partial success 7/8,success,Unsuccessful ,partial success 4/5,partial success 6/8,success,success,success
+Stalling data memory alone,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful 
+Stalling inst+data memory,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful 
+Direct-mapped instruction memory alone,partial success 6/7,partial success 7/17,partial success 31/40,partial success 4/48,partial success 7/8,success,Unsuccessful ,partial success 4/5,partial success 6/8,success,success,success
+Direct-mapped data memory alone,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful 
+Direct-mapped inst+data memory,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful 
+2-way instruction memory alone,partial success 6/7,partial success 7/17,partial success 31/40,partial success 4/48,partial success 7/8,success,Unsuccessful ,partial success 4/5,partial success 6/8,success,success,success
+2-way data memory alone,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful 
+2-way inst+data memory,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful ,Unsuccessful 
