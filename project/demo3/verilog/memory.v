@@ -32,6 +32,9 @@ module memory (dataAddr, wrtData, memWrt, createDump, clk, rst, memOut, readEn, 
    wire memWriteEn;
    wire memReadEn;
    wire isStalled;
+   wire cacheClk;
+
+   assign cacheClk = (isStalled) ? 1'b0 : clk;
 
    assign isStalled = istall & istallM;
    assign enable = ~createDump & ~isStalled;
@@ -55,7 +58,7 @@ mem_system #(1) m0(/*AUTOINST*/
                       .Rd               (memReadEn),
                       .Wr               (memWriteEn),           // no-write allocate cache
                       .createdump       (createDump | dcacheErr),
-                      .clk              (clk),
+                      .clk              (cacheClk),
                       .rst              (rst));
 
 endmodule
